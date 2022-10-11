@@ -1,8 +1,15 @@
 {
   "name": "fcash",
-  "version": "0.1.0",
+  "version": "1.1.2",
   "private": true,
+  "homepage": ".",
+  "proxy": "http://localhost:9002",
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.8",
+    "@mui/x-date-pickers": "^5.0.4",
+    "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -10,15 +17,24 @@
     "@types/node": "^16.11.63",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "dayjs": "^1.11.5",
+    "decimal.js": "^10.4.1",
+    "formik": "^2.2.9",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.0.4",
+    "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
+    "redux": "^4.2.0",
     "typescript": "^4.8.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:dapp": "npm run build && rm dapp/futurecash_* && cd build && zip -r futurecash_$npm_package_version.mds.zip . && mv futurecash_$npm_package_version.mds.zip ../dapp/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -39,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@redux-devtools/core": "^3.13.1"
   }
 }

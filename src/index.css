@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: Manrope-regular;
+  src: url('./assets/fonts/manrope/Manrope-Regular.ttf');
+}
+@font-face {
+  font-family: Manrope-bold;
+  src: url('./assets/fonts/manrope/Manrope-Bold.ttf');
+}
+@font-face {
+  font-family: Manrope-light;
+  src: url('./assets/fonts/manrope/Manrope-Light.ttf');
+}
+@font-face {
+  font-family: Manrope-semibold;
+  src: url('./assets/fonts/manrope/Manrope-SemiBold.ttf');
+}
+
+.App {
+  margin: 22px 16px;
+}
