@@ -14,11 +14,11 @@ import { futureCashScript } from "./scripts";
 const rpc = (command: string): Promise<any> => {
     return new Promise((resolve, reject) => {
         MDS.cmd(command, (resp: any) => {
-            console.log(resp)
+            //console.log(resp)
             
 
             if (resp.length > 0) {
-                console.log(`multi command activity.`);
+                //console.log(`multi command activity.`);
                 let success = true;
                 let error = "";
                 resp.forEach((r: any) => {
@@ -248,7 +248,7 @@ const sendFutureCash = (fCash: IFutureCashPost): Promise<object> => {
 
     return new Promise((resolve, reject) => {
         rpc(command).then((r) => {
-            
+            console.log(r)
             resolve(r);
             
         }).catch((err) => {

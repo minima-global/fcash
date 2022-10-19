@@ -16,6 +16,7 @@ import MiSnackBar from "./components/MiSnackBar";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -26,7 +27,7 @@ root.render(
         <Provider store={appStore}>
           <HashRouter>
             <CssBaseline />
-            <App />
+            <App/>
             <MiSnackBar />
           </HashRouter>
         </Provider>

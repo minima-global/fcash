@@ -98,9 +98,9 @@ const initializeMinima = () => {
   //   MDS.DEBUG_MINIDAPPID = process.env.REACT_APP_MINIDAPPID;
   // }
   
-  // MDS.DEBUG_HOST="127.0.0.1"
-  // MDS.DEBUG_PORT=9003
-  // MDS.DEBUG_MINIDAPPID = "0x9B298E1576D9BA0EC493F03CF642E55449D3E14D9CD4DB166349C587C653F4FA"
+  MDS.DEBUG_HOST="127.0.0.1"
+  MDS.DEBUG_PORT=9003
+  MDS.DEBUG_MINIDAPPID = "0x10B699EFD1A5C4AB280BBFCA100665AD7B938071F7C69ABA17F27D9454FC93E6"
 
   MDS.init((nodeEvent: InitResponse | MiningResponse | NewBlockResponse | MinimaLogResponse | NewBalanceResponse | MaximaResponse | MDSTimerResponse | MaximaHosts) => {
 

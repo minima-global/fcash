@@ -1,4 +1,3 @@
-import uiBackground from './assets/images/LM.jpeg';
 import { createTheme } from '@mui/material/styles';
 
 let theme = createTheme({
@@ -68,8 +67,7 @@ let theme = createTheme({
         MuiCssBaseline: {
             styleOverrides: `
             body {
-                background-image: url(${uiBackground});
-                background-size: cover;
+                background: #FF7358;
             }
           `,
         },

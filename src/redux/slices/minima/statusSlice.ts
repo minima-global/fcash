@@ -11,7 +11,7 @@ const initialState: StatusState = {
 };
 
 export const callAndStoreChainHeight = 
-    (): AppThunk => async (dispatch, getState) => {
+    (): AppThunk => async (dispatch) => {
 
         getBlockTime().then((cH) => {
             

@@ -1,142 +1,109 @@
 import React from "react";
-import {
-  Button,
-  Grid,
-  Typography,
-  Select,
-  MenuItem,
-  TextField,
-  Stack,
-} from "@mui/material";
-import { DateTimePicker } from "@mui/x-date-pickers";
+import { Stack } from "@mui/material";
+import { withFormik, FormikProps } from "formik";
+import { useAppDispatch } from "../../redux/hooks";
 
-import { useFormik } from "formik";
-
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-
-import { selectBalance } from "../../redux/slices/minima/balanceSlice";
 import moment from "moment";
-import { showToast } from "../../redux/slices/app/toastSlice";
 import {
   createBlockTime,
   getFutureCashScriptAddress,
   sendFutureCash,
 } from "../../minima/rpc-commands";
+import TokenTimeSelection from "./sendForm/TokenTimeSelection";
+import AddressAmountSelection from "./sendForm/AddressAmountSelection";
+import Confirmation from "./sendForm/Confirmation";
+import Success from "./sendForm/Success";
+import * as yup from "yup";
+import { showToast } from "../../redux/slices/app/toastSlice";
+import { AppDispatch } from "../../redux/store";
 
-const FormFutureCash = () => {
-  const walletTokens = useAppSelector(selectBalance);
-  const dispatch = useAppDispatch();
-  const [filterText, setFilterText] = React.useState("");
-  const formik = useFormik({
-    initialValues: {
-      tokenid: "0x00",
-      datetime: moment(new Date().getTime()),
-      address: "",
-      amount: "",
-    },
-    onSubmit: async (dt) => {
-      // console.log(dt);
-      // dispatch(
-      //   showToast(`Sent ${dt.amount} cash to the future.`, "success", "")
-      // );
+const formValidation = yup.object().shape({
+  tokenid: yup.string().trim().required("Field is required."),
+  datetime: yup.object().required("Field is required"),
+  address: yup
+    .string()
+    .required("Field is required.")
+    .matches(/0|M[xX][0-9a-zA-Z]+/, "Invalid Address.")
+    .min(59, "Invalid Address, too short.")
+    .max(66, "Invalid Address, too long."),
+  amount: yup
+    .string()
+    .required("Field is required")
+    .matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters."),
+  // burn:     yup.string()
+  //              .matches(/^[^a-zA-Z\\;'"]+$/, 'Invalid characters.'),
+});
+interface FormValues {
+  tokenid: string;
+  datetime: moment.Moment;
+  address: string;
+  amount: string;
+}
 
-      try {
-        const blocktime = await createBlockTime(dt.datetime);
-        const scriptAddress = await getFutureCashScriptAddress();
+const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
+  const [page, setPage] = React.useState(0);
+  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
+    props;
+  const formTransition = [
+    <TokenTimeSelection {...props} page={page} setPage={setPage} />,
+    <AddressAmountSelection {...props} page={page} setPage={setPage} />,
+    <Confirmation {...props} page={page} setPage={setPage} />,
+    <Success />,
+  ];
 
-        console.log("Calculated blocktime", blocktime);
-        console.log("scriptAddress acquired", scriptAddress);
-        await sendFutureCash({
-          amount: dt.amount,
-          scriptAddress: scriptAddress,
-          tokenid: dt.tokenid,
-          state1: blocktime,
-          state2: dt.address,
-        });
-      } catch (err) {
-        dispatch(showToast(`${err}`, "warning", ""));
-        formik.setSubmitting(false);
-        return;
-      }
-
-      dispatch(showToast(`You sent cash to the future!!!!`, "success", ""));
-
-      console.log("Tried blocktime and now here");
-    },
-  });
-
-  function handleInputChange(event: any) {
-    const value = event.target.value;
-    setFilterText(value);
-    // when the component re-renders the updated filter text will create a new filteredBalance variable
-  }
   return (
-    <Grid container>
-      <Grid item xs={0} sm={4}></Grid>
-      <Grid item xs={12} sm={4}>
-        <form onSubmit={formik.handleSubmit}>
-          <Stack spacing={2} mb={2}>
-            <Typography variant="h6">FutureCash</Typography>
-            <Select
-              disabled={formik.isSubmitting}
-              id="tokenid"
-              name="tokenid"
-              value={formik.values.tokenid ? formik.values.tokenid : ""}
-              onChange={formik.handleChange}
-              error={formik.touched.tokenid && Boolean(formik.errors.tokenid)}
-              onClose={() => setFilterText("")}
-              fullWidth
-            >
-              {walletTokens.map((w) => (
-                <MenuItem value={w.tokenid} key={w.tokenid}>
-                  {typeof w.token == "string"
-                    ? w.token
-                    : typeof w.token.name === "string"
-                    ? w.token.name
-                    : "No name"}
-                </MenuItem>
-              ))}
-            </Select>
-            <TextField
-              id="address"
-              name="address"
-              placeholder="Address"
-              onChange={formik.handleChange}
-            />
-            <TextField
-              id="amount"
-              name="amount"
-              placeholder="Amount"
-              onChange={formik.handleChange}
-            />
-            <DateTimePicker
-              disablePast={true}
-              value={formik.values.datetime}
-              onChange={(value) =>
-                formik.setFieldValue("datetime", value, true)
-              }
-              renderInput={(params: any) => (
-                <TextField id="datetime" name="datetime" {...params} />
-              )}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              disableElevation={true}
-            >
-              Send Funds
-            </Button>
-          </Stack>
-        </form>
-        <Stack spacing={2}>
-          {/* <Typography variant="h6">FutureCash</Typography> */}
-          {/* <TextField /> */}
-        </Stack>
-      </Grid>
-      <Grid item xs={0} sm={4}></Grid>
-    </Grid>
+    <form onSubmit={handleSubmit}>
+      <Stack spacing={2} mb={2}>
+        {formTransition[page]}
+      </Stack>
+    </form>
   );
 };
 
-export default FormFutureCash;
+interface MyEnhancedFutureCashFormProps {
+  initialTokenid: string;
+  initialTime: moment.Moment;
+  dispatch: AppDispatch;
+}
+const MyEnhancedTransitionalFormHandler = withFormik<
+  MyEnhancedFutureCashFormProps,
+  FormValues
+>({
+  validationSchema: formValidation,
+  mapPropsToValues: (props) => ({
+    tokenid: props.initialTokenid,
+    datetime: props.initialTime,
+    address: "",
+    amount: "",
+    dispatch: {},
+  }),
+  handleSubmit: async (dt, { props, setSubmitting }) => {
+    try {
+      const blocktime = await createBlockTime(dt.datetime);
+      const scriptAddress = await getFutureCashScriptAddress();
+
+      //console.log("Calculated blocktime", blocktime);
+      //console.log("scriptAddress acquired", scriptAddress);
+      await sendFutureCash({
+        amount: dt.amount,
+        scriptAddress: scriptAddress,
+        tokenid: dt.tokenid,
+        state1: blocktime,
+        state2: dt.address,
+      });
+    } catch (err) {
+      alert(err);
+      // TO-DO figure out how to use dispatch in formik
+      props.dispatch(showToast(`${err}`, "warning", ""));
+      setSubmitting(false);
+      return;
+    }
+    alert("you send cash to future");
+    // TO-DO figure out how to use dispatch in formik
+
+    props.dispatch(showToast(`You sent cash to the future!!!!`, "success", ""));
+  },
+  displayName: "FutureCash",
+})(TransitionalFormHandler);
+
+export default MyEnhancedTransitionalFormHandler;
