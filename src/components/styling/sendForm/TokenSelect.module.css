@@ -1,0 +1,45 @@
+.avatar {
+  width: 2.8em;
+  height: 2.8em;
+  background: #fff;
+}
+.dismiss {
+  cursor: pointer;
+}
+.slideIn {
+  animation: 0.5s alternate slidein;
+}
+.slideOut {
+  animation: 0.5s ease-out slideout;
+}
+
+@keyframes slidein {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: 70vh;
+  }
+}
+@keyframes slideout {
+  from {
+    height: 70vh;
+  }
+
+  to {
+    height: 0;
+  }
+}
+
+.cancelBtn {
+  font-family: Manrope-regular;
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 21px;
+  letter-spacing: 2px;
+  text-align: center;
+}
+.cancelBtn:disabled {
+  background: none;
+}
