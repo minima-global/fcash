@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import { withFormik, FormikProps } from "formik";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import moment from "moment";
 import {
@@ -16,6 +16,10 @@ import Success from "./sendForm/Success";
 import * as yup from "yup";
 import { showToast } from "../../redux/slices/app/toastSlice";
 import { AppDispatch } from "../../redux/store";
+import {
+  selectPageSelector,
+  updatePage,
+} from "../../redux/slices/app/sendFormSlice";
 
 const formValidation = yup.object().shape({
   tokenid: yup.string().trim().required("Field is required."),
@@ -41,20 +45,19 @@ interface FormValues {
 }
 
 const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
-  const [page, setPage] = React.useState(0);
-  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
-    props;
+  const { handleSubmit } = props;
+  const sendFormSelector = useAppSelector(selectPageSelector);
   const formTransition = [
-    <TokenTimeSelection {...props} page={page} setPage={setPage} />,
-    <AddressAmountSelection {...props} page={page} setPage={setPage} />,
-    <Confirmation {...props} page={page} setPage={setPage} />,
-    <Success />,
+    <TokenTimeSelection {...props} />,
+    <AddressAmountSelection {...props} />,
+    <Confirmation {...props} />,
+    <Success {...props} />,
   ];
 
   return (
     <form onSubmit={handleSubmit}>
       <Stack spacing={2} mb={2}>
-        {formTransition[page]}
+        {formTransition[sendFormSelector.page]}
       </Stack>
     </form>
   );
@@ -64,6 +67,7 @@ interface MyEnhancedFutureCashFormProps {
   initialTokenid: string;
   initialTime: moment.Moment;
   dispatch: AppDispatch;
+  page: number;
 }
 const MyEnhancedTransitionalFormHandler = withFormik<
   MyEnhancedFutureCashFormProps,
@@ -82,8 +86,6 @@ const MyEnhancedTransitionalFormHandler = withFormik<
       const blocktime = await createBlockTime(dt.datetime);
       const scriptAddress = await getFutureCashScriptAddress();
 
-      //console.log("Calculated blocktime", blocktime);
-      //console.log("scriptAddress acquired", scriptAddress);
       await sendFutureCash({
         amount: dt.amount,
         scriptAddress: scriptAddress,
@@ -91,15 +93,15 @@ const MyEnhancedTransitionalFormHandler = withFormik<
         state1: blocktime,
         state2: dt.address,
       });
+
+      props.dispatch(updatePage(props.page + 1));
     } catch (err) {
-      alert(err);
-      // TO-DO figure out how to use dispatch in formik
       props.dispatch(showToast(`${err}`, "warning", ""));
+
       setSubmitting(false);
+
       return;
     }
-    alert("you send cash to future");
-    // TO-DO figure out how to use dispatch in formik
 
     props.dispatch(showToast(`You sent cash to the future!!!!`, "success", ""));
   },

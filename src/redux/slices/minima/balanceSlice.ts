@@ -16,8 +16,8 @@ export const callAndStoreWalletBalance =
     async (dispatch) => {
       getWalletBalance()
           .then((wallet) => {
-              
-              dispatch(updateBalance(wallet));
+                       
+            dispatch(updateBalance(wallet));
           })
           .catch((err) => {
               console.error(err);

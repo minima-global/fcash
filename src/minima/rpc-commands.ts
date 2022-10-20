@@ -362,7 +362,7 @@ const isAddressMine = (addr: string) => {
         rpc(`scripts`).then((scripts) => {
             let scriptAddress = undefined;
             scripts.forEach((s: IScript) => {
-                if (s.script === addr) {
+                if (s.address === addr) {
                     scriptAddress = s.address;
                 }
             })
@@ -395,5 +395,6 @@ export {
     getFutureCashScriptAddress, 
     createBlockTime,
     collectFutureCash,
-    getBlockTime
+    getBlockTime,
+    isAddressMine
 };

@@ -4,11 +4,15 @@ import { ToastState } from './slices/app/toastSlice';
 import { MiningState } from "./slices/minima/miningSlice";
 import { CoinState } from "./slices/minima/coinSlice";
 import { BalanceState } from "./slices/minima/balanceSlice";
+import { SendFormState } from './slices/app/sendFormSlice';
+import { ClipboardState } from './slices/app/clipboardSlice';
 import coinReducer from "./slices/minima/coinSlice";
 import toastReducer from './slices/app/toastSlice';
 import miningReducer from './slices/minima/miningSlice';
 import balanceReducer from './slices/minima/balanceSlice';
 import statusReducer from './slices/minima/statusSlice';
+import sendFormReducer from './slices/app/sendFormSlice';
+import clipboardReducer from './slices/app/clipboardSlice';
 
 
 export type RootState = {
@@ -17,6 +21,8 @@ export type RootState = {
     toast: ToastState;
     wallet: BalanceState;
     status: StatusState;
+    page: SendFormState;
+    clipboard: ClipboardState
 };
 
 export const store = configureStore({
@@ -26,6 +32,8 @@ export const store = configureStore({
         toast: toastReducer,
         wallet: balanceReducer,
         status: statusReducer,
+        page: sendFormReducer,
+        clipboard: clipboardReducer
     }
 });
 
