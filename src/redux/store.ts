@@ -3,7 +3,7 @@ import { configureStore, ThunkAction, AnyAction } from "@reduxjs/toolkit";
 import { ToastState } from './slices/app/toastSlice';
 import { MiningState } from "./slices/minima/miningSlice";
 import { CoinState } from "./slices/minima/coinSlice";
-import { BalanceState } from "./slices/minima/balanceSlice";
+import { balanceMiddleware, BalanceState } from "./slices/minima/balanceSlice";
 import { SendFormState } from './slices/app/sendFormSlice';
 import { ClipboardState } from './slices/app/clipboardSlice';
 import coinReducer from "./slices/minima/coinSlice";
@@ -34,7 +34,8 @@ export const store = configureStore({
         status: statusReducer,
         page: sendFormReducer,
         clipboard: clipboardReducer
-    }
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(balanceMiddleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

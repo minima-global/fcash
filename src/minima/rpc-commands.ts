@@ -137,7 +137,7 @@ const getFutureCoins = (addr: string): Promise<Coin[] | string> => {
 
 /** Get Balance */
 
-const getWalletBalance = (): Promise<MinimaToken[] | string> => {
+const getWalletBalance = (): Promise<MinimaToken[]> => {
 
     return new Promise((resolve, reject) => {
         rpc(`balance`).then((wallet) => {

@@ -88,6 +88,10 @@ let whenMinimaLog = (d: MinimaLogData) => {
   // console.log("MINIMA LOG event ... please resgister custom callback", d);
 };
 
+let whenMDSTimer = (d: any) => {
+  // console.log("MINIMA MDS TIMER event ... please register custom callback", d);
+};
+
 ///////////////////////////
 
 const initializeMinima = () => {
@@ -131,6 +135,8 @@ const initializeMinima = () => {
               whenMinimaLog(minimaLogeData);
               break;
           case 'MDS_TIMER_10SECONDS':
+            const mdstimerdata = nodeEvent.data;
+            whenMDSTimer(mdstimerdata)
             break;
           case 'MAXIMAHOSTS':
             break;
@@ -167,6 +173,11 @@ function onInit(callback: () => void) {
   initializeMinima();
 }
 
+function onMDSTimer(callback: (data: any) => void) {
+  whenMDSTimer = callback;
+
+}
+
 function onMinimaLog(callback: (data: MinimaLogData) => void) {
   whenMinimaLog = callback;
 }
@@ -177,5 +188,6 @@ export const events = {
   onMaxima,
   onNewBalance,
   onInit,
-  onMinimaLog
+  onMinimaLog,
+  onMDSTimer
 };

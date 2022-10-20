@@ -4,11 +4,16 @@ import React from "react";
 import Routes from "./routes";
 import { useRoutes } from "react-router-dom";
 
-import { useAppDispatch } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { showToast } from "./redux/slices/app/toastSlice";
 
 import { callAndStoreCoins } from "./redux/slices/minima/coinSlice";
-import { callAndStoreWalletBalance } from "./redux/slices/minima/balanceSlice";
+import {
+  callAndStoreWalletBalance,
+  onNewBlock,
+  selectBalance,
+  selectBalanceNeedsUpdating,
+} from "./redux/slices/minima/balanceSlice";
 import { events } from "./minima/libs/events";
 import { addFutureCashScript } from "./minima/rpc-commands";
 import { futureCashScript } from "./minima/scripts";
@@ -22,6 +27,9 @@ function App() {
   const routes = useRoutes(Routes);
 
   const [minimaStarted, setMinimaStarted] = React.useState(false);
+  const sBalanceNeedsUpdating = useAppSelector<boolean>(
+    selectBalanceNeedsUpdating
+  );
 
   React.useEffect(() => {
     events.onInit(() => {
@@ -37,13 +45,15 @@ function App() {
 
     events.onNewBlock(() => {
       dispatch(callAndStoreChainHeight());
+      dispatch(onNewBlock());
     });
 
     events.onNewBalance(() => {
+      console.log(`new balance update`);
       dispatch(callAndStoreCoins());
       dispatch(callAndStoreWalletBalance());
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
