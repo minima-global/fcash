@@ -102,8 +102,6 @@ const MyEnhancedTransitionalFormHandler = withFormik<
 
       return;
     }
-
-    props.dispatch(showToast(`You sent cash to the future!!!!`, "success", ""));
   },
   displayName: "FutureCash",
 })(TransitionalFormHandler);
