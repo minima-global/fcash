@@ -2,14 +2,8 @@ import { Button, TextField } from "@mui/material";
 import { InputWrapper, InputLabel } from "./InputWrapper";
 import styles from "../../styling/sendForm/TokenSelect.module.css";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
-import { MinimaToken } from "../../../minima/types/minima";
-import React from "react";
-import Decimal from "decimal.js";
 
 const AddressAmountSelection = (props: any) => {
-  const walletTokens = useAppSelector(selectBalance);
   const {
     values,
     touched,
@@ -19,31 +13,31 @@ const AddressAmountSelection = (props: any) => {
     isValid,
     dirty,
     dispatch,
-    setFieldError,
   } = props;
 
-  React.useEffect(() => {
-    const tkn = walletTokens.find(
-      (t: MinimaToken) => t.tokenid == values.tokenid
-    );
+  // React.useEffect(() => {
+  // const tkn = walletTokens.find(
+  //   (t: MinimaToken) => t.tokenid == values.tokenid
+  // );
 
-    if (tkn == undefined) return;
+  // if (tkn == undefined) return;
 
-    if (values.amount.length == 0) return;
+  // if (values.amount.length == 0) return;
 
-    try {
-      const hasFunds = new Decimal(values.amount).lessThan(
-        new Decimal(tkn.sendable)
-      );
+  // try {
+  //   const hasFunds = new Decimal(values.amount).lessThan(
+  //     new Decimal(tkn.sendable)
+  //   );
 
-      if (!hasFunds) {
-        console.log(`setting field error`);
-        setFieldError("amount", "Insufficient funds!");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [values.amount]);
+  //   if (!hasFunds) {
+  //     console.log(`setting field error`);
+
+  //     setFieldError("amount", "Insufficient funds!");
+  //   }
+  // } catch (err) {
+  //   console.error(err);
+  // }
+  // }, [values.amount]);
 
   return (
     <>

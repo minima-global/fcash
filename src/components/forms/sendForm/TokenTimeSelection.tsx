@@ -49,7 +49,7 @@ const TokenTimeSelection = (props: any) => {
         fullWidth={true}
         error={touched.tokenid && Boolean(errors.tokenid) ? true : false}
         tokens={walletTokens}
-        setFormTokenId={setFieldValue}
+        setFieldValue={setFieldValue}
       />
       <InputWrapper>
         <InputLabel>Date & time</InputLabel>

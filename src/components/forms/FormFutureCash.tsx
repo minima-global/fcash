@@ -21,6 +21,17 @@ import {
   updatePage,
 } from "../../redux/slices/app/sendFormSlice";
 
+// const args = {
+//   message: "Insufficient funds",
+// };
+// yup.addMethod(yup.mixed, "checkFunds", (args: any) => {
+//   const { message } = args;
+
+//   return test("checkFunds", message, (val) => {
+//     return new Promise((resolve, reject) => {});
+//   });
+// });
+
 const formValidation = yup.object().shape({
   tokenid: yup.string().trim().required("Field is required."),
   datetime: yup.object().required("Field is required"),
@@ -33,7 +44,14 @@ const formValidation = yup.object().shape({
   amount: yup
     .string()
     .required("Field is required")
-    .matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters."),
+    .matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters.")
+    .test("checkFunds", "lel", function (val) {
+      const { path, createError, parent } = this;
+      console.log(parent);
+
+      console.log(val);
+      return createError({ path, message: "Insufficient funds." });
+    }),
   // burn:     yup.string()
   //              .matches(/^[^a-zA-Z\\;'"]+$/, 'Invalid characters.'),
 });
@@ -42,6 +60,7 @@ interface FormValues {
   datetime: moment.Moment;
   address: string;
   amount: string;
+  sendable: string;
 }
 
 const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
@@ -79,6 +98,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
     datetime: props.initialTime,
     address: "",
     amount: "",
+    sendable: "",
     dispatch: {},
   }),
   handleSubmit: async (dt, { props, setSubmitting }) => {

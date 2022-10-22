@@ -82,9 +82,12 @@ const MiTokenListItem = styled("li")`
   display: flex;
   flex-direction: row;
   border: 1px solid #ffb9ab;
+  overflow: hidden;
 
   * {
     padding: 0 8px;
+    text-overflow: ellipsis;
+    display: block;
   }
 `;
 const DropDownListHeader = styled("h6")`
@@ -154,6 +157,8 @@ const MiTokenAmount = styled("p")`
   letter-spacing: 0.02em;
   font-variant: tabular-nums;
   color: #363a3f;
+
+  text-overflow: ellipsis;
 `;
 
 const NoResults = styled("p")`
@@ -162,6 +167,14 @@ const NoResults = styled("p")`
   font-weight: 500;
   padding: 8px 16px;
   text-align: left;
+`;
+
+const MiSkeleton = styled("p")`
+  padding: 0;
+  margin: 0;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  height: 10px;
 `;
 
 const MiSelect = (props: any) => {
@@ -174,7 +187,7 @@ const MiSelect = (props: any) => {
   const toggling = () => setOpen(!isOpen);
   const onOptionClicked = (t: MinimaToken) => {
     setSelectedOption(t);
-    props.setFormTokenId("tokenid", t.tokenid);
+    props.setFieldValue("tokenid", t.tokenid);
     setOpen(false);
   };
 
@@ -231,6 +244,7 @@ const MiSelect = (props: any) => {
                   spacing={0.3}
                   flexDirection="column"
                   alignItems="flex-start"
+                  sx={{ textOverflow: "ellipsis" }}
                 >
                   <MiTokenName>
                     {typeof selectedOption.token == "string"
@@ -238,11 +252,13 @@ const MiSelect = (props: any) => {
                       : selectedOption.token.name}
                   </MiTokenName>
                   <MiTokenNameTicker>
-                    {selectedOption.tokenid == "0x00"
-                      ? "MINIMA"
-                      : selectedOption.token.hasOwnProperty("ticker")
-                      ? selectedOption.token.ticker
-                      : null}
+                    {selectedOption.tokenid == "0x00" ? (
+                      "MINIMA"
+                    ) : selectedOption.token.hasOwnProperty("ticker") ? (
+                      selectedOption.token.ticker
+                    ) : (
+                      <MiSkeleton />
+                    )}
                   </MiTokenNameTicker>
                   <MiTokenAmount>
                     {numberWithCommas(selectedOption.sendable)}
@@ -310,12 +326,15 @@ const MiSelect = (props: any) => {
                                 ? t.token
                                 : t.token.name}
                             </MiTokenName>
+
                             <MiTokenNameTicker>
-                              {t.tokenid == "0x00"
-                                ? "MINIMA"
-                                : t.token.hasOwnProperty("ticker")
-                                ? t.token.ticker
-                                : null}
+                              {t.tokenid == "0x00" ? (
+                                "MINIMA"
+                              ) : t.token.hasOwnProperty("ticker") ? (
+                                t.token.ticker
+                              ) : (
+                                <MiSkeleton />
+                              )}
                             </MiTokenNameTicker>
                             <MiTokenAmount>
                               {numberWithCommas(t.sendable)}
