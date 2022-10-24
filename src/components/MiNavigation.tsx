@@ -11,6 +11,7 @@ const MiNavigation = () => {
 
   return (
     <BottomNavigation
+      className={styles["container"]}
       showLabels
       onChange={(evt, newValue) => setValue(newValue)}
     >

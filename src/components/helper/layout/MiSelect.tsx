@@ -368,6 +368,199 @@ const MiSelect = (props: any) => {
                           </Stack>
                         </MiTokenListItem>
                       ))}
+                      {/* DummyToken */}
+                      {/* <MiTokenListItem key={Math.random() * 10000}>
+                        <Avatar
+                          sx={{
+                            width: "56px",
+                            height: "56px",
+                            background: "#fff",
+                          }}
+                          className={styles["avatar"]}
+                          variant="rounded"
+                          src={`https://robohash.org/${0x00}`}
+                        />
+                        <Stack
+                          spacing={0.3}
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <MiTokenName>"dummyToken"</MiTokenName>
+
+                          <MiTokenNameTicker>
+                            <MiSkeleton />
+                          </MiTokenNameTicker>
+                          <MiTokenAmount>"dummy"</MiTokenAmount>
+                        </Stack>
+                      </MiTokenListItem>
+                      <MiTokenListItem key={Math.random() * 10000}>
+                        <Avatar
+                          sx={{
+                            width: "56px",
+                            height: "56px",
+                            background: "#fff",
+                          }}
+                          className={styles["avatar"]}
+                          variant="rounded"
+                          src={`https://robohash.org/${0x00}`}
+                        />
+                        <Stack
+                          spacing={0.3}
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <MiTokenName>"dummyToken"</MiTokenName>
+
+                          <MiTokenNameTicker>
+                            <MiSkeleton />
+                          </MiTokenNameTicker>
+                          <MiTokenAmount>"dummy"</MiTokenAmount>
+                        </Stack>
+                      </MiTokenListItem>
+                      <MiTokenListItem key={Math.random() * 10000}>
+                        <Avatar
+                          sx={{
+                            width: "56px",
+                            height: "56px",
+                            background: "#fff",
+                          }}
+                          className={styles["avatar"]}
+                          variant="rounded"
+                          src={`https://robohash.org/${0x00}`}
+                        />
+                        <Stack
+                          spacing={0.3}
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <MiTokenName>"dummyToken"</MiTokenName>
+
+                          <MiTokenNameTicker>
+                            <MiSkeleton />
+                          </MiTokenNameTicker>
+                          <MiTokenAmount>"dummy"</MiTokenAmount>
+                        </Stack>
+                      </MiTokenListItem>
+                      <MiTokenListItem key={Math.random() * 10000}>
+                        <Avatar
+                          sx={{
+                            width: "56px",
+                            height: "56px",
+                            background: "#fff",
+                          }}
+                          className={styles["avatar"]}
+                          variant="rounded"
+                          src={`https://robohash.org/${0x00}`}
+                        />
+                        <Stack
+                          spacing={0.3}
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <MiTokenName>"dummyToken"</MiTokenName>
+
+                          <MiTokenNameTicker>
+                            <MiSkeleton />
+                          </MiTokenNameTicker>
+                          <MiTokenAmount>"dummy"</MiTokenAmount>
+                        </Stack>
+                      </MiTokenListItem>
+                      <MiTokenListItem key={Math.random() * 10000}>
+                        <Avatar
+                          sx={{
+                            width: "56px",
+                            height: "56px",
+                            background: "#fff",
+                          }}
+                          className={styles["avatar"]}
+                          variant="rounded"
+                          src={`https://robohash.org/${0x00}`}
+                        />
+                        <Stack
+                          spacing={0.3}
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <MiTokenName>"dummyToken"</MiTokenName>
+
+                          <MiTokenNameTicker>
+                            <MiSkeleton />
+                          </MiTokenNameTicker>
+                          <MiTokenAmount>"dummy"</MiTokenAmount>
+                        </Stack>
+                      </MiTokenListItem>
+                      <MiTokenListItem key={Math.random() * 10000}>
+                        <Avatar
+                          sx={{
+                            width: "56px",
+                            height: "56px",
+                            background: "#fff",
+                          }}
+                          className={styles["avatar"]}
+                          variant="rounded"
+                          src={`https://robohash.org/${0x00}`}
+                        />
+                        <Stack
+                          spacing={0.3}
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <MiTokenName>"dummyToken"</MiTokenName>
+
+                          <MiTokenNameTicker>
+                            <MiSkeleton />
+                          </MiTokenNameTicker>
+                          <MiTokenAmount>"dummy"</MiTokenAmount>
+                        </Stack>
+                      </MiTokenListItem>
+                      <MiTokenListItem key={Math.random() * 10000}>
+                        <Avatar
+                          sx={{
+                            width: "56px",
+                            height: "56px",
+                            background: "#fff",
+                          }}
+                          className={styles["avatar"]}
+                          variant="rounded"
+                          src={`https://robohash.org/${0x00}`}
+                        />
+                        <Stack
+                          spacing={0.3}
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <MiTokenName>"dummyToken"</MiTokenName>
+
+                          <MiTokenNameTicker>
+                            <MiSkeleton />
+                          </MiTokenNameTicker>
+                          <MiTokenAmount>"dummy"</MiTokenAmount>
+                        </Stack>
+                      </MiTokenListItem>
+                      <MiTokenListItem key={Math.random() * 10000}>
+                        <Avatar
+                          sx={{
+                            width: "56px",
+                            height: "56px",
+                            background: "#fff",
+                          }}
+                          className={styles["avatar"]}
+                          variant="rounded"
+                          src={`https://robohash.org/${0x00}`}
+                        />
+                        <Stack
+                          spacing={0.3}
+                          flexDirection="column"
+                          alignItems="flex-start"
+                        >
+                          <MiTokenName>"dummyToken"</MiTokenName>
+
+                          <MiTokenNameTicker>
+                            <MiSkeleton />
+                          </MiTokenNameTicker>
+                          <MiTokenAmount>"dummy"</MiTokenAmount>
+                        </Stack>
+                      </MiTokenListItem> */}
                     </DropDownList>
                   </Scroller>
                 </Stack>
