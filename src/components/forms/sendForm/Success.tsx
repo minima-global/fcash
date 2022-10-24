@@ -89,8 +89,9 @@ const Success = (props: any) => {
         <Button
           onClick={() => {
             resetForm();
-            dispatch(updatePage(page - 3));
+            dispatch(updatePage(page - 2));
           }}
+          color="secondary"
           fullWidth
           variant="contained"
         >

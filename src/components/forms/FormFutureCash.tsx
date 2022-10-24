@@ -23,17 +23,6 @@ import {
 import { MinimaToken } from "../../minima/types/minima";
 import Decimal from "decimal.js";
 
-// const args = {
-//   message: "Insufficient funds",
-// };
-// yup.addMethod(yup.mixed, "checkFunds", (args: any) => {
-//   const { message } = args;
-
-//   return test("checkFunds", message, (val) => {
-//     return new Promise((resolve, reject) => {});
-//   });
-// });
-
 const formValidation = yup.object().shape({
   token: yup.object().required("Field is required."),
   datetime: yup.object().required("Field is required"),
@@ -91,7 +80,7 @@ const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
   const sendFormSelector = useAppSelector(selectPageSelector);
   const formTransition = [
     <TokenTimeSelection {...props} />,
-    <AddressAmountSelection {...props} />,
+    // <AddressAmountSelection {...props} />,
     <Confirmation {...props} />,
     <Success {...props} />,
   ];

@@ -27,6 +27,7 @@ const TokenTimeSelection = (props: any) => {
     page,
     dispatch,
     resetForm,
+    isValid,
   } = props;
 
   React.useEffect(() => {
@@ -92,13 +93,46 @@ const TokenTimeSelection = (props: any) => {
           }}
         />
       </InputWrapper>
+      <InputWrapper>
+        <InputLabel>Enter a wallet address</InputLabel>
+        <TextField
+          id="address"
+          name="address"
+          placeholder="Address"
+          onChange={handleChange}
+          onBlur={handleBlur}
+          helperText={touched.address && errors.address}
+          error={touched.address && Boolean(errors.address)}
+          value={values.address}
+        />
+      </InputWrapper>
+      <InputWrapper>
+        <InputLabel>Amount</InputLabel>
+        <TextField
+          id="amount"
+          name="amount"
+          placeholder="Amount"
+          value={values.amount}
+          helperText={touched.amount && errors.amount}
+          error={touched.amount && Boolean(errors.amount)}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+      </InputWrapper>
       <Button
-        disabled={Boolean(errors.datetime) || Boolean(errors.token)}
+        sx={{ marginTop: "24px!important" }}
+        disabled={
+          Boolean(errors.amount) ||
+          Boolean(errors.address) ||
+          Boolean(errors.datetime) ||
+          Boolean(errors.token)
+        }
+        color="secondary"
         variant="contained"
         disableElevation
         onClick={() => dispatch(updatePage(page + 1))}
       >
-        Continue
+        Send Funds
       </Button>
       <Button
         disabled={Boolean(errors.datetime) || Boolean(errors.token)}

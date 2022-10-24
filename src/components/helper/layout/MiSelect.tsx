@@ -38,11 +38,11 @@ const DropDownHeader = styled("div")`
   }
 `;
 const DropDownListContainer = styled("div")`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 70vh;
+  height: 90vh;
   background: #fff;
   border-radius: 24px 24px 0px 0px;
   z-index: 1000;
@@ -168,12 +168,27 @@ const MiTokenAmount = styled("p")`
   text-overflow: ellipsis;
 `;
 
-const NoResults = styled("p")`
-  font-family: Manrope-regular;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 8px 16px;
-  text-align: left;
+const NoResults = styled("div")`
+  margin-top: 50px;
+  > h6 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 33px;
+    color: #363a3f;
+    padding: 0;
+    margin: 0;
+  }
+  > p {
+    margin: 0;
+    padding: 0;
+    margin-top: 15px;
+    font-size: 0.938rem;
+  }
+  * {
+    font-family: Manrope-regular;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
 `;
 
 const MiSkeleton = styled("span")`
@@ -189,6 +204,12 @@ const MiSelect = (props: any) => {
   const [filterWallet, setFilterWallet] = React.useState<MinimaToken[]>([]);
   const [filterText, setFilterText] = React.useState("");
 
+  if (isOpen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+
   const [selectedOption, setSelectedOption] =
     React.useState<MinimaToken | null>(null);
   const toggling = () => setOpen(!isOpen);
@@ -200,16 +221,9 @@ const MiSelect = (props: any) => {
   };
 
   React.useEffect(() => {
-    // console.log("re-render MiSelect");
     if (selectedOption == null) {
       setSelectedOption(props.tokens[0]);
     } else {
-      // console.log(`setting token..`);
-      // console.log(
-      //   props.tokens.find(
-      //     (i: MinimaToken) => i.tokenid == selectedOption.tokenid
-      //   )
-      // );
       setSelectedOption(
         props.tokens.find(
           (i: MinimaToken) => i.tokenid == selectedOption.tokenid
@@ -277,7 +291,7 @@ const MiSelect = (props: any) => {
               <MiArrow size={10} color="black" />
             </>
           )}
-          {!selectedOption && <NoResults>No token selected.</NoResults>}
+          {!selectedOption && <p>No token selected.</p>}
         </DropDownHeader>
         {isOpen && (
           <>
@@ -308,7 +322,10 @@ const MiSelect = (props: any) => {
                   <Scroller>
                     <DropDownList>
                       {filterWallet.length == 0 ? (
-                        <NoResults>No results</NoResults>
+                        <NoResults>
+                          <h6>No results</h6>
+                          <p>Please try your search again.</p>
+                        </NoResults>
                       ) : null}
                       {filterWallet.map((t: MinimaToken) => (
                         <MiTokenListItem

@@ -7,7 +7,7 @@ let theme = createTheme({
             main: '#317aff',
         },
         secondary: {
-            main: '#ff512f',
+            main: '#16181C',
         },
         background: {
             default: 'rgba(22, 24, 28, 0.05)',
@@ -131,8 +131,8 @@ theme = createTheme(theme, {
                     fontSize: '0.875rem',
                     
                     '&:disabled': {
-                        backgroundColor: '#EDEDED',
-                        opacity: 0.5,
+                        backgroundColor: '#D3D3D8',
+                        color: '#fff'
                     }
                 },
             },

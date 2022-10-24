@@ -16,32 +16,6 @@ const AddressAmountSelection = (props: any) => {
     dispatch,
   } = props;
 
-  // React.useEffect(() => {
-  // const tkn = walletTokens.find(
-  //   (t: MinimaToken) => t.tokenid == values.tokenid
-  // );
-
-  // if (tkn == undefined) return;
-
-  // if (values.amount.length == 0) return;
-
-  // try {
-  //   const hasFunds = new Decimal(values.amount).lessThan(
-  //     new Decimal(tkn.sendable)
-  //   );
-
-  //   if (!hasFunds) {
-  //     console.log(`setting field error`);
-
-  //     setFieldError("amount", "Insufficient funds!");
-  //   }
-  // } catch (err) {
-  //   console.error(err);
-  // }
-  // }, [values.amount]);
-
-  console.log(errors);
-
   return (
     <>
       <InputWrapper>
@@ -75,7 +49,7 @@ const AddressAmountSelection = (props: any) => {
         fullWidth
         variant="contained"
         disableElevation={true}
-        disabled={!(isValid && dirty)}
+        disabled={!isValid}
       >
         Send Funds
       </Button>

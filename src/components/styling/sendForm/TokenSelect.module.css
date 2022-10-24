@@ -19,18 +19,10 @@
   }
 
   to {
-    height: 70vh;
+    height: 90vh;
   }
 }
-@keyframes slideout {
-  from {
-    height: 70vh;
-  }
 
-  to {
-    height: 0;
-  }
-}
 
 .cancelBtn {
   font-family: Manrope-regular;

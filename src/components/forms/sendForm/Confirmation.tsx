@@ -1,4 +1,4 @@
-import { Stack, List, Button } from "@mui/material";
+import { Stack, Button } from "@mui/material";
 import React from "react";
 import { createBlockTime } from "../../../minima/rpc-commands";
 import { useAppSelector } from "../../../redux/hooks";
@@ -14,7 +14,7 @@ const Confirmation = (props: any) => {
 
   const wallet = useAppSelector(selectBalance);
 
-  const token = wallet.find((w) => w.tokenid === values.tokenid);
+  const token = props.values.token;
   const [estimatedBlockTime, setEstimatedBlockTime] = React.useState(0);
   //console.log("Found token", token);
   React.useEffect(() => {
@@ -57,6 +57,7 @@ const Confirmation = (props: any) => {
           />
           <Button
             variant="contained"
+            color="secondary"
             disableElevation
             type="submit"
             disabled={isSubmitting}
