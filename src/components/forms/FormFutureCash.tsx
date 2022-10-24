@@ -20,6 +20,8 @@ import {
   selectPageSelector,
   updatePage,
 } from "../../redux/slices/app/sendFormSlice";
+import { MinimaToken } from "../../minima/types/minima";
+import Decimal from "decimal.js";
 
 // const args = {
 //   message: "Insufficient funds",
@@ -33,7 +35,7 @@ import {
 // });
 
 const formValidation = yup.object().shape({
-  tokenid: yup.string().trim().required("Field is required."),
+  token: yup.object().required("Field is required."),
   datetime: yup.object().required("Field is required"),
   address: yup
     .string()
@@ -45,26 +47,47 @@ const formValidation = yup.object().shape({
     .string()
     .required("Field is required")
     .matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters.")
-    .test("checkFunds", "lel", function (val) {
+    .test("check-my-funds", "Insufficient funds.", function (val) {
       const { path, createError, parent } = this;
-      console.log(parent);
+      console.log(path);
+      if (val == undefined) {
+        return false;
+      }
 
-      console.log(val);
-      return createError({ path, message: "Insufficient funds." });
+      const selectedToken = parent.token;
+      if (new Decimal(selectedToken.sendable).lessThan(new Decimal(val))) {
+        const requiredAmount = new Decimal(val).minus(
+          new Decimal(selectedToken.sendable)
+        );
+
+        return createError({
+          path,
+          message: `Insufficient funds, you need another ${requiredAmount.toFixed()} ${
+            typeof selectedToken.token == "string"
+              ? selectedToken.token
+              : typeof selectedToken.token == "object" &&
+                selectedToken.token.hasOwnProperty("name")
+              ? selectedToken.token.name
+              : "Unknown"
+          } `,
+        });
+      }
+
+      return true;
     }),
   // burn:     yup.string()
   //              .matches(/^[^a-zA-Z\\;'"]+$/, 'Invalid characters.'),
 });
 interface FormValues {
-  tokenid: string;
+  token: MinimaToken | undefined;
   datetime: moment.Moment;
   address: string;
   amount: string;
-  sendable: string;
 }
 
 const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
   const { handleSubmit } = props;
+  console.log(props);
   const sendFormSelector = useAppSelector(selectPageSelector);
   const formTransition = [
     <TokenTimeSelection {...props} />,
@@ -83,7 +106,7 @@ const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
 };
 
 interface MyEnhancedFutureCashFormProps {
-  initialTokenid: string;
+  initialToken: MinimaToken;
   initialTime: moment.Moment;
   dispatch: AppDispatch;
   page: number;
@@ -94,22 +117,26 @@ const MyEnhancedTransitionalFormHandler = withFormik<
 >({
   validationSchema: formValidation,
   mapPropsToValues: (props) => ({
-    tokenid: props.initialTokenid,
+    token: props.initialToken,
     datetime: props.initialTime,
     address: "",
     amount: "",
-    sendable: "",
     dispatch: {},
   }),
-  handleSubmit: async (dt, { props, setSubmitting }) => {
+  enableReinitialize: true,
+  handleSubmit: async (dt, { props, setSubmitting, setFieldError }) => {
     try {
       const blocktime = await createBlockTime(dt.datetime);
       const scriptAddress = await getFutureCashScriptAddress();
+      if (dt.token == undefined) {
+        setFieldError("token", "Please select a token");
+        return;
+      }
 
       await sendFutureCash({
         amount: dt.amount,
         scriptAddress: scriptAddress,
-        tokenid: dt.tokenid,
+        tokenid: dt.token.tokenid,
         state1: blocktime,
         state2: dt.address,
       });

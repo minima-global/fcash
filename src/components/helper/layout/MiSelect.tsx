@@ -136,6 +136,9 @@ const MiTokenName = styled("p")`
   letter-spacing: 0.02em;
   text-align: left;
   color: #ff6b4e;
+  max-width: 35vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const MiTokenNameTicker = styled("p")`
   padding: 0;
@@ -146,6 +149,9 @@ const MiTokenNameTicker = styled("p")`
   line-height: 16px;
   letter-spacing: 0.02em;
   color: #363a3f;
+  max-width: 35vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const MiTokenAmount = styled("p")`
   padding: 0;
@@ -157,7 +163,8 @@ const MiTokenAmount = styled("p")`
   letter-spacing: 0.02em;
   font-variant: tabular-nums;
   color: #363a3f;
-
+  max-width: 35vw;
+  overflow: hidden;
   text-overflow: ellipsis;
 `;
 
@@ -169,7 +176,7 @@ const NoResults = styled("p")`
   text-align: left;
 `;
 
-const MiSkeleton = styled("p")`
+const MiSkeleton = styled("span")`
   padding: 0;
   margin: 0;
   line-height: 16px;
@@ -187,20 +194,21 @@ const MiSelect = (props: any) => {
   const toggling = () => setOpen(!isOpen);
   const onOptionClicked = (t: MinimaToken) => {
     setSelectedOption(t);
-    props.setFieldValue("tokenid", t.tokenid);
+    props.setFieldValue("token", t);
     setOpen(false);
   };
 
   React.useEffect(() => {
-    console.log("re-render MiSelect");
+    // console.log("re-render MiSelect");
     if (selectedOption == null) {
       setSelectedOption(props.tokens[0]);
     } else {
-      console.log(
-        props.tokens.find(
-          (i: MinimaToken) => i.tokenid == selectedOption.tokenid
-        )
-      );
+      // console.log(`setting token..`);
+      // console.log(
+      //   props.tokens.find(
+      //     (i: MinimaToken) => i.tokenid == selectedOption.tokenid
+      //   )
+      // );
       setSelectedOption(
         props.tokens.find(
           (i: MinimaToken) => i.tokenid == selectedOption.tokenid

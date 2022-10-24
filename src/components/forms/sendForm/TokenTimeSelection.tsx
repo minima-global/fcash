@@ -39,15 +39,17 @@ const TokenTimeSelection = (props: any) => {
       });
   }, [dispatch]);
 
+  console.log(values.token);
+
   return (
     <>
       <MiSelect
-        id="tokenid"
-        name="tokenid"
-        value={values.tokenid}
+        id="token"
+        name="token"
+        value={values.token}
         onChange={handleChange}
         fullWidth={true}
-        error={touched.tokenid && Boolean(errors.tokenid) ? true : false}
+        error={Boolean(errors.token) ? true : false}
         tokens={walletTokens}
         setFieldValue={setFieldValue}
       />
@@ -69,8 +71,8 @@ const TokenTimeSelection = (props: any) => {
           }}
           renderInput={(params: any) => (
             <TextField
-              error={touched.datetime && Boolean(errors.datetime)}
-              helperText={touched.datetime && errors.datetime}
+              error={Boolean(errors.datetime)}
+              helperText={errors.datetime}
               id="datetime"
               name="datetime"
               {...params}

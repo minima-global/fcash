@@ -39,6 +39,8 @@ const AddressAmountSelection = (props: any) => {
   // }
   // }, [values.amount]);
 
+  console.log(errors);
+
   return (
     <>
       <InputWrapper>
@@ -48,8 +50,8 @@ const AddressAmountSelection = (props: any) => {
           name="address"
           placeholder="Address"
           onChange={handleChange}
-          helperText={touched.address && errors.address}
-          error={touched.address && Boolean(errors.address)}
+          helperText={errors.address}
+          error={Boolean(errors.address)}
           value={values.address}
         />
       </InputWrapper>
@@ -60,8 +62,8 @@ const AddressAmountSelection = (props: any) => {
           name="amount"
           placeholder="Amount"
           value={values.amount}
-          helperText={touched.amount && errors.amount}
-          error={touched.amount && Boolean(errors.amount)}
+          helperText={errors.amount}
+          error={Boolean(errors.amount)}
           onChange={handleChange}
         />
       </InputWrapper>
