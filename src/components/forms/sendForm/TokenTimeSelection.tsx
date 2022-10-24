@@ -21,6 +21,7 @@ const TokenTimeSelection = (props: any) => {
     touched,
     errors,
     handleChange,
+    handleBlur,
     setFieldValue,
     setFieldError,
     page,
@@ -39,8 +40,6 @@ const TokenTimeSelection = (props: any) => {
       });
   }, [dispatch]);
 
-  console.log(values.token);
-
   return (
     <>
       <MiSelect
@@ -49,9 +48,10 @@ const TokenTimeSelection = (props: any) => {
         value={values.token}
         onChange={handleChange}
         fullWidth={true}
-        error={Boolean(errors.token) ? true : false}
+        error={touched.token && Boolean(errors.token) ? true : false}
         tokens={walletTokens}
         setFieldValue={setFieldValue}
+        resetForm={resetForm}
       />
       <InputWrapper>
         <InputLabel>Date & time</InputLabel>
@@ -71,10 +71,11 @@ const TokenTimeSelection = (props: any) => {
           }}
           renderInput={(params: any) => (
             <TextField
-              error={Boolean(errors.datetime)}
-              helperText={errors.datetime}
+              error={touched.datetime && Boolean(errors.datetime)}
+              helperText={touched.datetime && errors.datetime}
               id="datetime"
               name="datetime"
+              onBlur={handleBlur}
               {...params}
             />
           )}
@@ -92,7 +93,7 @@ const TokenTimeSelection = (props: any) => {
         />
       </InputWrapper>
       <Button
-        disabled={Boolean(errors.datetime) || Boolean(errors.tokenid)}
+        disabled={Boolean(errors.datetime) || Boolean(errors.token)}
         variant="contained"
         disableElevation
         onClick={() => dispatch(updatePage(page + 1))}
@@ -100,7 +101,7 @@ const TokenTimeSelection = (props: any) => {
         Continue
       </Button>
       <Button
-        disabled={Boolean(errors.datetime) || Boolean(errors.tokenid)}
+        disabled={Boolean(errors.datetime) || Boolean(errors.token)}
         color="inherit"
         className={styles["cancelBtn"]}
         onClick={() => resetForm()}

@@ -193,6 +193,7 @@ const MiSelect = (props: any) => {
     React.useState<MinimaToken | null>(null);
   const toggling = () => setOpen(!isOpen);
   const onOptionClicked = (t: MinimaToken) => {
+    props.resetForm();
     setSelectedOption(t);
     props.setFieldValue("token", t);
     setOpen(false);

@@ -10,6 +10,7 @@ const AddressAmountSelection = (props: any) => {
     errors,
     page,
     handleChange,
+    handleBlur,
     isValid,
     dirty,
     dispatch,
@@ -50,8 +51,9 @@ const AddressAmountSelection = (props: any) => {
           name="address"
           placeholder="Address"
           onChange={handleChange}
-          helperText={errors.address}
-          error={Boolean(errors.address)}
+          onBlur={handleBlur}
+          helperText={touched.address && errors.address}
+          error={touched.address && Boolean(errors.address)}
           value={values.address}
         />
       </InputWrapper>
@@ -62,9 +64,10 @@ const AddressAmountSelection = (props: any) => {
           name="amount"
           placeholder="Amount"
           value={values.amount}
-          helperText={errors.amount}
-          error={Boolean(errors.amount)}
+          helperText={touched.amount && errors.amount}
+          error={touched.amount && Boolean(errors.amount)}
           onChange={handleChange}
+          onBlur={handleBlur}
         />
       </InputWrapper>
       <Button
@@ -79,7 +82,9 @@ const AddressAmountSelection = (props: any) => {
       <Button
         color="inherit"
         className={styles["cancelBtn"]}
-        onClick={() => dispatch(updatePage(page - 1))}
+        onClick={() => {
+          dispatch(updatePage(page - 1));
+        }}
         variant="text"
       >
         Cancel
