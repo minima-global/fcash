@@ -28,6 +28,7 @@ const TokenTimeSelection = (props: any) => {
     dispatch,
     resetForm,
     isValid,
+    dirty,
   } = props;
 
   React.useEffect(() => {
@@ -41,6 +42,7 @@ const TokenTimeSelection = (props: any) => {
       });
   }, [dispatch]);
 
+  console.log("dirty textfields", dirty);
   return (
     <>
       <MiSelect
@@ -101,7 +103,7 @@ const TokenTimeSelection = (props: any) => {
           placeholder="Address"
           onChange={handleChange}
           onBlur={handleBlur}
-          helperText={touched.address && errors.address}
+          helperText={dirty && errors.address}
           error={touched.address && Boolean(errors.address)}
           value={values.address}
         />
@@ -113,7 +115,7 @@ const TokenTimeSelection = (props: any) => {
           name="amount"
           placeholder="Amount"
           value={values.amount}
-          helperText={touched.amount && errors.amount}
+          helperText={dirty && errors.amount}
           error={touched.amount && Boolean(errors.amount)}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -121,12 +123,7 @@ const TokenTimeSelection = (props: any) => {
       </InputWrapper>
       <Button
         sx={{ marginTop: "24px!important" }}
-        disabled={
-          Boolean(errors.amount) ||
-          Boolean(errors.address) ||
-          Boolean(errors.datetime) ||
-          Boolean(errors.token)
-        }
+        disabled={!(isValid && dirty)}
         color="secondary"
         variant="contained"
         disableElevation
