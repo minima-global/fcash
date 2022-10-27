@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../store";
-import { AlertColor } from "@mui/material";
 
 export interface ClipboardState {
   status: boolean;
@@ -21,11 +20,10 @@ export const setClipboardStatus =
   };
 
 export const clipboardSlice = createSlice({
-  name: "toast",
+  name: "clipboard",
   initialState,
   reducers: {
     updateStatus: (state, action) => {
-      // console.log(`setting toast state`, action.payload)
       const s = action.payload;
       state.status = s;
     },

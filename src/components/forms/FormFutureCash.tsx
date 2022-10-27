@@ -76,7 +76,6 @@ interface FormValues {
 
 const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
   const { handleSubmit } = props;
-  console.log(props);
   const sendFormSelector = useAppSelector(selectPageSelector);
   const formTransition = [
     <TokenTimeSelection {...props} />,

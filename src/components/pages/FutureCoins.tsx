@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "@mui/system";
 import styled from "@emotion/styled";
-import { Avatar } from "@mui/material";
+import { Avatar, Box, Button, CircularProgress } from "@mui/material";
 import {
   MiCoinName,
   MiCoinAmount,
@@ -18,6 +18,15 @@ import styles from "../styling/futurepage/index.module.css";
 import moment from "moment";
 import { mergeArray } from "../../utils";
 import Decimal from "decimal.js";
+import MiFutureNoResults from "../svgs/MiFutureNoResults";
+import { useNavigate } from "react-router-dom";
+import { Coin, MinimaToken } from "../../minima/types/minima";
+import { collectFutureCash } from "../../minima/rpc-commands";
+import {
+  selectPageSelector,
+  updatePage,
+} from "../../redux/slices/app/futureCoinSlice";
+import MiSuccess from "../futurecoins/Success";
 
 const Tabs = styled("div")`
   height: 48px;
@@ -50,37 +59,112 @@ const MiFutureContainer = styled("div")`
   padding: 16px 18px;
 `;
 
+const MiNoResults = styled("div")`
+  border-radius: 12px;
+  position: relative !important;
+  background: #fff;
+  z-index: 0;
+  > svg {
+    border-radius: 12px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+`;
+
+const MiNothingToSee = styled("h6")`
+  font-family: Manrope-regular;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 33px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #363a3f;
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+  padding-top: 42px;
+  padding-bottom: 15px;
+`;
+
+const MiNothingToSeeSubtitle = styled("p")`
+  position: relative;
+  z-index: 1;
+  font-family: Manrope-regular;
+
+  font-weight: 500;
+  font-size: 0.938rem;
+  line-height: 24px;
+
+  text-align: center;
+  letter-spacing: 0.02em;
+
+  color: #363a3f;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 33px;
+`;
+
+const MiUnlockButton = styled("button")`
+  background: #16181c;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  height: 32px;
+  width: 85px;
+  letter-spacing: 0.01em;
+  font-family: Manrope-regular;
+  font-weight: 800;
+`;
+
 const FutureCoins = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const coins = useAppSelector(selectFutureCash);
   const walletTokens = useAppSelector(selectBalance);
-
+  const chainHeight = useAppSelector(selectChainHeight);
+  const futurePageSelector = useAppSelector(selectPageSelector);
   const merged = mergeArray(coins, walletTokens);
-  console.log(merged);
+  console.log("futurePage", futurePageSelector.page);
   const [tabOpen, setTabOpenIndex] = React.useState(0);
   const toggle = (i: number) => setTabOpenIndex(i);
+  const filterForPending = (c: Coin & MinimaToken) => {
+    if (new Decimal(chainHeight).greaterThan(new Decimal(c.state[0].data))) {
+      return true;
+    }
+  };
+  const filterForReady = (c: Coin & MinimaToken) => {
+    if (new Decimal(chainHeight).lessThan(new Decimal(c.state[0].data))) {
+      return true;
+    }
+  };
 
   return (
     <>
-      <Stack spacing={2}>
-        <Tabs>
-          <TabButton
-            onClick={() => toggle(0)}
-            className={tabOpen == 0 ? styles["tab-open"] : undefined}
-          >
-            Pending
-          </TabButton>
-          <TabButton
-            onClick={() => toggle(1)}
-            className={tabOpen == 1 ? styles["tab-open"] : undefined}
-          >
-            Ready
-          </TabButton>
-        </Tabs>
+      {futurePageSelector.page == 1 && <MiSuccess />}
 
-        <MiFutureContainer>
-          {merged && merged.length > 0
-            ? merged.map((c: any) => (
-                <MiFutureCoin>
+      {futurePageSelector.page == 0 && (
+        <Stack spacing={3}>
+          <Tabs>
+            <TabButton
+              onClick={() => toggle(0)}
+              className={tabOpen == 0 ? styles["tab-open"] : undefined}
+            >
+              Pending
+            </TabButton>
+            <TabButton
+              onClick={() => toggle(1)}
+              className={tabOpen == 1 ? styles["tab-open"] : undefined}
+            >
+              Ready
+            </TabButton>
+          </Tabs>
+
+          {merged && merged.length > 0 && tabOpen == 0 && (
+            <MiFutureContainer>
+              {merged.filter(filterForPending).map((c: any) => (
+                <MiFutureCoin key={c.coinid}>
                   <Stack direction="row">
                     <Avatar
                       sx={{
@@ -118,56 +202,91 @@ const FutureCoins = () => {
                     )}
                   </MiUnlockDate>
                 </MiFutureCoin>
-              ))
-            : null}
-        </MiFutureContainer>
-      </Stack>
+              ))}
+            </MiFutureContainer>
+          )}
+
+          {merged && merged.length > 0 && tabOpen == 1 && (
+            <MiFutureContainer>
+              {merged.filter(filterForReady).map((c: any) => (
+                <MiFutureCoin key={c.coinid}>
+                  <Stack direction="row">
+                    <Avatar
+                      sx={{
+                        width: "48px",
+                        height: "48px",
+                        background: "#fff",
+                      }}
+                      className={styles["avatar"]}
+                      variant="rounded"
+                      src={`https://robohash.org/${c.tokenid}`}
+                    />
+                    <Stack flexDirection="column" alignItems="flex-start">
+                      <MiCoinName>
+                        {typeof c.token == "string" ? c.token : c.token.name}
+                      </MiCoinName>
+
+                      <MiCoinAmount>
+                        {c.tokenid == "0x00" ? c.amount : c.tokenamount}
+                      </MiCoinAmount>
+                    </Stack>
+                  </Stack>
+                  <Stack justifyContent="center">
+                    <MiUnlockButton
+                      onClick={async () => {
+                        try {
+                          await collectFutureCash({
+                            coinid: c.coinid,
+                            address: c.state[1].data,
+                            tokenid: c.tokenid,
+                            amount:
+                              c.tokenid == "0x00"
+                                ? c.amount
+                                : c.tokenamount
+                                ? c.tokenamount
+                                : "0",
+                          });
+                          // show success page
+                          dispatch(updatePage(futurePageSelector.page + 1));
+                        } catch (err: any) {
+                          console.error(err);
+                        }
+                      }}
+                    >
+                      Collect
+                    </MiUnlockButton>
+                  </Stack>
+                </MiFutureCoin>
+              ))}
+            </MiFutureContainer>
+          )}
+
+          {!merged ||
+            (merged.length === 0 && (
+              <MiNoResults>
+                <MiFutureNoResults />
+                <Stack spacing={2} sx={{ m: 2 }}>
+                  <MiNothingToSee>
+                    Nothing to <br /> see here!
+                  </MiNothingToSee>
+                  <MiNothingToSeeSubtitle>
+                    You currently have no <br /> pending contacts.
+                  </MiNothingToSeeSubtitle>
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    disableElevation
+                    fullWidth
+                    onClick={() => navigate("/send")}
+                  >
+                    Start contract
+                  </Button>
+                </Stack>
+              </MiNoResults>
+            ))}
+        </Stack>
+      )}
     </>
-    // <List>
-    //   {coins && coins.length > 0 ? (
-    //     coins.map((c: Coin) => (
-    //       <ListItem
-    //         sx={{
-    //           cursor: "pointer",
-    //           backgroundColor:
-    //             c.tokenid !== "0x00" ? "rgba(255, 255, 255, 0.8)" : "",
-    //           p: 2,
-    //         }}
-    //         onClick={async () => {
-    //           if (chainHeight < parseInt(c.state[0].data)) {
-    //             dispatch(showToast("Not ready yet!", "info", ""));
-
-    //             return;
-    //           }
-    //           try {
-    //             await collectFutureCash({
-    //               coinid: c.coinid,
-    //               address: c.state[1].data,
-    //               tokenid: c.tokenid,
-    //               amount:
-    //                 c.tokenid == "0x00"
-    //                   ? c.amount
-    //                   : c.tokenamount
-    //                   ? c.tokenamount
-    //                   : "0",
-    //             });
-
-    //             dispatch(showToast("Collected coins!", "success", ""));
-    //           } catch (err: any) {
-    //             console.error(err);
-    //             dispatch(showToast(err, "error", ""));
-    //           }
-    //         }}
-    //         key={c.coinid}
-    //       >
-    //         <ListItemText>{c.coinid}</ListItemText>
-    //         <ListItemText>unlock time:{c.state[0].data}</ListItemText>
-    //       </ListItem>
-    //     ))
-    //   ) : coins && coins.length === 0 ? (
-    //     <div>No future yet</div>
-    //   ) : null}
-    // </List>
   );
 };
 

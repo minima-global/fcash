@@ -206,7 +206,7 @@ const collectFutureCash = (futureCash: IFutureCashCollection) => {
     return new Promise((resolve, reject) => {
         constructTransaction(futureCash).then((res) => {
     
-            // console.log(res)
+            console.log(res)
             resolve(res);
     
         }).catch((err) => {
@@ -278,7 +278,7 @@ const constructTransaction = (fCash: IFutureCashCollection): Promise<string | bo
         `
 
         rpc(command).then((r) => {
-
+            
             resolve(r);
 
         }).catch((err) => {

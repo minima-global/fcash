@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../store";
 
-export interface SendFormState {
+export interface FutureCoinState {
   page: number;
 }
-const initialState: SendFormState = {
+const initialState: FutureCoinState = {
   page: 0,
 };
 
@@ -12,24 +12,26 @@ export const setPage =
   (page: number): AppThunk =>
   async (dispatch) => {
     // change page
+    console.log("updating page");
     dispatch(updatePage(page));
   };
 
-export const sendFormSlice = createSlice({
-  name: "sendform",
+export const futureCoinSlice = createSlice({
+  name: "futurecoin",
   initialState,
   reducers: {
     updatePage: (state, action) => {
       const pageNumber = action.payload;
+      console.log("updating page number to..", pageNumber);
       state.page = pageNumber;
     },
   },
 });
 
-export const { updatePage } = sendFormSlice.actions;
-export default sendFormSlice.reducer;
+export const { updatePage } = futureCoinSlice.actions;
+export default futureCoinSlice.reducer;
 
 // Return toast state
-export const selectPageSelector = (state: RootState): SendFormState => {
-  return state.page;
+export const selectPageSelector = (state: RootState): FutureCoinState => {
+  return state.futurepage;
 };
