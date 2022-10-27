@@ -1,8 +1,6 @@
-import { txn } from "./libs/txnConstructor";
 import { IFutureCashCollection, IFutureCashPost } from "./types/app";
-import { Coin, IScript, MinimaToken, Script, Status } from "./types/minima";
+import { Coin, IScript, MinimaToken,  Status } from "./types/minima";
 import { IGetAddress } from "./types/rpc";
-
 import moment, { Moment } from "moment";
 import Decimal from "decimal.js";
 import { futureCashScript } from "./scripts";
@@ -243,8 +241,8 @@ const getAddress = (): Promise<IGetAddress | string> => {
 /** Send To Future */
 
 const sendFutureCash = (fCash: IFutureCashPost): Promise<object> => {
-    
-    const command = `send amount:${fCash.amount} address:${fCash.scriptAddress} tokenid:${fCash.tokenid} state:{"1": "${fCash.state1}", "2":"${fCash.state2}"}`;
+    console.log('fCash', fCash);
+    const command = `send amount:${fCash.amount} address:${fCash.scriptAddress} tokenid:${fCash.tokenid} state:{"1": "${fCash.state1}", "2":"${fCash.state2}", "3":"${fCash.state3}"}`;
 
     return new Promise((resolve, reject) => {
         rpc(command).then((r) => {
@@ -362,7 +360,7 @@ const isAddressMine = (addr: string) => {
         rpc(`scripts`).then((scripts) => {
             let scriptAddress = undefined;
             scripts.forEach((s: IScript) => {
-                if (s.address === addr) {
+                if (s.address === addr || s.miniaddress === addr) {
                     scriptAddress = s.address;
                 }
             })

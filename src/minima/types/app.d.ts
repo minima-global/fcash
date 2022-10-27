@@ -12,7 +12,8 @@ interface IFutureCashPost {
   amount: string;
   scriptAddress: string;
   tokenid: string;
-  state1: number;
-  state2: string;
+  state1: number; // future in block time
+  state2: string; // address to be collected
+  state3: number; // future in ms
 }
 export {IFutureCashCollection, IFutureCashPost};

@@ -12,11 +12,9 @@ import ConfirmationDetailList from "./ConfirmationDetailList";
 const Confirmation = (props: any) => {
   const { values, page, isSubmitting, dispatch } = props;
 
-  const wallet = useAppSelector(selectBalance);
-
   const token = props.values.token;
   const [estimatedBlockTime, setEstimatedBlockTime] = React.useState(0);
-  //console.log("Found token", token);
+
   React.useEffect(() => {
     createBlockTime(values.datetime)
       .then((blktime) => {

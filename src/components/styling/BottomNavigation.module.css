@@ -10,5 +10,7 @@
 }
 .container {
   min-height: 48px;
- 
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

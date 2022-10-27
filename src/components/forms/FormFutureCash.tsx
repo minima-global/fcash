@@ -10,7 +10,7 @@ import {
   sendFutureCash,
 } from "../../minima/rpc-commands";
 import TokenTimeSelection from "./sendForm/TokenTimeSelection";
-import AddressAmountSelection from "./sendForm/AddressAmountSelection";
+// import AddressAmountSelection from "./sendForm/AddressAmountSelection";
 import Confirmation from "./sendForm/Confirmation";
 import Success from "./sendForm/Success";
 import * as yup from "yup";
@@ -121,13 +121,13 @@ const MyEnhancedTransitionalFormHandler = withFormik<
         setFieldError("token", "Please select a token");
         return;
       }
-
       await sendFutureCash({
         amount: dt.amount,
         scriptAddress: scriptAddress,
         tokenid: dt.token.tokenid,
         state1: blocktime,
         state2: dt.address,
+        state3: dt.datetime.valueOf(),
       });
 
       props.dispatch(updatePage(props.page + 1));

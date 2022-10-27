@@ -11,7 +11,7 @@ const CopyContainer = styled("h5")`
 
 const MiCopy = ({ size, color, copyPayload }: any) => {
   const dispatch = useAppDispatch();
-  console.log("color", color);
+
   return (
     <CopyContainer
       onClick={() => {

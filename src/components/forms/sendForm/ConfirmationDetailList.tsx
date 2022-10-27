@@ -24,7 +24,7 @@ const ConfirmationDetailList: FC<IConfirmationList> = ({
   address,
 }) => {
   const clipboardStatusSelector = useAppSelector<any>(selectClipboardSelector);
-  console.log("clipboardStatusSelector", clipboardStatusSelector);
+  // console.log("clipboardStatusSelector", clipboardStatusSelector);
   return (
     <Stack className={styles["confirmationDetailList"]}>
       <div>
