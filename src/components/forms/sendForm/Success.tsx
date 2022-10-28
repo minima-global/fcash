@@ -28,7 +28,7 @@ const Success = (props: any) => {
   return (
     <div className={styles["white-overlay"]}>
       <Stack
-        className={styles["content"]}
+        className={styles["overlay-content"]}
         alignItems="center"
         justifyContent="center"
       >

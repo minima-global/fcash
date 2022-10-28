@@ -11,7 +11,7 @@
   cursor: pointer;
 }
 
-.content {
+.overlay-content {
   margin-top: calc(32px + 48px);
   margin-left: 32px;
   margin-right: 32px;

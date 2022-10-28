@@ -12,7 +12,6 @@ const AddressAmountSelection = (props: any) => {
     handleChange,
     handleBlur,
     isValid,
-    dirty,
     dispatch,
   } = props;
 

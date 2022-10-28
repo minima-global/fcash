@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { useAppSelector } from "../../../redux/hooks";
 
 const MiHeader = styled("h6")`
   font-family: Manrope-regular;
@@ -41,10 +42,6 @@ const MiOverlayDetails = styled("div")`
   text-align: left;
   border-bottom: 1px solid #d3d3d8;
   margin-bottom: 12px;
-  > div:last-child {
-    border-bottom: none !important;
-    margin-bottom: 22px;
-  }
   h5 {
     margin: 0;
     font-family: Manrope-regular;
@@ -53,7 +50,6 @@ const MiOverlayDetails = styled("div")`
     line-height: 21px;
     letter-spacing: 0.16px;
     text-align: left;
-    padding-bottom: 8px !important;
     padding-top: 0px !important;
   }
   p {
@@ -71,4 +67,22 @@ const MiOverlayDetails = styled("div")`
   }
 `;
 
-export { MiHeader, MiContent, MiOverlayDetails };
+const MiOverlayDetailsContainer = styled("div")`
+  > :last-child {
+    border-bottom: none !important;
+  }
+`;
+
+const MiOverlayActionsContainer = styled("div")`
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export {
+  MiHeader,
+  MiContent,
+  MiOverlayDetails,
+  MiOverlayDetailsContainer,
+  MiOverlayActionsContainer,
+};

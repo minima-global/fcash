@@ -11,6 +11,7 @@ const initialState: SendFormState = {
 export const setPage =
   (page: number): AppThunk =>
   async (dispatch) => {
+    console.log("page", page);
     // change page
     dispatch(updatePage(page));
   };

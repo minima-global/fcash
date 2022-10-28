@@ -3,7 +3,7 @@ import MiCard from "../../helper/layout/MiCard";
 
 import moment from "moment";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { selectPageSelector } from "../../../redux/slices/app/futureCoinSlice";
+import { selectPageSelector } from "../../../redux/slices/app/sendFormSlice";
 import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
 
 const initialFormValues = {

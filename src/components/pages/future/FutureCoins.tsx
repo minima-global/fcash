@@ -12,7 +12,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   flagCoinCollection,
-  ICoinStatus,
   selectFutureCash,
   updatePendingStatus,
 } from "../../../redux/slices/minima/coinSlice";
@@ -29,12 +28,12 @@ import { useNavigate } from "react-router-dom";
 import { Coin, MinimaToken } from "../../../minima/types/minima";
 import { collectFutureCash } from "../../../minima/rpc-commands";
 import {
-  ICoinDetails,
   selectPageSelector,
-  setDetails,
+  showDetails,
   updatePage,
 } from "../../../redux/slices/app/futureCoinSlice";
 import MiSuccess from "../../futurecoins/Success";
+import CoinDetails from "../../futurecoins/coindetails/CoinDetails";
 
 const Tabs = styled("div")`
   height: 48px;
@@ -139,32 +138,6 @@ const FutureCoins = () => {
   const futurePageSelector = useAppSelector(selectPageSelector);
   const merged = mergeArray(coins, walletTokens);
 
-  const viewAndSetDetailsPage = (c: ICoinStatus) => {
-    const payload: ICoinDetails = {
-      name:
-        typeof c.token == "string"
-          ? c.token
-          : typeof c.token && c.token.hasOwnProperty("name")
-          ? c.token.name
-          : "Undefined",
-      amount:
-        c.tokenid == "0x00"
-          ? c.amount
-          : c.tokenamount
-          ? c.tokenamount
-          : "Undefined",
-      unlockdatetime:
-        c.state && c.state[2]
-          ? moment(c.state[2].data).format("MMM Do, YY H:mm A")
-          : "Undefined",
-      unlockblock: c.state && c.state[0] ? c.state[0].data : "Unavailable",
-      address: c.state && c.state[1] ? c.state[1].data : "Unavailable",
-      coinid: c.coinid,
-    };
-
-    dispatch(setDetails(payload));
-  };
-
   const [tabOpen, setTabOpenIndex] = React.useState(0);
   const toggle = (i: number) => setTabOpenIndex(i);
   const filterForPending = (c: Coin & MinimaToken) => {
@@ -180,8 +153,6 @@ const FutureCoins = () => {
 
   return (
     <>
-      {/* {futurePageSelector.details == true && <CoinDetails />} */}
-
       {futurePageSelector.page == 1 && <MiSuccess />}
 
       {futurePageSelector.page == 0 && (
@@ -205,11 +176,10 @@ const FutureCoins = () => {
             <MiFutureContainer>
               {merged.filter(filterForPending).map((c: any) => (
                 <>
+                  {futurePageSelector.details == true && <CoinDetails c={c} />}
                   <MiFutureCoin
                     key={c.coinid}
-                    onClick={() => {
-                      viewAndSetDetailsPage(c);
-                    }}
+                    onClick={() => dispatch(showDetails(true))}
                   >
                     <Stack direction="row">
                       <Avatar

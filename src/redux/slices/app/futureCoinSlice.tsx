@@ -27,13 +27,12 @@ export const setPage =
     console.log("updating page");
     dispatch(updatePage(page));
   };
-export const setDetails =
-  (payload: ICoinDetails): AppThunk =>
+
+export const showDetails =
+  (status: boolean): AppThunk =>
   async (dispatch) => {
-    // switch details page on
-    dispatch(updateDetails(true));
-    // set coin details payload
-    dispatch(updateDetailsPayload(payload));
+    // change page
+    dispatch(updateDetails(status));
   };
 
 export const futureCoinSlice = createSlice({
@@ -49,15 +48,10 @@ export const futureCoinSlice = createSlice({
       const status = action.payload;
       state.details = status;
     },
-    updateDetailsPayload: (state, action) => {
-      const payload = action.payload;
-      state.detailsPayload = payload;
-    },
   },
 });
 
-export const { updatePage, updateDetails, updateDetailsPayload } =
-  futureCoinSlice.actions;
+export const { updatePage, updateDetails } = futureCoinSlice.actions;
 export default futureCoinSlice.reducer;
 
 // Return toast state

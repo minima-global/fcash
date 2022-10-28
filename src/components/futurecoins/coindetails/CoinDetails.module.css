@@ -1,0 +1,41 @@
+.white-overlay {
+  position: absolute;
+  background: #fff;
+  z-index: 1000;
+  top: 0; bottom: 0; left:0; right:0;
+  margin-top: 0!important;
+  overflow: scroll;
+  padding-bottom: 22px;
+}
+
+.white-overlay svg {
+  cursor: pointer;
+}
+
+.overlay-content {
+  margin-top: calc(32px + 48px);
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+.copyContainer {
+  display: flex!important;
+  flex-direction: row!important;
+  justify-content: space-between;
+  align-items: center!important;
+  border-bottom: 1px solid #d3d3d8;
+  padding-bottom: 8px;
+}
+.copyContainer h5, .copyContainer p {
+  display: inline;
+}
+.copyContainer div {
+  border-bottom: none!important; 
+}
+.pt-8 {
+  margin-top: 8px!important;
+}
+
+.copyContainer svg {
+  cursor: pointer;
+}

@@ -3,9 +3,12 @@ import { FC } from "react";
 
 import MiCopy from "../../helper/layout/svgs/MiCopy";
 import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
-import theme from "../../../theme";
 import { selectClipboardSelector } from "../../../redux/slices/app/clipboardSlice";
 import { useAppSelector } from "../../../redux/hooks";
+import {
+  MiOverlayDetails,
+  MiOverlayDetailsContainer,
+} from "../../helper/layout/MiOverlay";
 
 export interface IConfirmationList {
   tokenName: string;
@@ -15,6 +18,43 @@ export interface IConfirmationList {
   tokenId: string;
   address: string;
 }
+interface IConfirmationDetail {
+  title: string;
+  value: any;
+  copyable?: boolean;
+  copyPayload?: any;
+}
+const MiTokenDetailItem = ({
+  title,
+  value,
+  copyable,
+  copyPayload,
+}: IConfirmationDetail) => {
+  const clipboardStatusSelector = useAppSelector(selectClipboardSelector);
+  return (
+    <MiOverlayDetails>
+      {copyable && (
+        <>
+          <div className={styles["copyContainer"]}>
+            <h5>{title + ":"}</h5>
+            <MiCopy
+              size={28}
+              color={!clipboardStatusSelector.status ? "#317aff" : "#4E8B7C"}
+              copyPayload={copyPayload}
+            />
+          </div>
+          <p className={styles["pt-8"]}>{value}</p>
+        </>
+      )}
+      {!copyable && (
+        <>
+          <h5>{title + ":"}</h5>
+          <p>{value}</p>
+        </>
+      )}
+    </MiOverlayDetails>
+  );
+};
 const ConfirmationDetailList: FC<IConfirmationList> = ({
   tokenName,
   amount,
@@ -23,42 +63,25 @@ const ConfirmationDetailList: FC<IConfirmationList> = ({
   tokenId,
   address,
 }) => {
-  const clipboardStatusSelector = useAppSelector<any>(selectClipboardSelector);
-  // console.log("clipboardStatusSelector", clipboardStatusSelector);
   return (
-    <Stack className={styles["confirmationDetailList"]}>
-      <div>
-        <h5>Token:</h5>
-        <p>{tokenName}</p>
-      </div>
-      <div>
-        <h5>Amount:</h5>
-        <p>{amount}</p>
-      </div>
-      <div>
-        <h5>Address:</h5>
-        <p>{address}</p>
-      </div>
-      <div>
-        <h5>Unlock date & time:</h5>
-        <p>{datetime.format("ddd MMM D YYYY, hh:m:s A")}</p>
-      </div>
-      <div>
-        <h5>Unlock blocktime:</h5>
-        <p>{estimatedBlock}</p>
-      </div>
-      <div>
-        <div className={styles["copyContainer"]}>
-          <h5>Token ID:</h5>
-          <MiCopy
-            size={28}
-            color={!clipboardStatusSelector.status ? "#317aff" : "#4E8B7C"}
-            copyPayload={tokenId}
-          />
-        </div>
-        <p>{tokenId}</p>
-      </div>
-    </Stack>
+    <MiOverlayDetailsContainer>
+      <MiTokenDetailItem title="Token" value={tokenName}></MiTokenDetailItem>
+      <MiTokenDetailItem title="Address" value={address}></MiTokenDetailItem>
+      <MiTokenDetailItem
+        title="Unlock date & time"
+        value={datetime.format("ddd MMM D YYYY, hh:m:s A")}
+      ></MiTokenDetailItem>
+      <MiTokenDetailItem
+        title="Unlock blocktime"
+        value={estimatedBlock}
+      ></MiTokenDetailItem>
+      <MiTokenDetailItem
+        title="Token ID"
+        value={tokenId}
+        copyable={true}
+        copyPayload={tokenId}
+      ></MiTokenDetailItem>
+    </MiOverlayDetailsContainer>
   );
 };
 
