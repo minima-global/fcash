@@ -1,11 +1,11 @@
 import { Alert, Snackbar } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 import {
   hideToast,
   selectToastState,
   showToast,
-} from "../redux/slices/app/toastSlice";
+} from "../../../redux/slices/app/toastSlice";
 
 const MiSnackBar = () => {
   const state = useAppSelector(selectToastState);

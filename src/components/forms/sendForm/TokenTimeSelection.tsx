@@ -4,7 +4,7 @@ import { TextField, Button } from "@mui/material";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
 
-import styles from "../../styling/sendForm/TokenSelect.module.css";
+import styles from "../../helper/layout/styling/sendpage/TokenSelect.module.css";
 
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { createBlockTime } from "../../../minima/rpc-commands";

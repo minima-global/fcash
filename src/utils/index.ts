@@ -1,3 +1,4 @@
+import { ICoinStatus } from './../redux/slices/minima/coinSlice';
 import { Token } from "typescript";
 import { Coin, MinimaToken } from "../minima/types/minima";
 
@@ -41,8 +42,9 @@ const mapCoinToToken = (coin: Coin, token: MinimaToken): any => {
 }
 
 // select a token, iterate through coins and find a coin with same tokenid
-const mergeArray = (coins: Coin[], tokens: MinimaToken[]): any => {
+const mergeArray = (coins: ICoinStatus[], tokens: MinimaToken[]): any => {
   const mergeArr: any = [];
+  
   tokens.map((t) => {
      coins.forEach((c) => {
       let merge = {};

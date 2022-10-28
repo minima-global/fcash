@@ -183,6 +183,8 @@ interface Coin {
     tokenid: string;
     floating: boolean;
     storestate: boolean;
+    created: number;
+    mmrentry: string;
     state: State[];
     token?: any;
     tokenamount?: string;

@@ -1,6 +1,6 @@
 import { Button, Stack } from "@mui/material";
-import styles from "../styling/futurepage/index.module.css";
-import MiFutureCoinSuccess from "../svgs/MiFutureCoinSuccess";
+import styles from "../helper/layout/styling/futurepage/index.module.css";
+import MiFutureCoinSuccess from "../helper/layout/svgs/MiFutureCoinSuccess";
 import { MiHeader, MiContent } from "../helper/layout/MiOverlay";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 

@@ -1,7 +1,7 @@
-import { useAppDispatch } from "../../redux/hooks";
-import { setClipboardStatus } from "../../redux/slices/app/clipboardSlice";
-import { showToast } from "../../redux/slices/app/toastSlice";
-import { copy } from "../../utils";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { setClipboardStatus } from "../../../../redux/slices/app/clipboardSlice";
+import { showToast } from "../../../../redux/slices/app/toastSlice";
+import { copy } from "../../../../utils";
 import styled from "@emotion/styled";
 
 const CopyContainer = styled("h5")`

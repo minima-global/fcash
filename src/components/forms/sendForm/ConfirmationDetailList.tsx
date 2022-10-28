@@ -1,8 +1,8 @@
 import { Stack } from "@mui/material";
 import { FC } from "react";
 
-import MiCopy from "../../svgs/MiCopy";
-import styles from "../../styling/sendForm/Confirmation.module.css";
+import MiCopy from "../../helper/layout/svgs/MiCopy";
+import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
 import theme from "../../../theme";
 import { selectClipboardSelector } from "../../../redux/slices/app/clipboardSlice";
 import { useAppSelector } from "../../../redux/hooks";

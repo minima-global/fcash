@@ -1,26 +1,26 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import { withFormik, FormikProps } from "formik";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 import moment from "moment";
 import {
   createBlockTime,
   getFutureCashScriptAddress,
   sendFutureCash,
-} from "../../minima/rpc-commands";
-import TokenTimeSelection from "./sendForm/TokenTimeSelection";
+} from "../../../minima/rpc-commands";
+import TokenTimeSelection from "./TokenTimeSelection";
 // import AddressAmountSelection from "./sendForm/AddressAmountSelection";
-import Confirmation from "./sendForm/Confirmation";
-import Success from "./sendForm/Success";
+import Confirmation from "./Confirmation";
+import Success from "./Success";
 import * as yup from "yup";
-import { showToast } from "../../redux/slices/app/toastSlice";
-import { AppDispatch } from "../../redux/store";
+import { showToast } from "../../../redux/slices/app/toastSlice";
+import { AppDispatch } from "../../../redux/store";
 import {
   selectPageSelector,
   updatePage,
-} from "../../redux/slices/app/sendFormSlice";
-import { MinimaToken } from "../../minima/types/minima";
+} from "../../../redux/slices/app/sendFormSlice";
+import { MinimaToken } from "../../../minima/types/minima";
 import Decimal from "decimal.js";
 
 const formValidation = yup.object().shape({

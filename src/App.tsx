@@ -7,7 +7,10 @@ import { useRoutes } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { showToast } from "./redux/slices/app/toastSlice";
 
-import { callAndStoreCoins } from "./redux/slices/minima/coinSlice";
+import {
+  callAndStoreCoins,
+  getFlaggedCoins,
+} from "./redux/slices/minima/coinSlice";
 import {
   callAndStoreWalletBalance,
   onNewBlock,
@@ -19,8 +22,8 @@ import { addFutureCashScript } from "./minima/rpc-commands";
 import { futureCashScript } from "./minima/scripts";
 import { callAndStoreChainHeight } from "./redux/slices/minima/statusSlice";
 
-import MiHeader from "./components/MiHeader";
-import MiNavigation from "./components/MiNavigation";
+import MiHeader from "./components/helper/layout/MiHeader";
+import MiNavigation from "./components/helper/layout/MiNavigation";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -38,6 +41,7 @@ function App() {
       dispatch(callAndStoreChainHeight());
       dispatch(callAndStoreCoins());
       dispatch(callAndStoreWalletBalance());
+      dispatch(getFlaggedCoins());
       addFutureCashScript(futureCashScript, false).then(() => {
         dispatch(showToast("FutureCash script added.", "info", ""));
       });

@@ -5,8 +5,8 @@ import { useAppSelector } from "../../../redux/hooks";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
 
-import styles from "../../styling/sendForm/Confirmation.module.css";
-import MiDismiss from "../../svgs/MiDismiss";
+import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
+import MiDismiss from "../../helper/layout/svgs/MiDismiss";
 import ConfirmationDetailList from "./ConfirmationDetailList";
 
 const Confirmation = (props: any) => {

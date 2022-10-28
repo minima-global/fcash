@@ -1,12 +1,12 @@
 import React from "react";
 
 import styled from "@emotion/styled";
-import MiConfirmationSuccessOtherAddress from "../../svgs/MiConfirmationSuccessOtherAddress";
-import MiConfirmationSuccessMyAddress from "../../svgs/MiConfirmationSuccessMyAddress";
+import MiConfirmationSuccessOtherAddress from "../../helper/layout/svgs/MiConfirmationSuccessOtherAddress";
+import MiConfirmationSuccessMyAddress from "../../helper/layout/svgs/MiConfirmationSuccessMyAddress";
 import { Stack } from "@mui/system";
 import { isAddressMine } from "../../../minima/rpc-commands";
 
-import styles from "../../styling/sendForm/Confirmation.module.css";
+import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
 import { Button } from "@mui/material";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { MiHeader, MiContent } from "../../helper/layout/MiOverlay";

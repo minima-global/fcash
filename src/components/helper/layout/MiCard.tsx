@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@mui/material";
-import styles from "../../styling/Card.module.css";
+import styles from "./styling/Card.module.css";
 
 const MiCard = ({ children }: any) => {
   return (

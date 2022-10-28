@@ -1,11 +1,138 @@
+import { FlaggedCoin } from './../redux/slices/minima/coinSlice';
 import { IFutureCashCollection, IFutureCashPost } from "./types/app";
 import { Coin, IScript, MinimaToken,  Status } from "./types/minima";
 import { IGetAddress } from "./types/rpc";
 import moment, { Moment } from "moment";
 import Decimal from "decimal.js";
 import { futureCashScript } from "./scripts";
+import { ICoinStatus } from "../redux/slices/minima/coinSlice";
 
 
+import { FLAGGEDCOINSTXT } from "./constants"
+
+/** MDS file storage */
+
+interface SaveSuccessPayload {
+    name: string;
+    size: number;
+}
+/**
+ * 
+ * @param _json a json object you want to store
+ * @param _fname name of file you want to save as
+ * @returns true or false if succeeded or error string
+ */
+const saveFile = (_fname: string = FLAGGEDCOINSTXT, _json: Object): Promise<SaveSuccessPayload> => {
+    
+    return new Promise((resolve, reject) => {
+
+        MDS.file.save(_fname, JSON.stringify(_json), (result: any) => {
+            console.log(result);
+
+            if(!result.status) {
+
+                reject(result.error);
+
+            }
+
+            if (result.status) {
+
+                if (result.exists && result.save) {
+
+                    resolve(result.save);
+
+                }
+
+                
+            }
+        });
+    })
+
+}
+
+export interface MDSFile {
+    data: string;
+    name: string;
+    size: number;    
+}
+/**
+ * 
+ * @param _fname name of file
+ * @returns file contents
+ */
+/** */
+const loadFile = (_fname: string = FLAGGEDCOINSTXT): Promise<MDSFile> => {
+
+    return new Promise((resolve, reject) => {
+
+        MDS.file.load(_fname, (result: any) => {
+            console.log(result);
+
+            if (!result.status) {
+
+                reject(result.error);
+
+            }
+
+            if (result.status && result.response.exists) {
+
+                resolve(result.response.load);
+
+
+            }
+
+
+        })
+
+
+    })
+
+}
+
+interface MDSFileMetaData {
+    isdir: boolean;
+    isfile: boolean;
+    name: string;
+    size: number;
+}
+/**
+ * 
+ * @param _f the name of the file you want to search for
+ * @returns MDSFile object
+ */
+const loadFileMetaData = (_f: string): Promise<MDSFileMetaData> => {
+
+    return new Promise((resolve, reject) => {
+
+        MDS.file.list("/", (result: any) => {
+
+            if (!result.status) {
+
+                reject(result.error);
+
+            }
+
+            if (result.status && result.response.exists) {
+                // folder '/' exists..
+                const listOfFiles: MDSFileMetaData[] = result.response.list;
+                const flaggedCoinsFile = listOfFiles.find((f) => f.name == _f);
+                
+                if (!flaggedCoinsFile) reject("File not found");
+                
+                if (flaggedCoinsFile) resolve(flaggedCoinsFile);
+                
+
+            } else {
+
+                reject("Folder '/' not found!");
+
+            }
+        })
+
+
+    })
+
+}
 
 /** Rpc cmd */
 
@@ -117,12 +244,31 @@ const getBlockTime = (): Promise<number | string> => {
 
 /** Get coins */
 
-const getFutureCoins = (addr: string): Promise<Coin[] | string> => {
+const getFutureCoins = (_addr: string, _flaggedCoins: FlaggedCoin[]): Promise<ICoinStatus[]> => {
     return new Promise((resolve, reject) => {
-
-        rpc(`coins relevant:true address:${addr}`).then((coins) => {
+        console.log("FLAGGEDCOINS", _flaggedCoins);
+        rpc(`coins relevant:true address:${_addr}`).then(async (coins) => {
             
-            resolve(coins);
+            
+            if (_flaggedCoins.length > 0) {
+
+                resolve(coins.map((c: Coin) => {
+                    const getFlaggedCoin = _flaggedCoins.find((f) => f.coinid == c.coinid);
+
+                    if (getFlaggedCoin) {
+
+                        return Object.assign({...c, status: "PENDING", collectedOnBlock: getFlaggedCoin.collectOnBlock})
+
+                    }
+
+                    return Object.assign({...c, status: "NOTCOLLECTED", collectedOnBlock: undefined})
+                }))
+            } else {
+                resolve(coins.map((c: Coin) => Object.assign({...c, status: "NOTCOLLECTED", collectedOnBlock: undefined})));
+            }
+            
+
+            resolve([]);
     
         }).catch((err) => {
 
@@ -260,7 +406,7 @@ const sendFutureCash = (fCash: IFutureCashPost): Promise<object> => {
 
 /** Transaction constructor */
 
-const constructTransaction = (fCash: IFutureCashCollection): Promise<string | boolean> => {
+const constructTransaction = (fCash: IFutureCashCollection): Promise<boolean> => {
 
     const id = Math.floor(Math.random() * 1000000000);
 
@@ -285,70 +431,8 @@ const constructTransaction = (fCash: IFutureCashCollection): Promise<string | bo
 
             reject(err);
 
-        })
-
-        // txn(rpc, {command: 'Create', id: id}).then(() => {
-        //     console.log(`Transaction:${id} created. :)`)
-        //     txn(rpc, {id: id, command: 'Input', input: {coinid: fCash.coinid}}).then(() => {
-        //         console.log(`Transaction:${id} input(s) added. :)`);
-    
-        //         txn(rpc, {id: id, command: 'Output', output: {address: fCash.address, amount: fCash.amount, tokenid: fCash.tokenid, storestate: true}}).then(() => {
-        //             console.log(`Transaction:${id} output(s) added. :)`);
-    
-        //             txn(rpc, {id: id, command: 'Basics'}).then(() => {
-        //                 console.log(`Transaction:${id} mmr proofs added. :)`);
-                        
-        //                 txn(rpc, {id: id, command: 'Delete'}).then(() => {
-    
-        //                     console.log(`Transaction:${id} completed & deleted. :)`);
-        //                     resolve(true);
-    
-        //                 }).catch((err) => {
-    
-        //                     throw new Error(err);
-    
-        //                 })
-        //                 // txn(rpc, {id: id, command: 'Sign', sign: {publickey: fCash.publickey}}).then(() => {
-        //                 //     console.log(`Transaction:${id} signed. :)`);
-    
-    
-        //                 // }).catch((err) => {
-    
-        //                 //     throw new Error(err);
-    
-        //                 // })
-    
-    
-        //             }).catch((err) => {
-    
-        //                 throw new Error(err);
-    
-        //             })
-    
-        //         }).catch((err) => {
-    
-        //             throw new Error(err);
-    
-        //         })
-    
-        //     }).catch((err) => {
-    
-        //         throw new Error(err);
-    
-        //     })
-    
-    
-        // }).catch((err) => {
-    
-        //     reject(err);
-            
-        // });
-
-
+        });
     });
-    
-    
-
 }
 
 /** is Address mine check */
@@ -382,6 +466,70 @@ const isAddressMine = (addr: string) => {
 
 }
 
+/** Store Flagged Coins, load file add to json and override */
+/**
+ * 
+ * @param coin FlaggedCoin to add
+ * @returns SaveSuccessPayload on success
+ */
+const storeFlaggedCoinInMemory = (coin: FlaggedCoin): Promise<SaveSuccessPayload> => {
+    return new Promise((resolve, reject) => {
+        loadFile(FLAGGEDCOINSTXT).then((r) => {
+            let flaggedCoins = JSON.parse(r.data);
+            const override = [...flaggedCoins, coin];
+            saveFile(FLAGGEDCOINSTXT, override).then((r) => resolve(r)).catch((err) => reject(err))
+        }).catch((err) => {
+
+            reject(err);
+
+        });
+    });
+}
+const removeFlaggedCoinInMemory = (coinid: string) => {
+
+}
+/** Get Flagged Coins */
+const retry = 10;
+let currentRound = 0;
+const getFlaggedCoinsInMemory = (): Promise<FlaggedCoin[]> => {
+    return new Promise((resolve, reject) => {
+        if (currentRound > 0) console.log(`getFlaggedCoins retrying.. ${currentRound}`);
+        if (currentRound < retry) {
+            loadFileMetaData(FLAGGEDCOINSTXT).then((r) => {
+                console.log(`Found ${FLAGGEDCOINSTXT}`, r);
+                loadFile(FLAGGEDCOINSTXT).then((r: MDSFile) => {
+                    
+                    resolve(JSON.parse(r.data));               
+        
+                }).catch((err) => {   
+                    
+                   reject(err);
+    
+                });
+            }).catch((err) => {
+            
+                if (typeof err == "string" && err == "File not found") {
+                    console.log("CURRENTROUND", currentRound)
+                    saveFile(FLAGGEDCOINSTXT, []).then((r) => console.log(r)).catch((err) => console.error(err));
+                    
+                    currentRound++;
+                    getFlaggedCoinsInMemory();
+                
+                } else {
+    
+                    reject(err);
+    
+                }
+            });
+            
+        } else {
+
+            reject(`Tried to find the ${FLAGGEDCOINSTXT} ${retry} times but failed to load it...`);
+        }
+    })
+
+}
+
 
 
 export {
@@ -394,5 +542,8 @@ export {
     createBlockTime,
     collectFutureCash,
     getBlockTime,
-    isAddressMine
+    isAddressMine,
+    saveFile,
+    loadFile,
+    loadFileMetaData
 };

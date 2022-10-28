@@ -35,4 +35,40 @@ const MiContent = styled("p")`
   margin-bottom: 48px;
 `;
 
-export { MiHeader, MiContent };
+const MiOverlayDetails = styled("div")`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border-bottom: 1px solid #d3d3d8;
+  margin-bottom: 12px;
+  > div:last-child {
+    border-bottom: none !important;
+    margin-bottom: 22px;
+  }
+  h5 {
+    margin: 0;
+    font-family: Manrope-regular;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 21px;
+    letter-spacing: 0.16px;
+    text-align: left;
+    padding-bottom: 8px !important;
+    padding-top: 0px !important;
+  }
+  p {
+    margin: 0;
+    font-family: Manrope-regular;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    padding-bottom: 12px !important;
+    padding-top: 0px !important;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+`;
+
+export { MiHeader, MiContent, MiOverlayDetails };

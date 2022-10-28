@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
 import App from "../App";
-import FutureCoins from "../components/pages/FutureCoins";
-import Send from "../components/pages/Send";
-import Wallet from "../components/pages/Wallet";
+import FutureCoins from "../components/pages/future/FutureCoins";
+import Send from "../components/pages/send/Send";
+import Wallet from "../components/pages/wallet/Wallet";
 
 const Routes = [
   {

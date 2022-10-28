@@ -1,10 +1,10 @@
-import MyEnhancedTransitionalFormHandler from "../forms/FormFutureCash";
-import MiCard from "../helper/layout/MiCard";
+import MyEnhancedTransitionalFormHandler from "../../forms/sendForm/FormFutureCash";
+import MiCard from "../../helper/layout/MiCard";
 
 import moment from "moment";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { selectPageSelector } from "../../redux/slices/app/sendFormSlice";
-import { selectBalance } from "../../redux/slices/minima/balanceSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { selectPageSelector } from "../../../redux/slices/app/futureCoinSlice";
+import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
 
 const initialFormValues = {
   initialToken: undefined, // Minima

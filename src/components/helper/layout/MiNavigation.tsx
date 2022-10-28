@@ -1,7 +1,7 @@
 import React from "react";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import theme from "../theme";
+import theme from "../../../theme";
 
 import styles from "./styling/BottomNavigation.module.css";
 

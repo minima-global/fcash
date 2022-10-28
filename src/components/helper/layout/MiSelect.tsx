@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 
-import styles from "../../styling/sendForm/TokenSelect.module.css";
-import MinimaIcon from "../../svgs/MinimaIcon";
+import styles from "./styling/sendpage/TokenSelect.module.css";
+import MinimaIcon from "./svgs/MinimaIcon";
 import { MinimaToken } from "../../../minima/types/minima";
 import React from "react";
-import MiDismiss from "../../svgs/MiDismiss";
+import MiDismiss from "./svgs/MiDismiss";
 import { Stack } from "@mui/system";
-import MiSearch from "../../svgs/MiSearch";
+import MiSearch from "./svgs/MiSearch";
 import { Avatar } from "@mui/material";
 
 import {
@@ -21,7 +21,7 @@ import {
 } from "./MiToken";
 
 import { containsText, numberWithCommas } from "../../../utils";
-import MiArrow from "../../svgs/MiArrow";
+import MiArrow from "./svgs/MiArrow";
 
 const DropDownContainer = styled("div")`
   width: 100%;
