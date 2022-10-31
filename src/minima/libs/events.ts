@@ -104,7 +104,7 @@ const initializeMinima = () => {
   
   MDS.DEBUG_HOST="127.0.0.1"
   MDS.DEBUG_PORT=9003
-  MDS.DEBUG_MINIDAPPID = "0x2D3FBFF12234DD2FF1F7439E57EB6E9B5E1507D16FCED00310DD8E70276BAA7B"
+  MDS.DEBUG_MINIDAPPID = "0x749E079C5E9575BBC5CA2BA530F6051FF29C62E6E1BF171AC987317113255465"
 
   MDS.init((nodeEvent: InitResponse | MiningResponse | NewBlockResponse | MinimaLogResponse | NewBalanceResponse | MaximaResponse | MDSTimerResponse | MaximaHosts) => {
 

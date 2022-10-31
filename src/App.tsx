@@ -61,7 +61,7 @@ function App() {
 
   return (
     <div className="App">
-      <div>
+      <div className="pb-50">
         <MiHeader />
 
         <div className="App-content">

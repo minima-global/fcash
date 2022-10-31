@@ -169,7 +169,7 @@ const rpc = (command: string): Promise<any> => {
     
             if (!resp.status && resp.pending) {
     
-                reject(resp.error);
+                reject(resp.error); 
     
             }
     
@@ -226,7 +226,7 @@ const blockTimeCalculator = (ms: number): Decimal => {
 
 /** Get block time */
 
-const getBlockTime = (): Promise<number | string> => {
+const getBlockTime = (): Promise<number> => {
 
     return new Promise((resolve, reject) => {
         rpc(`status`).then((r: Status) => {
@@ -388,7 +388,7 @@ const getAddress = (): Promise<IGetAddress | string> => {
 
 const sendFutureCash = (fCash: IFutureCashPost): Promise<object> => {
     console.log('fCash', fCash);
-    const command = `send amount:${fCash.amount} address:${fCash.scriptAddress} tokenid:${fCash.tokenid} state:{"1": "${fCash.state1}", "2":"${fCash.state2}", "3":"${fCash.state3}"}`;
+    const command = `send amount:${fCash.amount} address:${fCash.scriptAddress} tokenid:${fCash.tokenid} state:{"1": "${fCash.state1}", "2":"${fCash.state2}", "3":"${fCash.state3}", "4": "${fCash.state4}"}`;
 
     return new Promise((resolve, reject) => {
         rpc(command).then((r) => {
@@ -466,6 +466,14 @@ const isAddressMine = (addr: string) => {
 
 }
 
+/** Calculate difference between future block time and current block time */
+
+const getBlockDifference = async (_futureBlockTime: number) => {
+    const chainHeight = await getBlockTime();
+
+    return new Decimal(_futureBlockTime).minus(chainHeight).toNumber();
+}
+
 /** Store Flagged Coins, load file add to json and override */
 /**
  * 
@@ -536,6 +544,7 @@ export {
     rpc,
     getFutureCoins, 
     getWalletBalance, 
+    getBlockDifference,
     addFutureCashScript, 
     sendFutureCash, 
     getFutureCashScriptAddress, 

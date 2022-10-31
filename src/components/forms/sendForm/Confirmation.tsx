@@ -10,8 +10,6 @@ import ConfirmationDetailList from "./ConfirmationDetailList";
 const Confirmation = (props: any) => {
   const { values, page, isSubmitting, dispatch } = props;
 
-  console.log("currentPage", page);
-
   const token = props.values.token;
   const [estimatedBlockTime, setEstimatedBlockTime] = React.useState(0);
 

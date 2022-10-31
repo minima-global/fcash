@@ -8,6 +8,7 @@ import {
   createBlockTime,
   getFutureCashScriptAddress,
   sendFutureCash,
+  getBlockDifference,
 } from "../../../minima/rpc-commands";
 import TokenTimeSelection from "./TokenTimeSelection";
 // import AddressAmountSelection from "./sendForm/AddressAmountSelection";
@@ -117,6 +118,8 @@ const MyEnhancedTransitionalFormHandler = withFormik<
     try {
       const blocktime = await createBlockTime(dt.datetime);
       const scriptAddress = await getFutureCashScriptAddress();
+      const difference = await getBlockDifference(blocktime);
+      console.log("Block difference for @COINAGE:", difference);
       if (dt.token == undefined) {
         setFieldError("token", "Please select a token");
         return;
@@ -128,6 +131,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
         state1: blocktime,
         state2: dt.address,
         state3: dt.datetime.valueOf(),
+        state4: difference,
       });
 
       props.dispatch(updatePage(props.page + 1));
