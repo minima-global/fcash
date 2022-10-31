@@ -7,6 +7,7 @@ import { balanceMiddleware, BalanceState } from "./slices/minima/balanceSlice";
 import { SendFormState } from './slices/app/sendFormSlice';
 import { ClipboardState } from './slices/app/clipboardSlice';
 import { FutureCoinState } from "./slices/app/futureCoinSlice";
+import { IntroState } from './slices/app/introSlice';
 import coinReducer from "./slices/minima/coinSlice";
 import toastReducer from './slices/app/toastSlice';
 import miningReducer from './slices/minima/miningSlice';
@@ -15,6 +16,8 @@ import statusReducer from './slices/minima/statusSlice';
 import sendFormReducer from './slices/app/sendFormSlice';
 import futureCoinReducer from './slices/app/futureCoinSlice';
 import clipboardReducer from './slices/app/clipboardSlice';
+
+import introReducer from "./slices/app/introSlice";
 
 
 export type RootState = {
@@ -26,6 +29,7 @@ export type RootState = {
     page: SendFormState;
     clipboard: ClipboardState
     futurepage: FutureCoinState
+    intropage: IntroState
 };
 
 export const store = configureStore({
@@ -37,7 +41,8 @@ export const store = configureStore({
         status: statusReducer,
         page: sendFormReducer,
         clipboard: clipboardReducer,
-        futurepage: futureCoinReducer
+        futurepage: futureCoinReducer,
+        intropage: introReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(balanceMiddleware, coinMiddleware),
 });
