@@ -55,7 +55,7 @@ const MiCoinDetailItem = ({
 const CoinDetails = (props: { c: ICoinStatus }) => {
   const dispatch = useAppDispatch();
   const c = props.c;
-  console.log(c.state[2].data);
+  // console.log(c.state[2].data);
   return (
     <div className={styles["white-overlay"]}>
       <Stack className={styles["overlay-content"]}>

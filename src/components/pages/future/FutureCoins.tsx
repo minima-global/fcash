@@ -138,19 +138,20 @@ const FutureCoins = () => {
   const walletTokens = useAppSelector(selectBalance);
   const chainHeight = useAppSelector(selectChainHeight);
   const futurePageSelector = useAppSelector(selectPageSelector);
+  // merge the coins with walletTokens to get the token names & details
   const merged = mergeArray(coins, walletTokens);
 
   const [tabOpen, setTabOpenIndex] = React.useState(0);
   const toggle = (i: number) => setTabOpenIndex(i);
+
   const filterForPending = (c: Coin & MinimaToken) => {
-    if (new Decimal(chainHeight).greaterThan(new Decimal(c.state[0].data))) {
-      return true;
-    }
+    return new Decimal(chainHeight).lessThan(new Decimal(c.state[0].data));
   };
+
   const filterForReady = (c: Coin & MinimaToken) => {
-    if (new Decimal(chainHeight).lessThan(new Decimal(c.state[0].data))) {
-      return true;
-    }
+    return new Decimal(chainHeight).greaterThanOrEqualTo(
+      new Decimal(c.state[0].data)
+    );
   };
 
   React.useEffect(() => {
@@ -187,6 +188,7 @@ const FutureCoins = () => {
                 <>
                   {futurePageSelector.details == true && <CoinDetails c={c} />}
                   <MiFutureCoin
+                    id="pending-coin"
                     key={c.coinid}
                     onClick={() => dispatch(showDetails(true))}
                   >
@@ -235,7 +237,7 @@ const FutureCoins = () => {
           {readyCoins && readyCoins.length > 0 && tabOpen == 1 ? (
             <MiFutureContainer>
               {readyCoins.map((c: any) => (
-                <MiFutureCoin key={c.coinid}>
+                <MiFutureCoin id="ready-coin" key={c.coinid}>
                   <Stack direction="row">
                     <Avatar
                       sx={{
@@ -292,32 +294,32 @@ const FutureCoins = () => {
             </MiFutureContainer>
           ) : null}
 
-          {(pendingCoins.length == 0 && tabOpen == 0) ||
-            (readyCoins.length == 0 && tabOpen == 1 ? (
-              <MiNoResults>
-                <MiFutureNoResults />
-                <Stack spacing={2} sx={{ m: 2 }}>
-                  <MiNothingToSee>
-                    Nothing to <br /> see here!
-                  </MiNothingToSee>
-                  <MiNothingToSeeSubtitle>
-                    You currently have no <br />{" "}
-                    {tabOpen === 1
-                      ? "have no contracts that are ready to collect."
-                      : "pending contracts."}
-                  </MiNothingToSeeSubtitle>
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    disableElevation
-                    fullWidth
-                    onClick={() => navigate("/send")}
-                  >
-                    Start contract
-                  </Button>
-                </Stack>
-              </MiNoResults>
-            ) : null)}
+          {(pendingCoins.length === 0 && tabOpen == 0) ||
+          (readyCoins.length == 0 && tabOpen == 1) ? (
+            <MiNoResults>
+              <MiFutureNoResults />
+              <Stack spacing={2} sx={{ m: 2 }}>
+                <MiNothingToSee>
+                  Nothing to <br /> see here!
+                </MiNothingToSee>
+                <MiNothingToSeeSubtitle>
+                  You currently have no <br />{" "}
+                  {tabOpen === 1
+                    ? "have no contracts that are ready to collect."
+                    : "pending contracts."}
+                </MiNothingToSeeSubtitle>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                  fullWidth
+                  onClick={() => navigate("/send")}
+                >
+                  Start contract
+                </Button>
+              </Stack>
+            </MiNoResults>
+          ) : null}
         </Stack>
       )}
     </>
