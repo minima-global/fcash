@@ -11,8 +11,9 @@ import moment from "moment";
 import MiCopy from "../../helper/layout/svgs/MiCopy";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectClipboardSelector } from "../../../redux/slices/app/clipboardSlice";
-import { showDetails } from "../../../redux/slices/app/futureCoinSlice";
 import Decimal from "decimal.js";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface ICoinDetail {
   title: string;
@@ -52,64 +53,90 @@ const MiCoinDetailItem = ({
   );
 };
 
-const CoinDetails = (props: { c: ICoinStatus }) => {
+const CoinDetails = () => {
   const dispatch = useAppDispatch();
-  const c = props.c;
-  // console.log(c.state[2].data);
+  const navigate = useNavigate();
+  const [coinDetail, setCoinDetail] = React.useState<ICoinStatus | undefined>(
+    undefined
+  );
+  const location = useLocation();
+
+  React.useEffect(() => {
+    setCoinDetail(location.state);
+  }, [dispatch, location]);
+
   return (
     <div className={styles["white-overlay"]}>
       <Stack className={styles["overlay-content"]}>
-        <MiOverlayDetailsContainer>
-          <MiCoinDetailItem
-            title="Token"
-            value={typeof c.token == "string" ? c.token : c.token.name}
-          />
-          <MiCoinDetailItem
-            title="Amount"
-            value={c.tokenid == "0x00" ? c.amount : c.tokenamount}
-          />
-          <MiCoinDetailItem
-            title="Unlock block height"
-            value={c.state[0].data}
-          />
-          <MiCoinDetailItem
-            title="Approximate unlock date and time"
-            value={
-              c.state && c.state[2]
-                ? moment(
-                    new Decimal(c.state[2].data)
-                      // .times(new Decimal(1000))
-                      .toNumber()
-                  ).format("MMM Do, YYYY H:mm A")
-                : "Unavailable"
-            }
-          />
-          <MiCoinDetailItem
-            title="Coin assigned to address"
-            value={c.state && c.state[1] ? c.state[1].data : "Unavailable"}
-            copyable={true}
-            copyPayload={
-              c.state && c.state[1] ? c.state[1].data : "Unavailable"
-            }
-          />
-          <MiCoinDetailItem
-            title="Coin ID"
-            value={c.coinid}
-            copyable={true}
-            copyPayload={c.coinid}
-          />
-        </MiOverlayDetailsContainer>
-        <MiOverlayActionsContainer>
-          <Button
-            variant="contained"
-            disableElevation
-            fullWidth
-            color="secondary"
-            onClick={() => dispatch(showDetails(false))}
-          >
-            Close
-          </Button>
-        </MiOverlayActionsContainer>
+        {typeof coinDetail !== "undefined" ? (
+          <>
+            <MiOverlayDetailsContainer>
+              <MiCoinDetailItem
+                title="Token"
+                value={
+                  typeof coinDetail.token == "string"
+                    ? coinDetail.token
+                    : coinDetail.token.name
+                }
+              />
+              <MiCoinDetailItem
+                title="Amount"
+                value={
+                  coinDetail.tokenid == "0x00"
+                    ? coinDetail.amount
+                    : coinDetail.tokenamount
+                }
+              />
+              <MiCoinDetailItem
+                title="Unlock block height"
+                value={coinDetail.state[0].data}
+              />
+              <MiCoinDetailItem
+                title="Approximate unlock date and time"
+                value={
+                  coinDetail.state && coinDetail.state[2]
+                    ? moment(
+                        new Decimal(coinDetail.state[2].data)
+                          // .times(new Decimal(1000))
+                          .toNumber()
+                      ).format("MMM Do, YYYY H:mm A")
+                    : "Unavailable"
+                }
+              />
+              <MiCoinDetailItem
+                title="Coin assigned to address"
+                value={
+                  coinDetail.state && coinDetail.state[1]
+                    ? coinDetail.state[1].data
+                    : "Unavailable"
+                }
+                copyable={true}
+                copyPayload={
+                  coinDetail.state && coinDetail.state[1]
+                    ? coinDetail.state[1].data
+                    : "Unavailable"
+                }
+              />
+              <MiCoinDetailItem
+                title="Coin ID"
+                value={coinDetail.coinid}
+                copyable={true}
+                copyPayload={coinDetail.coinid}
+              />
+            </MiOverlayDetailsContainer>
+            <MiOverlayActionsContainer>
+              <Button
+                variant="contained"
+                disableElevation
+                fullWidth
+                color="secondary"
+                onClick={() => navigate(-1)}
+              >
+                Close
+              </Button>
+            </MiOverlayActionsContainer>
+          </>
+        ) : null}
       </Stack>
     </div>
   );

@@ -12,9 +12,11 @@ import MiSelect from "../../helper/layout/MiSelect";
 import { InputLabel, InputWrapper } from "./InputWrapper";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { Stack } from "@mui/system";
+import { selectChainHeight } from "../../../redux/slices/minima/statusSlice";
 
 const TokenTimeSelection = (props: any) => {
   const walletTokens = useAppSelector(selectBalance);
+  const chainHeight = useAppSelector(selectChainHeight);
   const [estimatedBlock, setEstimatedBlock] = React.useState(0);
 
   const {
@@ -44,7 +46,7 @@ const TokenTimeSelection = (props: any) => {
 
     // whenever that changes, just update this..
     setFieldValue("tokens", values.tokens);
-  }, [dispatch, values.tokens, page]);
+  }, [dispatch, values.tokens, values.datetime, page]);
 
   return (
     <>
@@ -54,6 +56,7 @@ const TokenTimeSelection = (props: any) => {
         sx={{ overFlow: "scroll" }}
       >
         <code>{JSON.stringify(values)}</code>
+        <code>{chainHeight}</code>
       </Stack>
       <MiSelect
         id="token"

@@ -4,7 +4,7 @@ import React from "react";
 import Routes from "./routes";
 import { useRoutes } from "react-router-dom";
 
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { useAppDispatch } from "./redux/hooks";
 import { showToast } from "./redux/slices/app/toastSlice";
 
 import {
@@ -30,9 +30,6 @@ function App() {
   const routes = useRoutes(Routes);
 
   const [minimaStarted, setMinimaStarted] = React.useState(false);
-  const sBalanceNeedsUpdating = useAppSelector<boolean>(
-    selectBalanceNeedsUpdating
-  );
 
   React.useEffect(() => {
     events.onInit(() => {

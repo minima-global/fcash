@@ -5,6 +5,7 @@ import moment from "moment";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectPageSelector } from "../../../redux/slices/app/sendFormSlice";
 import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
+import { CircularProgress } from "@mui/material";
 
 const initialFormValues = {
   initialToken: undefined, // Minima
@@ -12,22 +13,29 @@ const initialFormValues = {
 };
 const Send = () => {
   const dispatch = useAppDispatch();
+
   const sendFormSelector = useAppSelector(selectPageSelector);
 
   const wallet = useAppSelector(selectBalance);
   console.log("Wallet has changed", wallet);
 
   return (
-    <MiCard
-      children={
-        <MyEnhancedTransitionalFormHandler
-          initialTime={initialFormValues.initialTime}
-          initialToken={wallet[0]}
-          dispatch={dispatch}
-          page={sendFormSelector.page}
+    <>
+      {wallet && wallet.length > 0 ? (
+        <MiCard
+          children={
+            <MyEnhancedTransitionalFormHandler
+              initialTime={initialFormValues.initialTime}
+              initialToken={wallet[0]}
+              dispatch={dispatch}
+              page={sendFormSelector.page}
+            />
+          }
         />
-      }
-    />
+      ) : (
+        <CircularProgress size={24} color="inherit" />
+      )}
+    </>
   );
 };
 

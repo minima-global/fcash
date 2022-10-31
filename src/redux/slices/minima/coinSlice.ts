@@ -90,7 +90,8 @@ export const unflagCoinCollection =
                         console.log(`Unflagged coin as collected coin:${c.coinid} script must have failed`);
                         
                         const flaggedCoins = getState().coins.flaggedCoins;
-                        dispatch(updateFlaggedCoins(flaggedCoins.filter((c) => c.coinid == c.coinid)))
+                        console.log("flaggedCoins ->", flaggedCoins.filter((coin) => coin.coinid == c.coinid));
+                        dispatch(updateFlaggedCoins(flaggedCoins.filter((coin) => coin.coinid == c.coinid)))
                         dispatch(callAndStoreCoins())
                     }
                 });

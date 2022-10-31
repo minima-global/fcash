@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import App from "../App";
+import CoinDetails from "../components/futurecoins/coindetails/CoinDetails";
 import FutureCoins from "../components/pages/future/FutureCoins";
 import Send from "../components/pages/send/Send";
 import Wallet from "../components/pages/wallet/Wallet";
@@ -18,7 +19,16 @@ const Routes = [
   {
     path: "/future",
     bottomnavName: "Future",
-    element: <FutureCoins />,
+    children: [
+      {
+        element: <FutureCoins />,
+        index: true,
+      },
+      {
+        path: "coindetails",
+        element: <CoinDetails />,
+      },
+    ],
   },
   {
     path: "*",

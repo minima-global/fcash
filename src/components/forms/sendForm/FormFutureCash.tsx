@@ -39,7 +39,7 @@ const formValidation = yup.object().shape({
     .matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters.")
     .test("check-my-funds", "Insufficient funds.", function (val) {
       const { path, createError, parent } = this;
-      console.log(path);
+
       if (val == undefined) {
         return false;
       }

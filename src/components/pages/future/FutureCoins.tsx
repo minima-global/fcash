@@ -24,12 +24,11 @@ import moment from "moment";
 import { mergeArray } from "../../../utils";
 import Decimal from "decimal.js";
 import MiFutureNoResults from "../../helper/layout/svgs/MiFutureNoResults";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Coin, MinimaToken } from "../../../minima/types/minima";
 import { collectFutureCash } from "../../../minima/rpc-commands";
 import {
   selectPageSelector,
-  showDetails,
   updatePage,
 } from "../../../redux/slices/app/futureCoinSlice";
 import MiSuccess from "../../futurecoins/Success";
@@ -157,10 +156,11 @@ const FutureCoins = () => {
   React.useEffect(() => {
     setPendingCoins(merged.filter(filterForPending));
     setReadyCoins(merged.filter(filterForReady));
-  }, [coins]);
+  }, [coins, chainHeight]);
 
   return (
     <>
+      <Outlet />
       {/* Success Page on collection */}
       {futurePageSelector.page == 1 && <MiSuccess />}
 
@@ -186,11 +186,14 @@ const FutureCoins = () => {
             <MiFutureContainer>
               {pendingCoins.map((c: any) => (
                 <>
-                  {futurePageSelector.details == true && <CoinDetails c={c} />}
+                  {/* {futurePageSelector.details == true && <CoinDetails c={c} />} */}
                   <MiFutureCoin
                     id="pending-coin"
                     key={c.coinid}
-                    onClick={() => dispatch(showDetails(true))}
+                    onClick={() => {
+                      navigate("coindetails", { state: { ...c } });
+                    }}
+                    // onClick={() => dispatch(showDetails(true))}
                   >
                     <Stack direction="row">
                       <Avatar
