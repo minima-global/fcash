@@ -132,6 +132,8 @@ const MiUnlockButton = styled("button")`
 const FutureCoins = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [pendingCoins, setPendingCoins] = React.useState([]);
+  const [readyCoins, setReadyCoins] = React.useState([]);
   const coins = useAppSelector(selectFutureCash);
   const walletTokens = useAppSelector(selectBalance);
   const chainHeight = useAppSelector(selectChainHeight);
@@ -151,10 +153,17 @@ const FutureCoins = () => {
     }
   };
 
+  React.useEffect(() => {
+    setPendingCoins(merged.filter(filterForPending));
+    setReadyCoins(merged.filter(filterForReady));
+  }, [coins]);
+
   return (
     <>
+      {/* Success Page on collection */}
       {futurePageSelector.page == 1 && <MiSuccess />}
 
+      {/* Tabs */}
       {futurePageSelector.page == 0 && (
         <Stack spacing={3}>
           <Tabs>
@@ -171,10 +180,10 @@ const FutureCoins = () => {
               Ready
             </TabButton>
           </Tabs>
-
-          {merged && merged.length > 0 && tabOpen == 0 && (
+          {/* Pending Coins */}
+          {pendingCoins && pendingCoins.length > 0 && tabOpen == 0 ? (
             <MiFutureContainer>
-              {merged.filter(filterForPending).map((c: any) => (
+              {pendingCoins.map((c: any) => (
                 <>
                   {futurePageSelector.details == true && <CoinDetails c={c} />}
                   <MiFutureCoin
@@ -221,11 +230,11 @@ const FutureCoins = () => {
                 </>
               ))}
             </MiFutureContainer>
-          )}
-
-          {merged && merged.length > 0 && tabOpen == 1 && (
+          ) : null}
+          {/* Ready Coins */}
+          {readyCoins && readyCoins.length > 0 && tabOpen == 1 ? (
             <MiFutureContainer>
-              {merged.filter(filterForReady).map((c: any) => (
+              {readyCoins.map((c: any) => (
                 <MiFutureCoin key={c.coinid}>
                   <Stack direction="row">
                     <Avatar
@@ -281,10 +290,10 @@ const FutureCoins = () => {
                 </MiFutureCoin>
               ))}
             </MiFutureContainer>
-          )}
+          ) : null}
 
-          {!merged ||
-            (merged.length === 0 && (
+          {(pendingCoins.length == 0 && tabOpen == 0) ||
+            (readyCoins.length == 0 && tabOpen == 1 ? (
               <MiNoResults>
                 <MiFutureNoResults />
                 <Stack spacing={2} sx={{ m: 2 }}>
@@ -292,7 +301,10 @@ const FutureCoins = () => {
                     Nothing to <br /> see here!
                   </MiNothingToSee>
                   <MiNothingToSeeSubtitle>
-                    You currently have no <br /> pending contacts.
+                    You currently have no <br />{" "}
+                    {tabOpen === 1
+                      ? "have no contracts that are ready to collect."
+                      : "pending contracts."}
                   </MiNothingToSeeSubtitle>
                   <Button
                     color="secondary"
@@ -305,7 +317,7 @@ const FutureCoins = () => {
                   </Button>
                 </Stack>
               </MiNoResults>
-            ))}
+            ) : null)}
         </Stack>
       )}
     </>
