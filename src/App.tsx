@@ -2,7 +2,7 @@ import "./App.css";
 import React from "react";
 
 import Routes from "./routes";
-import { useRoutes } from "react-router-dom";
+import { useNavigate, useRoutes } from "react-router-dom";
 
 import { useAppDispatch } from "./redux/hooks";
 import { showToast } from "./redux/slices/app/toastSlice";
@@ -27,9 +27,11 @@ import MiNavigation from "./components/helper/layout/MiNavigation";
 
 function App() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const routes = useRoutes(Routes);
 
   const [minimaStarted, setMinimaStarted] = React.useState(false);
+  const [firstTime, setFirstTime] = React.useState(true);
 
   React.useEffect(() => {
     events.onInit(() => {
@@ -42,6 +44,8 @@ function App() {
       addFutureCashScript(futureCashScript, false).then(() => {
         dispatch(showToast("FutureCash script added.", "info", ""));
       });
+
+      firstTime ? navigate("intro") : navigate("/send");
     });
 
     events.onNewBlock(() => {

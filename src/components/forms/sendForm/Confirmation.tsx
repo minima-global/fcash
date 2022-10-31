@@ -3,6 +3,7 @@ import React from "react";
 import { createBlockTime } from "../../../minima/rpc-commands";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { MiOverlayActionsContainer } from "../../helper/layout/MiOverlay";
+import MiWhiteOverlay from "../../helper/layout/MiWhiteOverlay";
 
 import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
 import ConfirmationDetailList from "./ConfirmationDetailList";
@@ -38,37 +39,35 @@ const Confirmation = (props: any) => {
 
   return (
     <>
-      <div className={styles["white-overlay"]}>
-        <Stack className={styles["overlay-content"]}>
-          <ConfirmationDetailList
-            tokenName={details.tokenName}
-            amount={details.amount}
-            datetime={details.datetime}
-            estimatedBlock={details.estimatedBlock}
-            tokenId={details.tokenId}
-            address={details.address}
-          />
-          <MiOverlayActionsContainer>
-            <Button
-              variant="contained"
-              color="secondary"
-              disableElevation
-              type="submit"
-              disabled={isSubmitting}
-            >
-              Confirm
-            </Button>
-            <Button
-              disabled={isSubmitting}
-              color="inherit"
-              className={styles["cancelBtn"]}
-              onClick={() => dispatch(updatePage(page - 1))}
-            >
-              Cancel
-            </Button>
-          </MiOverlayActionsContainer>
-        </Stack>
-      </div>
+      <MiWhiteOverlay>
+        <ConfirmationDetailList
+          tokenName={details.tokenName}
+          amount={details.amount}
+          datetime={details.datetime}
+          estimatedBlock={details.estimatedBlock}
+          tokenId={details.tokenId}
+          address={details.address}
+        />
+        <MiOverlayActionsContainer>
+          <Button
+            variant="contained"
+            color="secondary"
+            disableElevation
+            type="submit"
+            disabled={isSubmitting}
+          >
+            Confirm
+          </Button>
+          <Button
+            disabled={isSubmitting}
+            color="inherit"
+            className={styles["cancelBtn"]}
+            onClick={() => dispatch(updatePage(page - 1))}
+          >
+            Cancel
+          </Button>
+        </MiOverlayActionsContainer>
+      </MiWhiteOverlay>
     </>
   );
 };

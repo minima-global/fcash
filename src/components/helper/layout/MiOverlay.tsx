@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { useAppSelector } from "../../../redux/hooks";
 
 const MiHeader = styled("h6")`
   font-family: Manrope-regular;
@@ -77,6 +76,7 @@ const MiOverlayActionsContainer = styled("div")`
   margin-top: 34px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 export {
