@@ -12,6 +12,7 @@ import MiCopy from "../../helper/layout/svgs/MiCopy";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectClipboardSelector } from "../../../redux/slices/app/clipboardSlice";
 import { showDetails } from "../../../redux/slices/app/futureCoinSlice";
+import Decimal from "decimal.js";
 
 interface ICoinDetail {
   title: string;
@@ -54,6 +55,7 @@ const MiCoinDetailItem = ({
 const CoinDetails = (props: { c: ICoinStatus }) => {
   const dispatch = useAppDispatch();
   const c = props.c;
+  console.log(c.state[2].data);
   return (
     <div className={styles["white-overlay"]}>
       <Stack className={styles["overlay-content"]}>
@@ -74,7 +76,11 @@ const CoinDetails = (props: { c: ICoinStatus }) => {
             title="Approximate unlock date and time"
             value={
               c.state && c.state[2]
-                ? moment(c.state[2].data).format("MMM Do, YY H:mm A")
+                ? moment(
+                    new Decimal(c.state[2].data)
+                      // .times(new Decimal(1000))
+                      .toNumber()
+                  ).format("MMM Do, YYYY H:mm A")
                 : "Unavailable"
             }
           />

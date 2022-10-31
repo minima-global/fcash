@@ -119,8 +119,10 @@ const MiSelect = (props: any) => {
 
   React.useEffect(() => {
     if (selectedOption == null) {
+      console.log("Setting selected option..");
       setSelectedOption(props.tokens[0]);
     } else {
+      console.log("2. Setting selected option..");
       setSelectedOption(
         props.tokens.find(
           (i: MinimaToken) => i.tokenid == selectedOption.tokenid

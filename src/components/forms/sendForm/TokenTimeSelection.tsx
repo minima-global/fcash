@@ -11,6 +11,7 @@ import { createBlockTime } from "../../../minima/rpc-commands";
 import MiSelect from "../../helper/layout/MiSelect";
 import { InputLabel, InputWrapper } from "./InputWrapper";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
+import { Stack } from "@mui/system";
 
 const TokenTimeSelection = (props: any) => {
   const walletTokens = useAppSelector(selectBalance);
@@ -40,11 +41,20 @@ const TokenTimeSelection = (props: any) => {
         dispatch(`${err}`, "warning", "");
         console.error(err);
       });
-  }, [dispatch]);
 
-  console.log("dirty textfields", dirty);
+    // whenever that changes, just update this..
+    setFieldValue("tokens", values.tokens);
+  }, [dispatch, values.tokens, page]);
+
   return (
     <>
+      <Stack
+        justifyContent="flex-start"
+        // alignItems="flex-start"
+        sx={{ overFlow: "scroll" }}
+      >
+        <code>{JSON.stringify(values)}</code>
+      </Stack>
       <MiSelect
         id="token"
         name="token"

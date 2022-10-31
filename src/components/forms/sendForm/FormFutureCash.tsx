@@ -113,7 +113,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
     amount: "",
     dispatch: {},
   }),
-  enableReinitialize: true,
+  enableReinitialize: false,
   handleSubmit: async (dt, { props, setSubmitting, setFieldError }) => {
     try {
       const blocktime = await createBlockTime(dt.datetime);
