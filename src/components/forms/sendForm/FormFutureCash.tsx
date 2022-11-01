@@ -119,7 +119,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
       const blocktime = await createBlockTime(dt.datetime);
       const scriptAddress = await getFutureCashScriptAddress();
       const difference = await getBlockDifference(blocktime);
-      console.log("Block difference for @COINAGE:", difference);
+
       if (dt.token == undefined) {
         setFieldError("token", "Please select a token");
         return;

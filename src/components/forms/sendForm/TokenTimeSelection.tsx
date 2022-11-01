@@ -35,6 +35,7 @@ const TokenTimeSelection = (props: any) => {
   } = props;
 
   React.useEffect(() => {
+    // calculate blocktime for datetime and set the field..
     createBlockTime(values.datetime)
       .then((blockHeight) => {
         setEstimatedBlock(blockHeight);
