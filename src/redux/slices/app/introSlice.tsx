@@ -20,6 +20,7 @@ export const introSlice = createSlice({
   reducers: {
     updatePage: (state, action) => {
       const pageNumber = action.payload;
+      console.log("updating page", pageNumber);
       state.page = pageNumber;
     },
   },
@@ -29,6 +30,6 @@ export const { updatePage } = introSlice.actions;
 export default introSlice.reducer;
 
 // Return toast state
-export const selectPageSelector = (state: RootState): IntroState => {
-  return state.page;
+export const selectPageSelector = (state: RootState): number => {
+  return state.intropage.page;
 };

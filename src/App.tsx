@@ -4,7 +4,7 @@ import React from "react";
 import Routes from "./routes";
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 
-import { useAppDispatch } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { showToast } from "./redux/slices/app/toastSlice";
 
 import {
@@ -24,6 +24,7 @@ import MiHeader from "./components/helper/layout/MiHeader";
 import MiNavigation from "./components/helper/layout/MiNavigation";
 import Intro from "./components/pages/intro/Intro";
 import SplashScreen from "./components/intro/SplashScreen";
+import { selectPageSelector } from "./redux/slices/app/introSlice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -34,6 +35,8 @@ function App() {
 
   const [minimaStarted, setMinimaStarted] = React.useState(false);
   const [firstTime, setFirstTime] = React.useState(true);
+
+  const introPage = useAppSelector(selectPageSelector);
 
   React.useEffect(() => {
     events.onInit(() => {
@@ -67,18 +70,18 @@ function App() {
     <div className="App">
       {splashScreen ? (
         <SplashScreen />
-      ) : firstTime ? (
+      ) : firstTime && introPage !== -1 ? (
         <Intro />
       ) : (
         <>
           <div className="pb-50">
-            {firstTime ? null : <MiHeader />}
+            {firstTime && introPage !== -1 ? null : <MiHeader />}
 
             <div className="App-content">
               {minimaStarted ? <>{routes}</> : <div>not rendered</div>}
             </div>
           </div>
-          {firstTime ? null : <MiNavigation />}
+          {firstTime && introPage !== -1 ? null : <MiNavigation />}
         </>
       )}
     </div>

@@ -11,14 +11,13 @@ import { displayIntroPages } from "../../pages/intro/Intro";
 
 const MiPagination = () => {
   const dispatch = useAppDispatch();
-  const selectIntro = useAppSelector(selectPageSelector);
-
+  const selectIntroPage = useAppSelector(selectPageSelector);
   React.useEffect(() => {
     console.log("MiPagination re-rendered");
-  }, [dispatch, selectIntro]);
+  }, [dispatch, selectIntroPage]);
 
   const onClickHandler = (currPage: number) => {
-    console.log("onClick");
+    // console.log("onClick");
     dispatch(setPage(currPage));
   };
 
@@ -29,7 +28,7 @@ const MiPagination = () => {
           <MiPaginationIcon
             key={"MiPaginationIcon-" + i}
             onClickHandler={() => onClickHandler(i)}
-            fill={selectIntro.page == i ? "#FF7358" : "#91919D"}
+            fill={selectIntroPage == i ? "#16181C" : "#FFDCD5"}
           />
         ))}
       </Stack>

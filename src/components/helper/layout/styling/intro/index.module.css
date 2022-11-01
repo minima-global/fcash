@@ -1,6 +1,5 @@
 .root {
-  position: absolute;
-  bottom: 60px;
+  position: relative;
 }
 
 .root * {
@@ -16,6 +15,6 @@
   width: 100vw;
 }
 .embla__slide {
+  background: #F77E66;
   flex: 0 0 100%;
 }
-
