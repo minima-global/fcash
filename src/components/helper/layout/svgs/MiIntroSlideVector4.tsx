@@ -8,7 +8,7 @@ const MiIntroSlideVector4 = () => {
         viewBox="0 0 341 320"
         fill="none"
       >
-        <g clip-path="url(#clip0_1134_29669)">
+        <g clipPath="url(#clip0_1134_29669)">
           <path
             d="M117.304 53.3112V34.9004"
             stroke="#070707"

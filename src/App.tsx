@@ -51,6 +51,7 @@ function App() {
       });
 
       setTimeout(() => showSplashScreen(false), 2500);
+      // TO-DO check if first time or switched off intro
       firstTime ? navigate("intro") : navigate("/send");
     });
 

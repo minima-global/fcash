@@ -2,7 +2,6 @@ import { useAppDispatch } from "../../../redux/hooks";
 import { setPage } from "../../../redux/slices/app/introSlice";
 import ForYourSelf from "../../intro/ForYourSelf";
 import LockUpFundsNow from "../../intro/LockUpFundsNow";
-import SplashScreen from "../../intro/SplashScreen";
 import ToSaveInvestSecure from "../../intro/ToSaveInvestSecure";
 import UnlockTheFuture from "../../intro/UnlockTheFuture";
 
@@ -25,10 +24,7 @@ const Intro = () => {
     if (emblaApi) {
       // Embla API is ready
       emblaApi.on("select", (e) => {
-        // console.log(e);
-
         const currentSlide = emblaApi.selectedScrollSnap();
-        console.log(`setting current page to currentSlide${currentSlide}`);
         dispatch(setPage(currentSlide));
       });
     }
@@ -113,11 +109,11 @@ const MiIntroActionsContainer = styled("div")`
   margin-top: 92px;
   width: 100%;
 
-  > :nth-child(2) {
+  > :nth-of-type(1) {
     margin-top: 37px;
   }
 
-  > :nth-child(3) {
+  > :nth-of-type(2) {
     margin-top: 8px;
   }
 `;

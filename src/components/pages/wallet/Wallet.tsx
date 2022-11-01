@@ -1,5 +1,10 @@
+import { useAppSelector } from "../../../redux/hooks";
+import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
+
 const Wallet = () => {
-  return <div>Wallet</div>
-}
+  const walletTokens = useAppSelector(selectBalance);
+
+  return <div>Wallet</div>;
+};
 
 export default Wallet;
