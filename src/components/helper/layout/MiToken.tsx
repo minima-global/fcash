@@ -8,8 +8,13 @@ export {
   MiTokenAmount,
   MiSkeleton,
   MiTokenListItem,
+  MiTokenContainer,
   NoResults,
 };
+
+const MiTokenContainer = styled("div")`
+  margin-top: 16px;
+`;
 
 const MiTokenListItem = styled("li")`
   background: #ffede9;

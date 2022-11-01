@@ -55,8 +55,8 @@ const TokenTimeSelection = (props: any) => {
         // alignItems="flex-start"
         sx={{ overFlow: "scroll" }}
       >
-        <code>{JSON.stringify(values)}</code>
-        <code>{chainHeight}</code>
+        {/* <code>{JSON.stringify(values)}</code>
+        <code>{chainHeight}</code> */}
       </Stack>
       <MiSelect
         id="token"

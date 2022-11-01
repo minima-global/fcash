@@ -17,7 +17,6 @@ const Send = () => {
   const sendFormSelector = useAppSelector(selectPageSelector);
 
   const wallet = useAppSelector(selectBalance);
-  console.log("Wallet has changed", wallet);
 
   return (
     <>
