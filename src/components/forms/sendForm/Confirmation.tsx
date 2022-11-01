@@ -3,7 +3,7 @@ import React from "react";
 import { createBlockTime } from "../../../minima/rpc-commands";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { MiOverlayActionsContainer } from "../../helper/layout/MiOverlay";
-import MiWhiteOverlay from "../../helper/layout/MiWhiteOverlay";
+import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
 
 import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
 import ConfirmationDetailList from "./ConfirmationDetailList";
@@ -39,7 +39,7 @@ const Confirmation = (props: any) => {
 
   return (
     <>
-      <MiWhiteOverlay>
+      <MiColoredOverlay color="white">
         <ConfirmationDetailList
           tokenName={details.tokenName}
           amount={details.amount}
@@ -67,7 +67,7 @@ const Confirmation = (props: any) => {
             Cancel
           </Button>
         </MiOverlayActionsContainer>
-      </MiWhiteOverlay>
+      </MiColoredOverlay>
     </>
   );
 };

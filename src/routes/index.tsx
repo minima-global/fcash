@@ -32,10 +32,6 @@ const Routes = [
     ],
   },
   {
-    path: "/intro",
-    element: <Intro />,
-  },
-  {
     path: "*",
     element: <Navigate replace to="/send" />,
   },

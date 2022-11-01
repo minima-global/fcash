@@ -14,7 +14,7 @@ import {
   MiContent,
   MiOverlayActionsContainer,
 } from "../../helper/layout/MiOverlay";
-import MiWhiteOverlay from "../../helper/layout/MiWhiteOverlay";
+import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
 
 const Success = (props: any) => {
   const { values, page, setPage, resetForm, dispatch } = props;
@@ -31,7 +31,7 @@ const Success = (props: any) => {
   });
 
   return (
-    <MiWhiteOverlay>
+    <MiColoredOverlay color="white">
       {relevantAddress ? (
         <MiConfirmationSuccessMyAddress width={290} height={190} />
       ) : (
@@ -62,7 +62,7 @@ const Success = (props: any) => {
       >
         Close
       </Button>
-    </MiWhiteOverlay>
+    </MiColoredOverlay>
   );
 };
 

@@ -7,13 +7,13 @@ import {
   selectPageSelector,
   updatePage,
 } from "../../redux/slices/app/futureCoinSlice";
-import MiWhiteOverlay from "../helper/layout/MiWhiteOverlay";
+import MiColoredOverlay from "../helper/layout/MiColoredOverlay";
 
 const MiSuccess = () => {
   const dispatch = useAppDispatch();
   const selectPage = useAppSelector(selectPageSelector);
   return (
-    <MiWhiteOverlay>
+    <MiColoredOverlay color="white">
       <MiFutureCoinSuccess />
       <MiHeader>
         Funds successfully <br />
@@ -34,7 +34,7 @@ const MiSuccess = () => {
       >
         Close
       </Button>
-    </MiWhiteOverlay>
+    </MiColoredOverlay>
   );
 };
 

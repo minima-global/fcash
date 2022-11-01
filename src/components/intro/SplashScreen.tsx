@@ -1,11 +1,12 @@
 import { Stack } from "@mui/material";
-import MiWhiteOverlay from "../helper/layout/MiWhiteOverlay";
+import MiPagination from "../helper/layout/MiPagination";
+import MiColoredOverlay from "../helper/layout/MiColoredOverlay";
 import MiFutureCashIcon from "../helper/layout/svgs/MiFutureCashIcon";
 import MiFutureCashIconRight from "../helper/layout/svgs/MiFutureCashIconRight";
 
 const SplashScreen = () => {
   return (
-    <MiWhiteOverlay center={true}>
+    <MiColoredOverlay color="splash" center={true}>
       <Stack
         flexDirection="row"
         justifyContent="flex-start"
@@ -14,7 +15,7 @@ const SplashScreen = () => {
         <MiFutureCashIcon />
         <MiFutureCashIconRight />
       </Stack>
-    </MiWhiteOverlay>
+    </MiColoredOverlay>
   );
 };
 

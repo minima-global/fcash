@@ -14,7 +14,7 @@ import { selectClipboardSelector } from "../../../redux/slices/app/clipboardSlic
 import Decimal from "decimal.js";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import MiWhiteOverlay from "../../helper/layout/MiWhiteOverlay";
+import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
 
 interface ICoinDetail {
   title: string;
@@ -67,7 +67,7 @@ const CoinDetails = () => {
   }, [dispatch, location]);
 
   return (
-    <MiWhiteOverlay>
+    <MiColoredOverlay color="white">
       {typeof coinDetail !== "undefined" ? (
         <>
           <MiOverlayDetailsContainer>
@@ -137,7 +137,7 @@ const CoinDetails = () => {
           </MiOverlayActionsContainer>
         </>
       ) : null}
-    </MiWhiteOverlay>
+    </MiColoredOverlay>
   );
 };
 
