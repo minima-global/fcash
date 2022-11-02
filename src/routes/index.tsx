@@ -5,6 +5,7 @@ import FutureCoins from "../components/pages/future/FutureCoins";
 import Instructions from "../components/pages/instructions/Instructions";
 import Intro from "../components/pages/intro/Intro";
 import Send from "../components/pages/send/Send";
+import SmartContract from "../components/pages/smartcontract/SmartContract";
 import Wallet from "../components/pages/wallet/Wallet";
 
 const Routes = [
@@ -35,6 +36,10 @@ const Routes = [
   {
     path: "/instructions",
     element: <Instructions />,
+  },
+  {
+    path: "/smartcontract",
+    element: <SmartContract />,
   },
   {
     path: "*",

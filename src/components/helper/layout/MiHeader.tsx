@@ -60,7 +60,14 @@ const MiHeader = () => {
               >
                 Instructions
               </MenuItem>
-              <MenuItem onClick={handleClose}>Smart Contract</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  navigate("/smartcontract");
+                }}
+              >
+                Smart Contract
+              </MenuItem>
             </Menu>
           </Stack>
         </Stack>
