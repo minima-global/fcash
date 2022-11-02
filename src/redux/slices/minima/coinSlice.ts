@@ -61,7 +61,8 @@ export const flagCoinCollection =
         const flaggedCoins = getState().coins.flaggedCoins;
         getFutureCashScriptAddress().then((s) => {
             getFutureCoins(s, getState().coins.flaggedCoins).then((coins) => {
-                const collectedCoin = coins.find(c => c.coinid == collectedCoinid);
+
+                const collectedCoin = coins.find(c => c.coinid === collectedCoinid);
                 if (collectedCoin) {
                     console.log(`Flagging coin:${collectedCoin.coinid} as pending collection on block:${chainHeight}`);
                     dispatch(updateFlaggedCoins([...flaggedCoins, {coinid: collectedCoin.coinid, collectOnBlock: chainHeight}]));
@@ -88,7 +89,7 @@ export const unflagCoinCollection =
 
 
                 coins.forEach((c) => {
-                    
+                    console.log("Flagged coin", c)
                     // if this coin has pending status and collectedOnBlock is defined and the difference is a block then unflag it as collected
                     // because it must have failed and can try to be collected again
                     // the coin should leave within a couple of seconds if the checks are alright and txn is mined
@@ -106,8 +107,8 @@ export const unflagCoinCollection =
                     console.log("Does this coin still exist? Should be 0 if not, 1 if it still is there", exists.length);
                     // it is has been successfully collected so remove it
                     if (exists.length === 0) {
-
-                        dispatch(updateFlaggedCoins(flaggedCoins.filter((coin) => coin.coinid !== c.coinid)))
+                        console.log("Should update flaggedCoins with this []", flaggedCoins.filter((coin) => coin.coinid === c.coinid))
+                        dispatch(updateFlaggedCoins(flaggedCoins.filter((coin) => coin.coinid === c.coinid)))
                         dispatch(callAndStoreCoins())
 
                     }

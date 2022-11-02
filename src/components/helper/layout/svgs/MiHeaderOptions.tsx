@@ -1,6 +1,6 @@
-const MiHeaderOptions = () => {
+const MiHeaderOptions = ({ onClickHandler }: any) => {
   return (
-    <>
+    <span onClick={onClickHandler}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="4"
@@ -15,7 +15,7 @@ const MiHeaderOptions = () => {
           fill="#16181C"
         />
       </svg>
-    </>
+    </span>
   );
 };
 

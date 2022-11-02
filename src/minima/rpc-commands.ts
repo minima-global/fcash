@@ -256,15 +256,17 @@ const getFutureCoins = (_addr: string, _flaggedCoins: FlaggedCoin[]): Promise<IC
                     const getFlaggedCoin = _flaggedCoins.find((f) => f.coinid == c.coinid);
 
                     if (getFlaggedCoin) {
-
-                        return Object.assign({...c, status: "PENDING", collectedOnBlock: getFlaggedCoin.collectOnBlock})
+                        console.log("Setting interface to flagged coin")
+                        return Object.assign(c, {status: "PENDING", collectedOnBlock: getFlaggedCoin.collectOnBlock})
 
                     }
 
-                    return Object.assign({...c, status: "NOTCOLLECTED", collectedOnBlock: undefined})
+                    return Object.assign(c, {status: "NOTCOLLECTED", collectedOnBlock: undefined})
                 }))
             } else {
-                resolve(coins.map((c: Coin) => Object.assign({...c, status: "NOTCOLLECTED", collectedOnBlock: undefined})));
+
+                resolve(coins.map((c: Coin) => Object.assign(c, { collectedOnBlock: undefined, status: "NOTCOLLECTED"})));
+            
             }
             
 
