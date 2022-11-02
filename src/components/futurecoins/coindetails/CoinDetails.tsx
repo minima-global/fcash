@@ -15,6 +15,7 @@ import Decimal from "decimal.js";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
+import { selectChainHeight } from "../../../redux/slices/minima/statusSlice";
 
 interface ICoinDetail {
   title: string;
@@ -57,6 +58,8 @@ const MiCoinDetailItem = ({
 const CoinDetails = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const chainHeight = useAppSelector(selectChainHeight);
+
   const [coinDetail, setCoinDetail] = React.useState<ICoinStatus | undefined>(
     undefined
   );
@@ -86,6 +89,15 @@ const CoinDetails = () => {
                   ? coinDetail.amount
                   : coinDetail.tokenamount
               }
+            />
+            <MiCoinDetailItem title="Coin created" value={coinDetail.created} />
+            <MiCoinDetailItem
+              title="Current block height"
+              value={chainHeight}
+            />
+            <MiCoinDetailItem
+              title="Coin difference until unlock"
+              value={coinDetail.state[3].data}
             />
             <MiCoinDetailItem
               title="Unlock block height"
