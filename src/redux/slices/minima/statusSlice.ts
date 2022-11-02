@@ -5,9 +5,11 @@ import { getBlockTime } from '../../../minima/rpc-commands';
 
 export interface StatusState {
     chainHeight: number;
+    displayChainHeight: boolean;
 }
 const initialState: StatusState = {
-    chainHeight: 0
+    chainHeight: 0,
+    displayChainHeight: false
 };
 
 export const callAndStoreChainHeight = 
@@ -22,6 +24,12 @@ export const callAndStoreChainHeight =
             dispatch(showToast(`${err}`, "warning", ""))
         })
 };
+export const displayChainHeight = 
+    (s: boolean): AppThunk => async (dispatch) => {
+
+        dispatch(updateDisplayChainHeight(s));
+        
+};
 
 
 export const statusSlice = createSlice({
@@ -33,13 +41,21 @@ export const statusSlice = createSlice({
             const height = action.payload;
             state.chainHeight = height;
         },
+        updateDisplayChainHeight: (state, action: PayloadAction<any>) => {
+            // console.log(action);
+            const status = action.payload;
+            state.displayChainHeight = status; 
+        }, 
     },
 });
 
-export const { updateChainHeight } = statusSlice.actions;
+export const { updateChainHeight, updateDisplayChainHeight } = statusSlice.actions;
 export default statusSlice.reducer;
 
 // Return balance
 export const selectChainHeight = (state: RootState): number => {
   return state.status.chainHeight
+};
+export const selectDisplayChainHeight = (state: RootState): boolean => {
+  return state.status.displayChainHeight
 };

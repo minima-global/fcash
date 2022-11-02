@@ -2,7 +2,7 @@ import "./App.css";
 import React from "react";
 
 import Routes from "./routes";
-import { useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { useNavigate, useRoutes } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { showToast } from "./redux/slices/app/toastSlice";
@@ -18,13 +18,17 @@ import {
 import { events } from "./minima/libs/events";
 import { addFutureCashScript } from "./minima/rpc-commands";
 import { futureCashScript } from "./minima/scripts";
-import { callAndStoreChainHeight } from "./redux/slices/minima/statusSlice";
+import {
+  callAndStoreChainHeight,
+  selectDisplayChainHeight,
+} from "./redux/slices/minima/statusSlice";
 
 import MiHeader from "./components/helper/layout/MiHeader";
 import MiNavigation from "./components/helper/layout/MiNavigation";
 import Intro from "./components/pages/intro/Intro";
 import SplashScreen from "./components/intro/SplashScreen";
 import { selectPageSelector } from "./redux/slices/app/introSlice";
+import MiCurrentBlockOverlay from "./components/helper/layout/MiCurrentBlockOverlay";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -37,6 +41,7 @@ function App() {
   const [firstTime, setFirstTime] = React.useState(true);
 
   const introPage = useAppSelector(selectPageSelector);
+  const displayChainHeightComponent = useAppSelector(selectDisplayChainHeight);
 
   React.useEffect(() => {
     events.onInit(() => {
@@ -69,6 +74,8 @@ function App() {
 
   return (
     <div className="App">
+      {displayChainHeightComponent ? <MiCurrentBlockOverlay /> : null}
+
       {splashScreen ? (
         <SplashScreen />
       ) : firstTime && introPage !== -1 ? (
