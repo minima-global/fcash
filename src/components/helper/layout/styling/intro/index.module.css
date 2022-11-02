@@ -17,4 +17,5 @@
 .embla__slide {
   background: rgba(247, 126, 102, 0.9)!important;
   flex: 0 0 100%;
+  overflow: scroll;
 }
