@@ -27,7 +27,11 @@ import MiHeader from "./components/helper/layout/MiHeader";
 import MiNavigation from "./components/helper/layout/MiNavigation";
 import Intro from "./components/pages/intro/Intro";
 import SplashScreen from "./components/intro/SplashScreen";
-import { selectPageSelector } from "./redux/slices/app/introSlice";
+import {
+  checkIfFirstTime,
+  selectFirstTime,
+  selectPageSelector,
+} from "./redux/slices/app/introSlice";
 import MiCurrentBlockOverlay from "./components/helper/layout/MiCurrentBlockOverlay";
 
 function App() {
@@ -38,10 +42,11 @@ function App() {
   const [splashScreen, showSplashScreen] = React.useState(true);
 
   const [minimaStarted, setMinimaStarted] = React.useState(false);
-  const [firstTime, setFirstTime] = React.useState(true);
 
   const introPage = useAppSelector(selectPageSelector);
   const displayChainHeightComponent = useAppSelector(selectDisplayChainHeight);
+
+  const firstTime = useAppSelector(selectFirstTime);
 
   React.useEffect(() => {
     events.onInit(() => {
@@ -54,6 +59,8 @@ function App() {
       addFutureCashScript(futureCashScript, false).then(() => {
         dispatch(showToast("FutureCash script added.", "info", ""));
       });
+
+      dispatch(checkIfFirstTime());
 
       setTimeout(() => showSplashScreen(false), 2500);
       // TO-DO check if first time or switched off intro

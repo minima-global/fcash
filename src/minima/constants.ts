@@ -8,3 +8,4 @@ export const TOKENCREATE = 'tokencreate';
 export const RPCHOST = 'http://127.0.0.1:9002/';
 export const INSUFFICIENT = 'Insufficient funds..';
 export const FLAGGEDCOINSTXT = 'flaggedcoins.txt';
+export const FIRSTTIMETXT = 'firstTime.txt';

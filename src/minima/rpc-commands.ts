@@ -8,7 +8,7 @@ import { futureCashScript } from "./scripts";
 import { ICoinStatus } from "../redux/slices/minima/coinSlice";
 
 
-import { FLAGGEDCOINSTXT } from "./constants"
+import { FIRSTTIMETXT, FLAGGEDCOINSTXT } from "./constants"
 
 /** MDS file storage */
 
@@ -500,47 +500,79 @@ const storeFlaggedCoinInMemory = (coin: FlaggedCoin): Promise<SaveSuccessPayload
 const removeFlaggedCoinInMemory = (coinid: string) => {
 
 }
-/** Get Flagged Coins */
-const retry = 10;
-let currentRound = 0;
-const getFlaggedCoinsInMemory = (): Promise<FlaggedCoin[]> => {
+/** Check if it is users first time running app */
+const getFirstTime = (): Promise<boolean> => {
     return new Promise((resolve, reject) => {
-        if (currentRound > 0) console.log(`getFlaggedCoins retrying.. ${currentRound}`);
-        if (currentRound < retry) {
-            loadFileMetaData(FLAGGEDCOINSTXT).then((r) => {
-                console.log(`Found ${FLAGGEDCOINSTXT}`, r);
-                loadFile(FLAGGEDCOINSTXT).then((r: MDSFile) => {
-                    
-                    resolve(JSON.parse(r.data));               
-        
-                }).catch((err) => {   
-                    
-                   reject(err);
-    
-                });
-            }).catch((err) => {
-            
-                if (typeof err == "string" && err == "File not found") {
-                    console.log("CURRENTROUND", currentRound)
-                    saveFile(FLAGGEDCOINSTXT, []).then((r) => console.log(r)).catch((err) => console.error(err));
-                    
-                    currentRound++;
-                    getFlaggedCoinsInMemory();
+        // if (currentRound > 0) console.log(`getFirstTime retrying.. ${currentRound}`);
+        loadFileMetaData(FIRSTTIMETXT).then((r) => {
+            console.log(`Found ${FIRSTTIMETXT}`, r);
+            loadFile(FIRSTTIMETXT).then((r: MDSFile) => {
+                // not their first time
+                resolve(false);               
                 
-                } else {
-    
-                    reject(err);
-    
-                }
-            });
-            
-        } else {
+            }).catch((err) => {   
+                
+               reject(err);
 
-            reject(`Tried to find the ${FLAGGEDCOINSTXT} ${retry} times but failed to load it...`);
-        }
+            });
+        }).catch((err) => {
+            
+            if (typeof err == "string" && err == "File not found") {
+                saveFile(FIRSTTIMETXT, []).then((r) => console.log(r)).catch((err) => console.error(err));
+                resolve(true)
+      
+            
+            } else {
+
+                reject(err);
+
+            }
+        });
+
     })
 
 }
+/** Get Flagged Coins */
+// const retry = 10;
+// let currentRound = 0;
+// const getFlaggedCoinsInMemory = (): Promise<FlaggedCoin[]> => {
+//     return new Promise((resolve, reject) => {
+//         if (currentRound > 0) console.log(`getFlaggedCoins retrying.. ${currentRound}`);
+//         if (currentRound < retry) {
+//             loadFileMetaData(FLAGGEDCOINSTXT).then((r) => {
+//                 console.log(`Found ${FLAGGEDCOINSTXT}`, r);
+//                 loadFile(FLAGGEDCOINSTXT).then((r: MDSFile) => {
+                    
+//                     resolve(JSON.parse(r.data));               
+        
+//                 }).catch((err) => {   
+                    
+//                    reject(err);
+    
+//                 });
+//             }).catch((err) => {
+            
+//                 if (typeof err == "string" && err == "File not found") {
+//                     console.log("CURRENTROUND", currentRound)
+//                     saveFile(FLAGGEDCOINSTXT, []).then((r) => console.log(r)).catch((err) => console.error(err));
+                    
+//                     currentRound++;
+//                     getFlaggedCoinsInMemory();
+                
+//                 } else {
+    
+//                     reject(err);
+    
+//                 }
+//             });
+            
+//         } else {
+
+//             reject(`Tried to find the ${FLAGGEDCOINSTXT} ${retry} times but failed to load it...`);
+//         }
+//     })
+
+// }
 
 
 
@@ -558,5 +590,6 @@ export {
     isAddressMine,
     saveFile,
     loadFile,
-    loadFileMetaData
+    loadFileMetaData,
+    getFirstTime
 };
