@@ -10,6 +10,7 @@ import {
 } from "../pages/intro/Intro";
 import { useNavigate } from "react-router-dom";
 const UnlockTheFuture = () => {
+  const navigate = useNavigate();
   return (
     <div className={styles["embla__slide"]}>
       <MiColoredOverlay color="light-orange" center={true}>
@@ -21,7 +22,9 @@ const UnlockTheFuture = () => {
 
         <MiIntroActionsContainer>
           <MiPagination />
-          <MiIntroActionsButton>Instructions</MiIntroActionsButton>
+          <MiIntroActionsButton onClick={() => navigate("/instructions")}>
+            Instructions
+          </MiIntroActionsButton>
         </MiIntroActionsContainer>
       </MiColoredOverlay>
     </div>

@@ -11,8 +11,10 @@ import {
 } from "../pages/intro/Intro";
 import { useAppDispatch } from "../../redux/hooks";
 import { setPage } from "../../redux/slices/app/introSlice";
+import { useNavigate } from "react-router-dom";
 const ForYourSelf = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   return (
     <div className={styles["embla__slide"]}>
       <MiColoredOverlay color="light-orange" center={true}>
@@ -24,7 +26,9 @@ const ForYourSelf = () => {
 
         <MiIntroActionsContainer>
           <MiPagination />
-          <MiIntroActionsButton>Instructions</MiIntroActionsButton>
+          <MiIntroActionsButton onClick={() => navigate("/instructions")}>
+            Instructions
+          </MiIntroActionsButton>
 
           <MiIntroSkipButton onClick={() => dispatch(setPage(-1))}>
             Skip
