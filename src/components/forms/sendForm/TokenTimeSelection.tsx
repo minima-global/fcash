@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, CircularProgress } from "@mui/material";
 
 import { useAppSelector } from "../../../redux/hooks";
 import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
@@ -35,6 +35,7 @@ const TokenTimeSelection = (props: any) => {
   } = props;
 
   React.useEffect(() => {
+    console.log("RERENDER TOKENTIMESELECTION, setting blockktime..");
     // calculate blocktime for datetime and set the field..
     createBlockTime(values.datetime)
       .then((blockHeight) => {
@@ -80,7 +81,7 @@ const TokenTimeSelection = (props: any) => {
             createBlockTime(values.datetime)
               .then((blktime) => {
                 setEstimatedBlock(blktime);
-                console.log("Success");
+                // console.log("Success");
               })
               .catch((err) => {
                 setFieldError("datetime", err);
@@ -103,7 +104,11 @@ const TokenTimeSelection = (props: any) => {
         <TextField
           id="estimatedBlock"
           name="estimatedBlock"
-          value={estimatedBlock}
+          value={
+            estimatedBlock === 0
+              ? "Select your date & time to proceed with calculation."
+              : estimatedBlock
+          }
           InputProps={{
             readOnly: true,
           }}

@@ -58,12 +58,13 @@ export const getFlaggedCoins =
 export const flagCoinCollection = 
     (collectedCoinid: string): AppThunk => async (dispatch, getState) => {
         const chainHeight = getState().status.chainHeight;
+        const flaggedCoins = getState().coins.flaggedCoins;
         getFutureCashScriptAddress().then((s) => {
             getFutureCoins(s, getState().coins.flaggedCoins).then((coins) => {
                 const collectedCoin = coins.find(c => c.coinid == collectedCoinid);
                 if (collectedCoin) {
                     console.log(`Flagging coin:${collectedCoin.coinid} as pending collection on block:${chainHeight}`);
-                    dispatch(updateFlaggedCoins({coinid: collectedCoin.coinid, collectOnBlock: chainHeight}));
+                    dispatch(updateFlaggedCoins([...flaggedCoins, {coinid: collectedCoin.coinid, collectOnBlock: chainHeight}]));
                     dispatch(callAndStoreCoins())
                 }
                     
@@ -83,16 +84,32 @@ export const unflagCoinCollection =
         const chainHeight = getState().status.chainHeight;
         getFutureCashScriptAddress().then((s) => {
             getFutureCoins(s, getState().coins.flaggedCoins).then((coins) => {
-                
+                const flaggedCoins = getState().coins.flaggedCoins;
+
+
                 coins.forEach((c) => {
+                    
+                    // if this coin has pending status and collectedOnBlock is defined and the difference is a block then unflag it as collected
+                    // because it must have failed and can try to be collected again
+                    // the coin should leave within a couple of seconds if the checks are alright and txn is mined
                     if (c.status === 'PENDING' && c.collectedOnBlock && new Decimal(chainHeight).minus(new Decimal(c.collectedOnBlock)).greaterThan(1)) {
-                        console.log(`Block difference since collection: ${new Decimal(chainHeight).minus(new Decimal(c.collectedOnBlock)).greaterThan(1)}`)
                         console.log(`Unflagged coin as collected coin:${c.coinid} script must have failed`);
-                        
-                        const flaggedCoins = getState().coins.flaggedCoins;
-                        console.log("flaggedCoins ->", flaggedCoins.filter((coin) => coin.coinid == c.coinid));
-                        dispatch(updateFlaggedCoins(flaggedCoins.filter((coin) => coin.coinid == c.coinid)))
+                        console.log("flaggedCoins ->", flaggedCoins.filter((coin) => coin.coinid === c.coinid));
+                        // filter through the coins and don't keep the coin which should be unflagged for our Map
+                        dispatch(updateFlaggedCoins(flaggedCoins.filter((coin) => coin.coinid !== c.coinid)))
                         dispatch(callAndStoreCoins())
+                    }
+                    // if the coin is not found then we should remove it from the flaggedCoins Map
+                    // because it was successfully collected
+                    
+                    const exists = flaggedCoins.filter((coin) => coin.coinid === c.coinid);
+                    console.log("Does this coin still exist? Should be 0 if not, 1 if it still is there", exists.length);
+                    // it is has been successfully collected so remove it
+                    if (exists.length === 0) {
+
+                        dispatch(updateFlaggedCoins(flaggedCoins.filter((coin) => coin.coinid !== c.coinid)))
+                        dispatch(callAndStoreCoins())
+
                     }
                 });
 
@@ -129,9 +146,8 @@ export const coinSlice = createSlice({
         },
         updateFlaggedCoins: (state, action: PayloadAction<any>) => {
             // console.log(action.payload)
-            const _fCoins = state.flaggedCoins;
-            _fCoins.push(action.payload);
-            state.flaggedCoins = _fCoins;
+            const flaggedcoins = action.payload;
+            state.flaggedCoins = flaggedcoins;
         }
     },
 });

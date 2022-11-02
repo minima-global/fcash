@@ -423,8 +423,10 @@ const constructTransaction = (fCash: IFutureCashCollection): Promise<boolean> =>
             txndelete id:${id}
         `
 
+        console.log(command)
+
         rpc(command).then((r) => {
-            
+            console.log(r)
             resolve(r);
 
         }).catch((err) => {
