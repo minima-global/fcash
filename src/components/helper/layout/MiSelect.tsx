@@ -35,7 +35,6 @@ const DropDownHeader = styled("div")`
   background: #ffede9;
   margin: 0 auto;
 
-  border: 1px solid #ffb9ab;
   border-radius: 8px;
   position: relative;
   * {

@@ -16,7 +16,7 @@ import { selectChainHeight } from "../../../redux/slices/minima/statusSlice";
 
 const TokenTimeSelection = (props: any) => {
   const walletTokens = useAppSelector(selectBalance);
-  const chainHeight = useAppSelector(selectChainHeight);
+
   const [estimatedBlock, setEstimatedBlock] = React.useState(0);
 
   const {
