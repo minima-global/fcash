@@ -49,7 +49,7 @@ const MiSwipeableCarousel = () => {
 
   React.useEffect(() => {
     dispatch(setPage(currentIndex));
-  }, [currentIndex]);
+  }, [dispatch, currentIndex]);
 
   const handleOnClick = (page: number) => {
     const scrollLeft = Math.floor(ref.current.scrollWidth * (page / numberOfSlides));
