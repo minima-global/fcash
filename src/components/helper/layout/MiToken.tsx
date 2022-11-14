@@ -14,6 +14,10 @@ export {
 
 const MiTokenContainer = styled("div")`
   margin-top: 16px;
+
+  > :last-of-type {
+    margin-bottom: 0;
+  }
 `;
 
 const MiTokenListItem = styled("li")`
