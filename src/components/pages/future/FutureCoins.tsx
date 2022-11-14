@@ -34,6 +34,9 @@ import {
 import MiSuccess from "../../futurecoins/Success";
 import { TabButton, Tabs } from "../../helper/layout/MiTabs";
 
+import MinimaLogoSquare from "../../../assets/images/minimaLogoSquare.png";
+import { MINIMA__TOKEN_ID } from "../../../minima/constants";
+
 const MiFutureContainer = styled("div")`
   background: #ffffff;
   box-shadow: 0px 4px 10px 4px rgba(0, 0, 0, 0.05);
@@ -182,7 +185,13 @@ const FutureCoins = () => {
                       }}
                       className={styles["avatar"]}
                       variant="rounded"
-                      src={`https://robohash.org/${c.tokenid}`}
+                      src={
+                        c.tokenid === MINIMA__TOKEN_ID
+                          ? MinimaLogoSquare
+                          : c.token.url && c.token.url.length
+                          ? c.token.url
+                          : `https://robohash.org/${c.tokenid}`
+                      }
                     />
                     <Stack flexDirection="column" alignItems="flex-start">
                       <MiCoinName>
@@ -227,7 +236,13 @@ const FutureCoins = () => {
                       }}
                       className={styles["avatar"]}
                       variant="rounded"
-                      src={`https://robohash.org/${c.tokenid}`}
+                      src={
+                        c.tokenid === MINIMA__TOKEN_ID
+                          ? MinimaLogoSquare
+                          : c.token.url && c.token.url.length
+                          ? c.token.url
+                          : `https://robohash.org/${c.tokenid}`
+                      }
                     />
                     <Stack flexDirection="column" alignItems="flex-start">
                       <MiCoinName>

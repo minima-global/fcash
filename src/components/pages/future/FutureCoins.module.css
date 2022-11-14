@@ -4,3 +4,16 @@
   color: #ffffff!important;
 }
 
+.avatar {
+  width: 56px!important;
+  height: 56px!important;
+  background: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+.avatar img {
+  width: inherit;
+  height: inherit;
+  padding: 0;
+  margin: 0;
+}
