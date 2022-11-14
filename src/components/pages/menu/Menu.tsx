@@ -1,4 +1,5 @@
-import { Stack, styled } from "@mui/material";
+import React from "react";
+import { styled } from "@mui/material";
 
 import styles from "./Menu.module.css";
 
@@ -14,7 +15,7 @@ import { updateState } from "../../../redux/slices/app/menuSlice";
 const BackDrop = styled("div")`
   background: rgba(0, 0, 0, 0.6);
   z-index: 994;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -22,10 +23,11 @@ const BackDrop = styled("div")`
 `;
 const MenuContainer = styled("div")`
   z-index: 995;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
+  margin-bottom: 56px;
   min-height: 70vh;
   width: 100%;
   background-color: #fff;
@@ -89,6 +91,14 @@ const MenuListItem = styled("li")`
 const Menu = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      console.log("re-activating to scroll");
+      document.body.style.overflow = "auto";
+    };
+  }, [dispatch]);
 
   const toggleBlockHeightComponent = () => {
     dispatch(updateDisplayChainHeight(true));
