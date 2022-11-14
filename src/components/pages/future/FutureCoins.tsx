@@ -39,6 +39,10 @@ const MiFutureContainer = styled("div")`
   box-shadow: 0px 4px 10px 4px rgba(0, 0, 0, 0.05);
   border-radius: 12px;
   padding: 16px 18px;
+
+  > :last-of-type {
+    margin-bottom: 0;
+  }
 `;
 
 const MiNoResults = styled("div")`
@@ -161,54 +165,51 @@ const FutureCoins = () => {
           {pendingCoins && pendingCoins.length > 0 && tabOpen == 0 ? (
             <MiFutureContainer>
               {pendingCoins.map((c: any) => (
-                <>
-                  {/* {futurePageSelector.details == true && <CoinDetails c={c} />} */}
-                  <MiFutureCoin
-                    id="pending-coin"
-                    key={c.coinid}
-                    onClick={() => {
-                      navigate("coindetails", { state: { ...c } });
-                    }}
-                    // onClick={() => dispatch(showDetails(true))}
-                  >
-                    <Stack direction="row">
-                      <Avatar
-                        sx={{
-                          width: "48px",
-                          height: "48px",
-                          background: "#fff",
-                        }}
-                        className={styles["avatar"]}
-                        variant="rounded"
-                        src={`https://robohash.org/${c.tokenid}`}
-                      />
-                      <Stack flexDirection="column" alignItems="flex-start">
-                        <MiCoinName>
-                          {typeof c.token == "string" ? c.token : c.token.name}
-                        </MiCoinName>
+                <MiFutureCoin
+                  id="pending-coin"
+                  key={c.coinid}
+                  onClick={() => {
+                    navigate("coindetails", { state: { ...c } });
+                  }}
+                  // onClick={() => dispatch(showDetails(true))}
+                >
+                  <Stack direction="row">
+                    <Avatar
+                      sx={{
+                        width: "48px",
+                        height: "48px",
+                        background: "#fff",
+                      }}
+                      className={styles["avatar"]}
+                      variant="rounded"
+                      src={`https://robohash.org/${c.tokenid}`}
+                    />
+                    <Stack flexDirection="column" alignItems="flex-start">
+                      <MiCoinName>
+                        {typeof c.token == "string" ? c.token : c.token.name}
+                      </MiCoinName>
 
-                        <MiCoinAmount>
-                          {c.tokenid == "0x00" ? c.amount : c.tokenamount}
-                        </MiCoinAmount>
-                      </Stack>
+                      <MiCoinAmount>
+                        {c.tokenid == "0x00" ? c.amount : c.tokenamount}
+                      </MiCoinAmount>
                     </Stack>
-                    <MiUnlockDate>
-                      {c.state[2] ? (
-                        <>
-                          {moment(
-                            new Decimal(c.state[2].data).toNumber()
-                          ).format("MMM Do, YY")}{" "}
-                          <br />
-                          {moment(
-                            new Decimal(c.state[2].data).toNumber()
-                          ).format("H:mm A")}
-                        </>
-                      ) : (
-                        "Unavailable"
-                      )}
-                    </MiUnlockDate>
-                  </MiFutureCoin>
-                </>
+                  </Stack>
+                  <MiUnlockDate>
+                    {c.state[2] ? (
+                      <>
+                        {moment(new Decimal(c.state[2].data).toNumber()).format(
+                          "MMM Do, YY"
+                        )}{" "}
+                        <br />
+                        {moment(new Decimal(c.state[2].data).toNumber()).format(
+                          "H:mm A"
+                        )}
+                      </>
+                    ) : (
+                      "Unavailable"
+                    )}
+                  </MiUnlockDate>
+                </MiFutureCoin>
               ))}
             </MiFutureContainer>
           ) : null}
