@@ -91,7 +91,7 @@ function App() {
           {/* the rest of the app */}
           <div className="App">
             <div className="pb-50">
-              {firstTime && introPage !== -1 ? null : <MiHeader />}
+              {/* {firstTime && introPage !== -1 ? null : <MiHeader />} */}
 
               <div className="App-content">
                 {minimaStarted ? <>{routes}</> : <div>not rendered</div>}
