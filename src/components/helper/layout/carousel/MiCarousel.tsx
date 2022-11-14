@@ -12,10 +12,10 @@ import { setPage } from "../../../../redux/slices/app/introSlice";
 import MiPagination from "../MiPagination";
 import smoothScroll from "../../smoothScroll";
 
-let inMotion = false;
 
 const MiSwipeableCarousel = () => {
   const ref = React.useRef<any>();
+  const inMotion = React.useRef(false);
   const dispatch = useAppDispatch();
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [numberOfSlides, setNumberOfSlide] = React.useState(0);
@@ -26,7 +26,7 @@ const MiSwipeableCarousel = () => {
     const elementIndices: Record<string, number> = {};
 
     const observer = new IntersectionObserver(function(entries, observer) {
-      if (!inMotion) {
+      if (!inMotion.current) {
         const activated = entries.reduce(function (max, entry) {
           return (entry.intersectionRatio > max.intersectionRatio) ? entry : max;
         });
@@ -72,13 +72,13 @@ const MiSwipeableCarousel = () => {
   }, [dispatch, currentIndex]);
 
   const handleOnClick = (page: number) => {
-    inMotion = true;
+    inMotion.current = true;
     const scrollLeft = Math.floor(ref.current.scrollWidth * (page / numberOfSlides));
     smoothScroll(ref.current, scrollLeft, true);
     dispatch(setPage(page));
     setTimeout(() => {
-      inMotion = false;
-    }, 1500);
+      inMotion.current = false;
+    }, 2000);
   }
 
   return (
