@@ -84,7 +84,7 @@ export const balanceMiddleware = (store: any) => (next: any) => (action: any) =>
         store.dispatch(callAndStoreWalletBalance())
     }
 
-
+    console.log(action);
     return next(action)
 }
 

@@ -5,7 +5,6 @@ import Routes from "./routes";
 import { useNavigate, useRoutes } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { showToast } from "./redux/slices/app/toastSlice";
 
 import {
   callAndStoreCoins,
@@ -33,6 +32,9 @@ import {
   selectPageSelector,
 } from "./redux/slices/app/introSlice";
 import MiCurrentBlockOverlay from "./components/helper/layout/MiCurrentBlockOverlay";
+import { selectMenuStateStatus } from "./redux/slices/app/menuSlice";
+
+import Menu from "./components/pages/menu/Menu";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -44,6 +46,7 @@ function App() {
 
   const introPage = useAppSelector(selectPageSelector);
   const displayChainHeightComponent = useAppSelector(selectDisplayChainHeight);
+  const selectMenuStatus = useAppSelector(selectMenuStateStatus);
 
   const firstTime = useAppSelector(selectFirstTime);
 
@@ -92,7 +95,7 @@ function App() {
           <div className="App">
             <div className="pb-50">
               {/* {firstTime && introPage !== -1 ? null : <MiHeader />} */}
-
+              {selectMenuStatus ? <Menu /> : null}
               <div className="App-content">
                 {minimaStarted ? <>{routes}</> : <div>not rendered</div>}
               </div>

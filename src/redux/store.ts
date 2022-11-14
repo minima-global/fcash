@@ -1,3 +1,4 @@
+
 import { StatusState } from './slices/minima/statusSlice';
 import { configureStore, ThunkAction, AnyAction } from "@reduxjs/toolkit";
 import { ToastState } from './slices/app/toastSlice';
@@ -8,6 +9,7 @@ import { SendFormState } from './slices/app/sendFormSlice';
 import { ClipboardState } from './slices/app/clipboardSlice';
 import { FutureCoinState } from "./slices/app/futureCoinSlice";
 import { IntroState } from './slices/app/introSlice';
+import { MenuState } from './slices/app/menuSlice';
 import coinReducer from "./slices/minima/coinSlice";
 import toastReducer from './slices/app/toastSlice';
 import miningReducer from './slices/minima/miningSlice';
@@ -16,6 +18,7 @@ import statusReducer from './slices/minima/statusSlice';
 import sendFormReducer from './slices/app/sendFormSlice';
 import futureCoinReducer from './slices/app/futureCoinSlice';
 import clipboardReducer from './slices/app/clipboardSlice';
+import menuReducer from './slices/app/menuSlice';
 
 import introReducer from "./slices/app/introSlice";
 
@@ -30,6 +33,7 @@ export type RootState = {
     clipboard: ClipboardState
     futurepage: FutureCoinState
     intropage: IntroState
+    menu: MenuState
 };
 
 export const store = configureStore({
@@ -42,7 +46,8 @@ export const store = configureStore({
         page: sendFormReducer,
         clipboard: clipboardReducer,
         futurepage: futureCoinReducer,
-        intropage: introReducer
+        intropage: introReducer,
+        menu: menuReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(balanceMiddleware, coinMiddleware),
 });
