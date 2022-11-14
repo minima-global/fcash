@@ -60,16 +60,16 @@ const MiSwipeableCarousel = () => {
     <div>
       <Box data-slide-id="parent" ref={ref} className={styles["carousel__container"]}>
         <ul className={styles["carousel__wrapper"]}>
-          <li data-slide="1" className={styles["slide"]} id="audi">
+          <li data-slide="1" className={styles["slide"]}>
             <LockUpFundsNow />
           </li>
-          <li data-slide="2" className={styles["slide"]} id="ferrari">
+          <li data-slide="2" className={styles["slide"]}>
             <ForYourSelf />
           </li>
-          <li data-slide="3" className={styles["slide"]} id="lamborghini">
+          <li data-slide="3" className={styles["slide"]}>
             <ToSaveInvestSecure />
           </li>
-          <li data-slide="4" className={styles["slide"]} id="bmw">
+          <li data-slide="4" className={styles["slide"]}>
             <UnlockTheFuture />
           </li>
         </ul>
