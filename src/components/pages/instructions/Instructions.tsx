@@ -22,6 +22,10 @@ const MiInstructionWrapper = styled("div")`
 `;
 const MiInstructionList = styled("ol")`
   padding-inline-start: 20px;
+
+  > :last-of-type {
+    margin-bottom: 0 !important;
+  }
 `;
 const MiInstruction = styled("li")`
   font-family: Manrope-regular;
