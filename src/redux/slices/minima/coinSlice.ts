@@ -64,7 +64,7 @@ export const flagCoinCollection =
 
                 const collectedCoin = coins.find(c => c.coinid === collectedCoinid);
                 if (collectedCoin) {
-                    console.log(`Flagging coin:${collectedCoin.coinid} as pending collection on block:${chainHeight}`);
+                    // console.log(`Flagging coin:${collectedCoin.coinid} as pending collection on block:${chainHeight}`);
                     dispatch(updateFlaggedCoins([...flaggedCoins, {coinid: collectedCoin.coinid, collectOnBlock: chainHeight}]));
                     dispatch(callAndStoreCoins())
                 }
@@ -89,13 +89,13 @@ export const unflagCoinCollection =
 
 
                 coins.forEach((c) => {
-                    console.log("Flagged coin", c)
+                    // console.log("Flagged coin", c)
                     // if this coin has pending status and collectedOnBlock is defined and the difference is a block then unflag it as collected
                     // because it must have failed and can try to be collected again
                     // the coin should leave within a couple of seconds if the checks are alright and txn is mined
                     if (c.status === 'PENDING' && c.collectedOnBlock && new Decimal(chainHeight).minus(new Decimal(c.collectedOnBlock)).greaterThan(1)) {
-                        console.log(`Unflagged coin as collected coin:${c.coinid} script must have failed`);
-                        console.log("flaggedCoins ->", flaggedCoins.filter((coin) => coin.coinid === c.coinid));
+                        // console.log(`Unflagged coin as collected coin:${c.coinid} script must have failed`);
+                        // console.log("flaggedCoins ->", flaggedCoins.filter((coin) => coin.coinid === c.coinid));
                         // filter through the coins and don't keep the coin which should be unflagged for our Map
                         dispatch(updateFlaggedCoins(flaggedCoins.filter((coin) => coin.coinid !== c.coinid)))
                         dispatch(callAndStoreCoins())
@@ -104,10 +104,10 @@ export const unflagCoinCollection =
                     // because it was successfully collected
                     
                     const exists = flaggedCoins.filter((coin) => coin.coinid === c.coinid);
-                    console.log("Does this coin still exist? Should be 0 if not, 1 if it still is there", exists.length);
+                    // console.log("Does this coin still exist? Should be 0 if not, 1 if it still is there", exists.length);
                     // it is has been successfully collected so remove it
                     if (exists.length === 0) {
-                        console.log("Should update flaggedCoins with this []", flaggedCoins.filter((coin) => coin.coinid === c.coinid))
+                        // console.log("Should update flaggedCoins with this []", flaggedCoins.filter((coin) => coin.coinid === c.coinid))
                         dispatch(updateFlaggedCoins(flaggedCoins.filter((coin) => coin.coinid === c.coinid)))
                         dispatch(callAndStoreCoins())
 

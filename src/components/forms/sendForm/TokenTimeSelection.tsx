@@ -35,7 +35,7 @@ const TokenTimeSelection = (props: any) => {
   } = props;
 
   React.useEffect(() => {
-    console.log("RERENDER TOKENTIMESELECTION, setting blockktime..");
+    // console.log("RERENDER TOKENTIMESELECTION, setting blockktime..");
     // calculate blocktime for datetime and set the field..
     createBlockTime(values.datetime)
       .then((blockHeight) => {
@@ -52,14 +52,7 @@ const TokenTimeSelection = (props: any) => {
 
   return (
     <>
-      <Stack
-        justifyContent="flex-start"
-        // alignItems="flex-start"
-        sx={{ overFlow: "scroll" }}
-      >
-        {/* <code>{JSON.stringify(values)}</code>
-        <code>{chainHeight}</code> */}
-      </Stack>
+      <Stack justifyContent="flex-start" sx={{ overFlow: "scroll" }}></Stack>
       <MiSelect
         id="token"
         name="token"

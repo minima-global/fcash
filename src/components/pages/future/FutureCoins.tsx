@@ -245,11 +245,11 @@ const FutureCoins = () => {
                         // dispatch a flag on the coin being collected.
                         dispatch(flagCoinCollection(c.coinid)); // flag this coin as being collected
                         dispatch(updatePendingStatus(true)); // there are pending collection coins in our balance
-                        console.log(`COLLECTING TKN WITH ${c.amount}`);
+                        // console.log(`COLLECTING TKN WITH ${c.amount}`);
 
-                        if (typeof c.amount == "string") {
-                          console.log("AMOUNT IS STRING");
-                        }
+                        // if (typeof c.amount == "string") {
+                        //   console.log("AMOUNT IS STRING");
+                        // }
                         try {
                           await collectFutureCash({
                             coinid: c.coinid,

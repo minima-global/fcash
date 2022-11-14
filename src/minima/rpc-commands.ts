@@ -27,7 +27,7 @@ const saveFile = (_fname: string = FLAGGEDCOINSTXT, _json: Object): Promise<Save
     return new Promise((resolve, reject) => {
 
         MDS.file.save(_fname, JSON.stringify(_json), (result: any) => {
-            console.log(result);
+            // console.log(result);
 
             if(!result.status) {
 
@@ -66,7 +66,7 @@ const loadFile = (_fname: string = FLAGGEDCOINSTXT): Promise<MDSFile> => {
     return new Promise((resolve, reject) => {
 
         MDS.file.load(_fname, (result: any) => {
-            console.log(result);
+            // console.log(result);
 
             if (!result.status) {
 
@@ -246,7 +246,7 @@ const getBlockTime = (): Promise<number> => {
 
 const getFutureCoins = (_addr: string, _flaggedCoins: FlaggedCoin[]): Promise<ICoinStatus[]> => {
     return new Promise((resolve, reject) => {
-        console.log("FLAGGEDCOINS", _flaggedCoins);
+        // console.log("FLAGGEDCOINS", _flaggedCoins);
         rpc(`coins relevant:true address:${_addr}`).then(async (coins) => {
             
             
@@ -256,7 +256,7 @@ const getFutureCoins = (_addr: string, _flaggedCoins: FlaggedCoin[]): Promise<IC
                     const getFlaggedCoin = _flaggedCoins.find((f) => f.coinid == c.coinid);
 
                     if (getFlaggedCoin) {
-                        console.log("Setting interface to flagged coin")
+                        // console.log("Setting interface to flagged coin")
                         return Object.assign(c, {status: "PENDING", collectedOnBlock: getFlaggedCoin.collectOnBlock})
 
                     }
@@ -354,7 +354,7 @@ const collectFutureCash = (futureCash: IFutureCashCollection) => {
     return new Promise((resolve, reject) => {
         constructTransaction(futureCash).then((res) => {
     
-            console.log(res)
+            // console.log(res)
             resolve(res);
     
         }).catch((err) => {
@@ -389,12 +389,12 @@ const getAddress = (): Promise<IGetAddress | string> => {
 /** Send To Future */
 
 const sendFutureCash = (fCash: IFutureCashPost): Promise<object> => {
-    console.log('fCash', fCash);
+    // console.log('fCash', fCash);
     const command = `send amount:${fCash.amount} address:${fCash.scriptAddress} tokenid:${fCash.tokenid} state:{"1": "${fCash.state1}", "2":"${fCash.state2}", "3":"${fCash.state3}", "4": "${fCash.state4}"}`;
 
     return new Promise((resolve, reject) => {
         rpc(command).then((r) => {
-            console.log(r)
+            // console.log(r)
             resolve(r);
             
         }).catch((err) => {
@@ -414,8 +414,8 @@ const constructTransaction = (fCash: IFutureCashCollection): Promise<boolean> =>
 
     return new Promise((resolve, reject) => {
 
-        console.log(`Token Amount`, fCash.amount)
-        console.log(`Token tokenid`, fCash.tokenid)
+        // console.log(`Token Amount`, fCash.amount)
+        // console.log(`Token tokenid`, fCash.tokenid)
         const command = `
             txncreate id:${id};
             txninput id:${id} coinid:${fCash.coinid};
@@ -425,10 +425,10 @@ const constructTransaction = (fCash: IFutureCashCollection): Promise<boolean> =>
             txndelete id:${id}
         `
 
-        console.log(command)
+        // console.log(command)
 
         rpc(command).then((r) => {
-            console.log(r)
+            // console.log(r)
             resolve(r);
 
         }).catch((err) => {

@@ -40,7 +40,6 @@ function App() {
   const routes = useRoutes(Routes);
 
   const [splashScreen, showSplashScreen] = React.useState(true);
-
   const [minimaStarted, setMinimaStarted] = React.useState(false);
 
   const introPage = useAppSelector(selectPageSelector);
@@ -50,14 +49,14 @@ function App() {
 
   React.useEffect(() => {
     events.onInit(() => {
-      console.log("Minima inited");
+      // console.log("Minima inited");
       setMinimaStarted(true);
       dispatch(callAndStoreChainHeight());
       dispatch(callAndStoreCoins());
       dispatch(callAndStoreWalletBalance());
       dispatch(getFlaggedCoins());
       addFutureCashScript(futureCashScript, false).then(() => {
-        dispatch(showToast("FutureCash script added.", "info", ""));
+        // dispatch(showToast("FutureCash script added.", "info", ""));
       });
 
       dispatch(checkIfFirstTime());
@@ -73,14 +72,14 @@ function App() {
     });
 
     events.onNewBalance(() => {
-      console.log(`new balance update`);
+      // console.log(`new balance update`);
       dispatch(callAndStoreCoins());
       dispatch(callAndStoreWalletBalance());
     });
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <>
       {displayChainHeightComponent ? <MiCurrentBlockOverlay /> : null}
 
       {splashScreen ? (
@@ -89,17 +88,20 @@ function App() {
         <Intro />
       ) : (
         <>
-          <div className="pb-50">
-            {firstTime && introPage !== -1 ? null : <MiHeader />}
+          {/* the rest of the app */}
+          <div className="App">
+            <div className="pb-50">
+              {firstTime && introPage !== -1 ? null : <MiHeader />}
 
-            <div className="App-content">
-              {minimaStarted ? <>{routes}</> : <div>not rendered</div>}
+              <div className="App-content">
+                {minimaStarted ? <>{routes}</> : <div>not rendered</div>}
+              </div>
             </div>
+            {firstTime && introPage !== -1 ? null : <MiNavigation />}
           </div>
-          {firstTime && introPage !== -1 ? null : <MiNavigation />}
         </>
       )}
-    </div>
+    </>
   );
 }
 

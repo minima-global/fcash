@@ -1,14 +1,18 @@
-import { useAppDispatch } from "../../../redux/hooks";
-import { setPage } from "../../../redux/slices/app/introSlice";
-import ForYourSelf from "../../intro/ForYourSelf";
-import LockUpFundsNow from "../../intro/LockUpFundsNow";
-import ToSaveInvestSecure from "../../intro/ToSaveInvestSecure";
-import UnlockTheFuture from "../../intro/UnlockTheFuture";
-
-import useEmblaCarousel from "embla-carousel-react";
-import styles from "../../helper/layout/styling/intro/index.module.css";
 import React from "react";
 import styled from "@emotion/styled";
+import { setPage } from "../../../redux/slices/app/introSlice";
+
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../redux/hooks";
+
+import MiPagination from "../../helper/layout/MiPagination";
+import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
+import MiSwipeableCarousel from "../../helper/layout/carousel/MiCarousel";
+
+import ForYourSelf from "../../intro/ForYourSelf";
+import LockUpFundsNow from "../../intro/LockUpFundsNow";
+import UnlockTheFuture from "../../intro/UnlockTheFuture";
+import ToSaveInvestSecure from "../../intro/ToSaveInvestSecure";
 
 export const displayIntroPages = [
   <LockUpFundsNow />,
@@ -17,37 +21,37 @@ export const displayIntroPages = [
   <UnlockTheFuture />,
 ];
 const Intro = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    if (emblaApi) {
-      // Embla API is ready
-      emblaApi.on("select", (e) => {
-        const currentSlide = emblaApi.selectedScrollSnap();
-        dispatch(setPage(currentSlide));
-      });
-    }
-
+    document.body.style.overflow = "hidden";
     return () => {
-      if (emblaApi) {
-        emblaApi.off("select", (e) => {
-          // console.log("EMBLA, REMOVING LISTENER " + e);
-        });
-        emblaApi.destroy();
-      }
+      console.log("re-activating to scroll");
+      document.body.style.overflow = "auto";
     };
-  }, [emblaApi]);
+  }, [dispatch]);
 
   return (
-    <div className={styles["embla"]} ref={emblaRef}>
-      <div className={styles["embla__container"]}>
-        <LockUpFundsNow />
-        <ForYourSelf />
-        <ToSaveInvestSecure />
-        <UnlockTheFuture />
-      </div>
-    </div>
+    <MiColoredOverlay color="light-orange" center={true}>
+      <MiSwipeableCarousel />
+
+      <MiIntroActionsContainer>
+        <MiPagination />
+        <MiIntroActionsButton
+          onClick={() => {
+            navigate("/instructions");
+            dispatch(setPage(-1));
+          }}
+        >
+          Instructions
+        </MiIntroActionsButton>
+
+        <MiIntroSkipButton onClick={() => dispatch(setPage(-1))}>
+          Skip
+        </MiIntroSkipButton>
+      </MiIntroActionsContainer>
+    </MiColoredOverlay>
   );
 };
 
@@ -58,7 +62,7 @@ const MiIntroTitle = styled("div")`
   font-weight: 700;
   font-size: 2rem;
   line-height: 40px;
-  margin-top: 40px;
+  margin-top: 5%;
   text-align: center;
   letter-spacing: 0.02em;
 
@@ -71,7 +75,6 @@ const MiIntroActionsButton = styled("button")`
   border: none;
   border-radius: 6px;
   height: 54px;
-  letter-spacing: 0.02rem;
 
   font-family: Manrope-regular;
   font-weight: 800;
@@ -97,8 +100,10 @@ const MiIntroSkipButton = styled("div")`
   background: none;
   cursor: pointer;
   text-align: center;
-  letter-spacing: 0.02em;
   color: #ffffff;
+
+  border-bottom: 1px solid #fff;
+  min-width: 25vw;
 
   :hover {
     transform: scale(0.989);
@@ -107,7 +112,13 @@ const MiIntroSkipButton = styled("div")`
 
 const MiIntroActionsContainer = styled("div")`
   margin-top: 92px;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: relative;
+
+  margin: 0 32px;
 
   > :nth-of-type(1) {
     margin-top: 37px;

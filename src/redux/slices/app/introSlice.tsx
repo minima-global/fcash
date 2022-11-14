@@ -43,7 +43,7 @@ export const introSlice = createSlice({
   reducers: {
     updatePage: (state, action) => {
       const pageNumber = action.payload;
-      console.log("updating page", pageNumber);
+      // console.log("updating page", pageNumber);
       state.page = pageNumber;
     },
     updateFirstTime: (state, action) => {

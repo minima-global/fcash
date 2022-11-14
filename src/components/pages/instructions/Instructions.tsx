@@ -18,7 +18,7 @@ const MiInstructionTitle = styled("p")`
   text-align: left;
 `;
 const MiInstructionWrapper = styled("div")`
-  padding: 24px 35px;
+  padding: 0px 0px;
 `;
 const MiInstructionList = styled("ol")`
   padding-inline-start: 20px;

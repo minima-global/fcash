@@ -1,7 +1,6 @@
-import React from "react";
 import { Stack } from "@mui/material";
 import { withFormik, FormikProps } from "formik";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../redux/hooks";
 
 import moment from "moment";
 import {
@@ -11,7 +10,6 @@ import {
   getBlockDifference,
 } from "../../../minima/rpc-commands";
 import TokenTimeSelection from "./TokenTimeSelection";
-// import AddressAmountSelection from "./sendForm/AddressAmountSelection";
 import Confirmation from "./Confirmation";
 import Success from "./Success";
 import * as yup from "yup";
@@ -23,6 +21,10 @@ import {
 } from "../../../redux/slices/app/sendFormSlice";
 import { MinimaToken } from "../../../minima/types/minima";
 import Decimal from "decimal.js";
+
+// precision to 64 decimal places
+Decimal.set({ precision: 64 });
+// tokens in Minima are scaled maximum 36 decimal places
 
 const formValidation = yup.object().shape({
   token: yup.object().required("Field is required."),
@@ -45,7 +47,7 @@ const formValidation = yup.object().shape({
       }
 
       const selectedToken = parent.token;
-      if (new Decimal(selectedToken.sendable).lessThan(new Decimal(val))) {
+      if (new Decimal(selectedToken.sendable).lessThan(new Decimal(0.0))) {
         const requiredAmount = new Decimal(val).minus(
           new Decimal(selectedToken.sendable)
         );

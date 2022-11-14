@@ -12,9 +12,9 @@ import { displayIntroPages } from "../../pages/intro/Intro";
 const MiPagination = () => {
   const dispatch = useAppDispatch();
   const selectIntroPage = useAppSelector(selectPageSelector);
-  React.useEffect(() => {
-    console.log("MiPagination re-rendered");
-  }, [dispatch, selectIntroPage]);
+  // React.useEffect(() => {
+  //   // console.log("MiPagination re-rendered");
+  // }, [dispatch, selectIntroPage]);
 
   const onClickHandler = (currPage: number) => {
     // console.log("onClick");

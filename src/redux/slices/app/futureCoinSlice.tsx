@@ -20,7 +20,7 @@ export const setPage =
   (page: number): AppThunk =>
   async (dispatch) => {
     // change page
-    console.log("updating page");
+    // console.log("updating page");
     dispatch(updatePage(page));
   };
 
