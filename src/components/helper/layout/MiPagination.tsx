@@ -3,17 +3,24 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setPage, selectPageSelector } from "../../../redux/slices/app/introSlice";
 import MiPaginationIcon from "./svgs/MiPaginationIcon";
-
 import styles from "../layout/styling/intro/index.module.css";
 
 import { displayIntroPages } from "../../pages/intro/Intro";
 
-const MiPagination = () => {
+type MiPaginationProps = {
+    onClick?: Function;
+};
+
+const MiPagination: React.FC<MiPaginationProps> = ({ onClick }) => {
   const dispatch = useAppDispatch();
   const selectIntroPage = useAppSelector(selectPageSelector);
 
   const onClickHandler = (currPage: number) => {
-    dispatch(setPage(currPage));
+      dispatch(setPage(currPage));
+
+      if (onClick) {
+          onClick(currPage)
+      }
   };
 
   return (

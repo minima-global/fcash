@@ -9,11 +9,14 @@ import UnlockTheFuture from "../../../intro/UnlockTheFuture";
 import styles from "./MiCarousel.module.css";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { setPage } from "../../../../redux/slices/app/introSlice";
+import MiPagination from "../MiPagination";
+import smoothScroll from "../../smoothScroll";
 
 const MiSwipeableCarousel = () => {
   const ref = React.useRef<any>();
   const dispatch = useAppDispatch();
   const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [numberOfSlides, setNumberOfSlide] = React.useState(0);
 
   React.useEffect(() => {
     const carousel = ref.current;
@@ -33,7 +36,6 @@ const MiSwipeableCarousel = () => {
       threshold: 0.5,
     });
 
-
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].getAttribute("id") as string) {
         const index = elements[i].getAttribute("id");
@@ -41,29 +43,39 @@ const MiSwipeableCarousel = () => {
         observer.observe(elements[i]);
       }
     }
+
+    setNumberOfSlide(Array.from(elements).length);
   }, []);
 
   React.useEffect(() => {
     dispatch(setPage(currentIndex));
   }, [currentIndex]);
 
+  const handleOnClick = (page: number) => {
+    const scrollLeft = Math.floor(ref.current.scrollWidth * (page / numberOfSlides));
+    smoothScroll(ref.current, scrollLeft, true);
+  }
+
   return (
-    <Box data-slide-id="parent" ref={ref} className={styles["carousel__container"]}>
-      <ul className={styles["carousel__wrapper"]}>
-        <li data-slide="1" className={styles["slide"]} id="audi">
-          <LockUpFundsNow />
-        </li>
-        <li data-slide="2" className={styles["slide"]} id="ferrari">
-          <ForYourSelf />
-        </li>
-        <li data-slide="3" className={styles["slide"]} id="lamborghini">
-          <ToSaveInvestSecure />
-        </li>
-        <li data-slide="4" className={styles["slide"]} id="bmw">
-          <UnlockTheFuture />
-        </li>
-      </ul>
-    </Box>
+    <div>
+      <Box data-slide-id="parent" ref={ref} className={styles["carousel__container"]}>
+        <ul className={styles["carousel__wrapper"]}>
+          <li data-slide="1" className={styles["slide"]} id="audi">
+            <LockUpFundsNow />
+          </li>
+          <li data-slide="2" className={styles["slide"]} id="ferrari">
+            <ForYourSelf />
+          </li>
+          <li data-slide="3" className={styles["slide"]} id="lamborghini">
+            <ToSaveInvestSecure />
+          </li>
+          <li data-slide="4" className={styles["slide"]} id="bmw">
+            <UnlockTheFuture />
+          </li>
+        </ul>
+      </Box>
+      <MiPagination onClick={handleOnClick} />
+    </div>
   );
 };
 
