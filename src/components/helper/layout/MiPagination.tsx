@@ -16,10 +16,10 @@ const MiPagination: React.FC<MiPaginationProps> = ({ onClick }) => {
   const selectIntroPage = useAppSelector(selectPageSelector);
 
   const onClickHandler = (currPage: number) => {
-      dispatch(setPage(currPage));
-
       if (onClick) {
           onClick(currPage)
+      } else {
+          dispatch(setPage(currPage));
       }
   };
 

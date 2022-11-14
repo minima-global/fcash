@@ -5,7 +5,7 @@ function smoothScrollPolyfill (node, key, target) {
   const startTime = Date.now()
   const offset = node[key]
   const gap = target - offset
-  const duration = 1000
+  const duration = 250;
   let interrupt = false
 
   const step = () => {
@@ -64,7 +64,7 @@ function smoothScroll (node, topOrLeft, horizontal) {
   if (hasNativeSmoothScroll) {
     return node.scrollTo({
       [horizontal ? 'left' : 'top']: topOrLeft,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
   } else {
     return smoothScrollPolyfill(node, horizontal ? 'scrollLeft' : 'scrollTop', topOrLeft)
