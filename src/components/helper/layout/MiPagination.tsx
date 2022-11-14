@@ -30,7 +30,7 @@ const MiPagination: React.FC<MiPaginationProps> = ({ onClick }) => {
           <MiPaginationIcon
             key={"MiPaginationIcon-" + i}
             onClickHandler={() => onClickHandler(i)}
-            fill={selectIntroPage == i ? "#16181C" : "#FFDCD5"}
+            fill={selectIntroPage === i ? "#16181C" : "#FFDCD5"}
           />
         ))}
       </Stack>

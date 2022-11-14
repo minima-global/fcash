@@ -69,7 +69,7 @@ const MiSwipeableCarousel = () => {
 
   React.useEffect(() => {
     dispatch(setPage(currentIndex));
-  }, [currentIndex]);
+  }, [dispatch, currentIndex]);
 
   const handleOnClick = (page: number) => {
     inMotion = true;
