@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Button, CircularProgress } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 
 import { useAppSelector } from "../../../redux/hooks";
 import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
@@ -12,7 +12,6 @@ import MiSelect from "../../helper/layout/MiSelect";
 import { InputLabel, InputWrapper } from "./InputWrapper";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { Stack } from "@mui/system";
-import { selectChainHeight } from "../../../redux/slices/minima/statusSlice";
 
 const TokenTimeSelection = (props: any) => {
   const walletTokens = useAppSelector(selectBalance);
@@ -134,7 +133,7 @@ const TokenTimeSelection = (props: any) => {
         />
       </InputWrapper>
       <Button
-        sx={{ marginTop: "24px!important" }}
+        className={styles["btn"]}
         disabled={!(isValid && dirty)}
         color="secondary"
         variant="contained"

@@ -23,13 +23,15 @@
   }
 }
 
-
+.btn {
+  letter-spacing: 0;
+}
 .cancelBtn {
   font-family: Manrope-regular;
   font-size: 0.875rem;
   font-weight: 800;
   line-height: 21px;
-  letter-spacing: 2px;
+  letter-spacing: 0;
   text-align: center;
 }
 .cancelBtn:disabled {
