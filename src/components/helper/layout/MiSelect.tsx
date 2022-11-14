@@ -22,6 +22,8 @@ import {
 
 import { containsText, numberWithCommas } from "../../../utils";
 import MiArrow from "./svgs/MiArrow";
+import MinimaLogoSquare from "../../../assets/images/minimaLogoSquare.png";
+import { MINIMA__TOKEN_ID } from "../../../minima/constants";
 
 const DropDownContainer = styled("div")`
   width: 100%;
@@ -157,7 +159,14 @@ const MiSelect = (props: any) => {
                   }}
                   className={styles["avatar"]}
                   variant="rounded"
-                  src={`https://robohash.org/${selectedOption.tokenid}`}
+                  src={
+                    selectedOption.tokenid === MINIMA__TOKEN_ID
+                      ? MinimaLogoSquare
+                      : selectedOption.token.url &&
+                        selectedOption.token.url.length
+                      ? selectedOption.token.url
+                      : `https://robohash.org/${selectedOption.tokenid}`
+                  }
                 />
                 <Stack
                   spacing={0.3}
@@ -236,7 +245,13 @@ const MiSelect = (props: any) => {
                             }}
                             className={styles["avatar"]}
                             variant="rounded"
-                            src={`https://robohash.org/${t.tokenid}`}
+                            src={
+                              t.tokenid === MINIMA__TOKEN_ID
+                                ? MinimaLogoSquare
+                                : t.token.url && t.token.url.length
+                                ? t.token.url
+                                : `https://robohash.org/${t.tokenid}`
+                            }
                           />
                           <Stack
                             spacing={0.3}
