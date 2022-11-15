@@ -40,16 +40,15 @@
   position: fixed;
   background: rgba(247, 126, 102, 0.9)!important;
   z-index: 1000;
-  top: 0; bottom: 0; left:0; right:0;
+  top: 0; bottom: 0; left:0; right: 0;
   overflow: hidden;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: space-between;
   padding: 5vh 0;
-
 }
 
 .light-orange-overlay svg {

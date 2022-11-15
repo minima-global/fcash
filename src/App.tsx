@@ -22,7 +22,7 @@ import {
   selectDisplayChainHeight,
 } from "./redux/slices/minima/statusSlice";
 
-import MiHeader from "./components/helper/layout/MiHeader";
+import { Grid } from "@mui/material";
 import MiNavigation from "./components/helper/layout/MiNavigation";
 import Intro from "./components/pages/intro/Intro";
 import SplashScreen from "./components/intro/SplashScreen";
@@ -86,9 +86,21 @@ function App() {
       {displayChainHeightComponent ? <MiCurrentBlockOverlay /> : null}
 
       {splashScreen ? (
-        <SplashScreen />
+        <Grid container>
+          <Grid item xs={0} sm={2} />
+          <Grid item xs={12} sm={8}>
+            <SplashScreen />
+          </Grid>
+          <Grid item xs={0} sm={2} />
+        </Grid>
       ) : firstTime && introPage !== -1 ? (
-        <Intro />
+        <Grid container>
+          <Grid item xs={0} sm={2} />
+          <Grid item xs={12} sm={8}>
+            <Intro />
+          </Grid>
+          <Grid item xs={0} sm={2} />
+        </Grid>
       ) : (
         <>
           {/* the rest of the app */}
@@ -97,7 +109,19 @@ function App() {
               {/* {firstTime && introPage !== -1 ? null : <MiHeader />} */}
               {selectMenuStatus ? <Menu /> : null}
               <div className="App-content">
-                {minimaStarted ? <>{routes}</> : <div>not rendered</div>}
+                {minimaStarted ? (
+                  <>
+                    <Grid container>
+                      <Grid item xs={0} sm={2} />
+                      <Grid item xs={12} sm={8}>
+                        {routes}
+                      </Grid>
+                      <Grid item xs={0} sm={2} />
+                    </Grid>
+                  </>
+                ) : (
+                  <div>not rendered</div>
+                )}
               </div>
             </div>
             {firstTime && introPage !== -1 ? null : <MiNavigation />}
