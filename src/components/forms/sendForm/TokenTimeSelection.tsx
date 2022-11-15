@@ -34,14 +34,12 @@ const TokenTimeSelection = (props: any) => {
   } = props;
 
   React.useEffect(() => {
-    // console.log("RERENDER TOKENTIMESELECTION, setting blockktime..");
     // calculate blocktime for datetime and set the field..
     createBlockTime(values.datetime)
       .then((blockHeight) => {
         setEstimatedBlock(blockHeight);
       })
       .catch((err) => {
-        // dispatch(`${err}`, "warning", "");
         console.error(err);
       });
 

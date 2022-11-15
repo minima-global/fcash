@@ -20,8 +20,8 @@ export const hideToast = (): AppThunk => async (dispatch) => {
   dispatch(updateState({ display: false, ...props }));
 };
 
-export const toastSlice = createSlice({
-  name: "toast",
+export const menuSlice = createSlice({
+  name: "menu",
   initialState,
   reducers: {
     updateState: (state, action) => {
@@ -32,8 +32,8 @@ export const toastSlice = createSlice({
   },
 });
 
-export const { updateState } = toastSlice.actions;
-export default toastSlice.reducer;
+export const { updateState } = menuSlice.actions;
+export default menuSlice.reducer;
 
 // Return toast state
 export const selectMenuStateStatus = (state: RootState): boolean => {
