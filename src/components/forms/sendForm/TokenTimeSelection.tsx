@@ -77,7 +77,7 @@ const TokenTimeSelection = (props: any) => {
                 id="datetime"
                 name="datetime"
                 onBlur={handleBlur}
-                {...params.inputProps}
+                {...params}
               />
             )
           }}
