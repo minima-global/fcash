@@ -100,7 +100,7 @@ const Menu = () => {
   React.useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
-      console.log("re-activating to scroll");
+      // console.log("re-activating to scroll");
       document.body.style.overflow = "auto";
     };
   }, [dispatch]);
