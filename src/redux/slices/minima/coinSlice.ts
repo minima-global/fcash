@@ -172,11 +172,11 @@ export const coinMiddleware = (store: any) => (next: any) => (action: any) => {
     
     if (action.type === NEWBLOCK && selectPendingCoinCollection(store.getState())) {
         // if there's a pending coin and collectedOnblock is older than 3 then remove as PENDING back to NOTCOLLECTED
-        console.log("pending coin collection check up")
+        // console.log("pending coin collection check up")
         store.dispatch(unflagCoinCollection())
     }
 
-    console.log(action)
+    // console.log(action)
 
 
     return next(action)

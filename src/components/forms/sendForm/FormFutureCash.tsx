@@ -21,6 +21,7 @@ import {
 } from "../../../redux/slices/app/sendFormSlice";
 import { MinimaToken } from "../../../minima/types/minima";
 import Decimal from "decimal.js";
+import Pending from "./Pending";
 
 // precision to 64 decimal places
 Decimal.set({ precision: 64 });
@@ -87,8 +88,6 @@ const formValidation = yup.object().shape({
 
       return true;
     }),
-  // burn:     yup.string()
-  //              .matches(/^[^a-zA-Z\\;'"]+$/, 'Invalid characters.'),
 });
 interface FormValues {
   token: MinimaToken | undefined;
@@ -103,9 +102,9 @@ const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
 
   const formTransition = [
     <TokenTimeSelection {...props} />,
-    // <AddressAmountSelection {...props} />,
     <Confirmation {...props} />,
     <Success {...props} />,
+    <Pending {...props} />,
   ];
 
   return (
@@ -158,7 +157,11 @@ const MyEnhancedTransitionalFormHandler = withFormik<
 
       props.dispatch(updatePage(props.page + 1));
     } catch (err) {
-      props.dispatch(showToast(`${err}`, "warning", ""));
+      if (err === "pending") {
+        props.dispatch(updatePage(props.page + 2));
+      }
+
+      // props.dispatch(showToast(`${err}`, "warning", ""));
 
       setSubmitting(false);
 

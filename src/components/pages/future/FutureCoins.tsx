@@ -59,6 +59,7 @@ const MiNoResults = styled("div")`
     left: 0;
     right: 0;
     top: 0;
+    bottom: 0;
   }
 `;
 
@@ -292,7 +293,7 @@ const FutureCoins = () => {
           {(pendingCoins.length === 0 && tabOpen == 0) ||
           (readyCoins.length == 0 && tabOpen == 1) ? (
             <MiNoResults>
-              <MiFutureNoResults />
+              {/* <MiFutureNoResults /> */}
               <Stack spacing={2} sx={{ m: 2 }}>
                 <MiNothingToSee>
                   Nothing to <br /> see here!

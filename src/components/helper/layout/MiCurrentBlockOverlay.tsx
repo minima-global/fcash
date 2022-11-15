@@ -11,7 +11,7 @@ const BackDrop = styled("div")`
   background: rgba(0, 0, 0, 0.6);
   height: 100vh;
   z-index: 999;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;

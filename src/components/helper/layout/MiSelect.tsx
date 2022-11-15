@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 
 import styles from "./styling/sendpage/TokenSelect.module.css";
-import MinimaIcon from "./svgs/MinimaIcon";
 import { MinimaToken } from "../../../minima/types/minima";
 import React from "react";
 import MiDismiss from "./svgs/MiDismiss";
@@ -95,6 +94,7 @@ const DropDownListHeader = styled("h6")`
   text-align: center;
   padding: 0;
   margin: 0;
+  margin-bottom: 32px;
 `;
 
 const MiSelect = (props: any) => {
@@ -235,7 +235,15 @@ const MiSelect = (props: any) => {
                       {filterWallet.map((t: MinimaToken) => (
                         <MiTokenListItem
                           key={t.tokenid}
-                          onClick={() => onOptionClicked(t)}
+                          onClick={() => {
+                            if (t.sendable === "0") {
+                              return;
+                            }
+                            onOptionClicked(t);
+                          }}
+                          className={
+                            t.sendable === "0" ? styles["disabled"] : ""
+                          }
                         >
                           <Avatar
                             sx={{
@@ -279,199 +287,6 @@ const MiSelect = (props: any) => {
                           </Stack>
                         </MiTokenListItem>
                       ))}
-                      {/* DummyToken */}
-                      {/* <MiTokenListItem key={Math.random() * 10000}>
-                        <Avatar
-                          sx={{
-                            width: "56px",
-                            height: "56px",
-                            background: "#fff",
-                          }}
-                          className={styles["avatar"]}
-                          variant="rounded"
-                          src={`https://robohash.org/${0x00}`}
-                        />
-                        <Stack
-                          spacing={0.3}
-                          flexDirection="column"
-                          alignItems="flex-start"
-                        >
-                          <MiTokenName>"dummyToken"</MiTokenName>
-
-                          <MiTokenNameTicker>
-                            <MiSkeleton />
-                          </MiTokenNameTicker>
-                          <MiTokenAmount>"dummy"</MiTokenAmount>
-                        </Stack>
-                      </MiTokenListItem>
-                      <MiTokenListItem key={Math.random() * 10000}>
-                        <Avatar
-                          sx={{
-                            width: "56px",
-                            height: "56px",
-                            background: "#fff",
-                          }}
-                          className={styles["avatar"]}
-                          variant="rounded"
-                          src={`https://robohash.org/${0x00}`}
-                        />
-                        <Stack
-                          spacing={0.3}
-                          flexDirection="column"
-                          alignItems="flex-start"
-                        >
-                          <MiTokenName>"dummyToken"</MiTokenName>
-
-                          <MiTokenNameTicker>
-                            <MiSkeleton />
-                          </MiTokenNameTicker>
-                          <MiTokenAmount>"dummy"</MiTokenAmount>
-                        </Stack>
-                      </MiTokenListItem>
-                      <MiTokenListItem key={Math.random() * 10000}>
-                        <Avatar
-                          sx={{
-                            width: "56px",
-                            height: "56px",
-                            background: "#fff",
-                          }}
-                          className={styles["avatar"]}
-                          variant="rounded"
-                          src={`https://robohash.org/${0x00}`}
-                        />
-                        <Stack
-                          spacing={0.3}
-                          flexDirection="column"
-                          alignItems="flex-start"
-                        >
-                          <MiTokenName>"dummyToken"</MiTokenName>
-
-                          <MiTokenNameTicker>
-                            <MiSkeleton />
-                          </MiTokenNameTicker>
-                          <MiTokenAmount>"dummy"</MiTokenAmount>
-                        </Stack>
-                      </MiTokenListItem>
-                      <MiTokenListItem key={Math.random() * 10000}>
-                        <Avatar
-                          sx={{
-                            width: "56px",
-                            height: "56px",
-                            background: "#fff",
-                          }}
-                          className={styles["avatar"]}
-                          variant="rounded"
-                          src={`https://robohash.org/${0x00}`}
-                        />
-                        <Stack
-                          spacing={0.3}
-                          flexDirection="column"
-                          alignItems="flex-start"
-                        >
-                          <MiTokenName>"dummyToken"</MiTokenName>
-
-                          <MiTokenNameTicker>
-                            <MiSkeleton />
-                          </MiTokenNameTicker>
-                          <MiTokenAmount>"dummy"</MiTokenAmount>
-                        </Stack>
-                      </MiTokenListItem>
-                      <MiTokenListItem key={Math.random() * 10000}>
-                        <Avatar
-                          sx={{
-                            width: "56px",
-                            height: "56px",
-                            background: "#fff",
-                          }}
-                          className={styles["avatar"]}
-                          variant="rounded"
-                          src={`https://robohash.org/${0x00}`}
-                        />
-                        <Stack
-                          spacing={0.3}
-                          flexDirection="column"
-                          alignItems="flex-start"
-                        >
-                          <MiTokenName>"dummyToken"</MiTokenName>
-
-                          <MiTokenNameTicker>
-                            <MiSkeleton />
-                          </MiTokenNameTicker>
-                          <MiTokenAmount>"dummy"</MiTokenAmount>
-                        </Stack>
-                      </MiTokenListItem>
-                      <MiTokenListItem key={Math.random() * 10000}>
-                        <Avatar
-                          sx={{
-                            width: "56px",
-                            height: "56px",
-                            background: "#fff",
-                          }}
-                          className={styles["avatar"]}
-                          variant="rounded"
-                          src={`https://robohash.org/${0x00}`}
-                        />
-                        <Stack
-                          spacing={0.3}
-                          flexDirection="column"
-                          alignItems="flex-start"
-                        >
-                          <MiTokenName>"dummyToken"</MiTokenName>
-
-                          <MiTokenNameTicker>
-                            <MiSkeleton />
-                          </MiTokenNameTicker>
-                          <MiTokenAmount>"dummy"</MiTokenAmount>
-                        </Stack>
-                      </MiTokenListItem>
-                      <MiTokenListItem key={Math.random() * 10000}>
-                        <Avatar
-                          sx={{
-                            width: "56px",
-                            height: "56px",
-                            background: "#fff",
-                          }}
-                          className={styles["avatar"]}
-                          variant="rounded"
-                          src={`https://robohash.org/${0x00}`}
-                        />
-                        <Stack
-                          spacing={0.3}
-                          flexDirection="column"
-                          alignItems="flex-start"
-                        >
-                          <MiTokenName>"dummyToken"</MiTokenName>
-
-                          <MiTokenNameTicker>
-                            <MiSkeleton />
-                          </MiTokenNameTicker>
-                          <MiTokenAmount>"dummy"</MiTokenAmount>
-                        </Stack>
-                      </MiTokenListItem>
-                      <MiTokenListItem key={Math.random() * 10000}>
-                        <Avatar
-                          sx={{
-                            width: "56px",
-                            height: "56px",
-                            background: "#fff",
-                          }}
-                          className={styles["avatar"]}
-                          variant="rounded"
-                          src={`https://robohash.org/${0x00}`}
-                        />
-                        <Stack
-                          spacing={0.3}
-                          flexDirection="column"
-                          alignItems="flex-start"
-                        >
-                          <MiTokenName>"dummyToken"</MiTokenName>
-
-                          <MiTokenNameTicker>
-                            <MiSkeleton />
-                          </MiTokenNameTicker>
-                          <MiTokenAmount>"dummy"</MiTokenAmount>
-                        </Stack>
-                      </MiTokenListItem> */}
                     </DropDownList>
                   </Scroller>
                 </Stack>
@@ -485,47 +300,3 @@ const MiSelect = (props: any) => {
 };
 
 export default MiSelect;
-
-const whatImageToDisplay = (t: MinimaToken) => {
-  // minima token
-  if (t.tokenid == "0x00") {
-    return <MinimaIcon />;
-  }
-  // custom token
-  if (t.token.hasOwnProperty("url")) {
-    return t.token.url;
-  }
-  // nft
-  if (t.token.hasOwnProperty("image")) {
-    return t.token.image;
-  }
-
-  return;
-};
-
-/**
- 
-<select
-        id={props.id}
-        name={props.name}
-        onChange={props.onChange}
-        className={styles["selectWrapper"]}
-      >
-        {props.tokens.map((t: MinimaToken) => (
-          <option value={t.tokenid}>
-            <Stack>
-              <Avatar variant="rounded">
-                {t.tokenid == "0x00" ? <MinimaIcon /> : null}
-
-                {t.tokenid !== "0x00" && t.token.hasOwnProperty() ? (
-                  <img src={t.token.url} />
-                ) : null}
-
-                {t.tokenid !== "0x00" ? <img src={t.token.url} /> : null}
-              </Avatar>
-              {typeof t.token === "string" ? t.token : t.token.name}
-            </Stack>
-          </option>
-        ))}
-      </select>
- */
