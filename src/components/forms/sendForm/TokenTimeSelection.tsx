@@ -41,7 +41,7 @@ const TokenTimeSelection = (props: any) => {
         setEstimatedBlock(blockHeight);
       })
       .catch((err) => {
-        dispatch(`${err}`, "warning", "");
+        // dispatch(`${err}`, "warning", "");
         console.error(err);
       });
 

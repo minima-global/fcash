@@ -9,15 +9,11 @@ import { isAddressMine } from "../../../minima/rpc-commands";
 import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
 import { Button } from "@mui/material";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
-import {
-  MiHeader,
-  MiContent,
-  MiOverlayActionsContainer,
-} from "../../helper/layout/MiOverlay";
+import { MiHeader, MiContent } from "../../helper/layout/MiOverlay";
 import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
 
 const Success = (props: any) => {
-  const { values, page, setPage, resetForm, dispatch } = props;
+  const { values, page, resetForm, dispatch } = props;
   const [relevantAddress, setRelevantAddress] = React.useState(false);
 
   React.useEffect(() => {

@@ -5,7 +5,9 @@ const MiColoredOverlay = ({ children, center, color }: any) => {
   return (
     <div className={styles[`${color}-overlay${center ? "-center" : ""}`]}>
       {color !== "light-orange" ? (
-        <Stack className={styles["content"]}>{children}</Stack>
+        <Stack className={styles["content"]} alignItems="center">
+          {children}
+        </Stack>
       ) : (
         children
       )}

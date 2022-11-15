@@ -169,7 +169,7 @@ const rpc = (command: string): Promise<any> => {
     
             if (!resp.status && resp.pending) {
     
-                reject(resp.error); 
+                reject("pending"); 
     
             }
     
@@ -496,9 +496,6 @@ const storeFlaggedCoinInMemory = (coin: FlaggedCoin): Promise<SaveSuccessPayload
 
         });
     });
-}
-const removeFlaggedCoinInMemory = (coinid: string) => {
-
 }
 /** Check if it is users first time running app */
 const getFirstTime = (): Promise<boolean> => {
