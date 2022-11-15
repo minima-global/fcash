@@ -96,7 +96,17 @@ const CoinDetails = () => {
               value={chainHeight}
             />
             <MiCoinDetailItem
-              title="Coin difference until unlock"
+              title="Remaining blocks until unlock"
+              value={
+                coinDetail.state && coinDetail.state[2]
+                  ? new Decimal(coinDetail.state[0].data)
+                      .minus(chainHeight)
+                      .toNumber()
+                  : null
+              }
+            />
+            <MiCoinDetailItem
+              title="Coin age at unlock"
               value={coinDetail.state[3].data}
             />
             <MiCoinDetailItem
