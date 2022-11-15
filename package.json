@@ -1,6 +1,6 @@
 {
   "name": "fcash",
-  "version": "1.3",
+  "version": "1.3.1",
   "private": true,
   "homepage": ".",
   "proxy": "http://localhost:9002",

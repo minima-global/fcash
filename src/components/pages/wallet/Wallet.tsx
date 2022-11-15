@@ -109,7 +109,7 @@ const Wallet = () => {
                     <MiSkeleton />
                   )}
                 </MiTokenNameTicker>
-                <MiTokenAmount>{numberWithCommas(t.sendable)}</MiTokenAmount>
+                <MiTokenAmount>{t.sendable}</MiTokenAmount>
               </Stack>
             </MiTokenListItem>
           ))}
