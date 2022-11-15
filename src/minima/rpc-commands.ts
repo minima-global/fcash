@@ -505,7 +505,7 @@ const getFirstTime = (): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         // if (currentRound > 0) console.log(`getFirstTime retrying.. ${currentRound}`);
         loadFile(FIRSTTIMETXT).then((r: MDSFile) => {
-            console.log(r)
+            // console.log(r)
             // not their first time
             resolve(false);               
             
