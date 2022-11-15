@@ -1,5 +1,5 @@
 .splash-overlay-center {
-  position: absolute;
+  position: fixed;
   background: #fff;
   z-index: 1000;
   top: 0; bottom: 0; left:0; right:0;
@@ -13,7 +13,7 @@
   margin-top: 0 !important;
 }
 .white-overlay {
-  position: absolute;
+  position: fixed;
   background: #fff;
   z-index: 1000;
   top: 0; bottom: 0; left:0; right:0;
@@ -22,7 +22,7 @@
   padding-bottom: 22px;
 }
 .white-overlay-center {
-  position: absolute;
+  position: fixed;
   background: #fff;
   z-index: 1000;
   top: 0; bottom: 0; left:0; right:0;
@@ -37,7 +37,7 @@
   cursor: pointer;
 }
 .light-orange-overlay-center {
-  position: absolute;
+  position: fixed;
   background: rgba(247, 126, 102, 0.9)!important;
   z-index: 1000;
   top: 0; bottom: 0; left:0; right:0;
