@@ -76,8 +76,8 @@ const TokenTimeSelection = (props: any) => {
                 helperText={dirty && errors.datetime}
                 id="datetime"
                 name="datetime"
+                type="datetime-local"
                 onBlur={handleBlur}
-                {...params.inputProps}
                 {...params}
               />
             )
