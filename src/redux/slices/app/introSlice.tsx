@@ -25,11 +25,7 @@ export const checkIfFirstTime = (): AppThunk => async (dispatch) => {
   // let's check if file exists, if not create it
   getFirstTime()
     .then((r) => {
-      if (r) {
-        return dispatch(updateFirstTime(false));
-      }
-
-      dispatch(updateFirstTime(true));
+      dispatch(updateFirstTime(r));
     })
     .catch((err) => {
       console.log(err);

@@ -81,6 +81,9 @@ const loadFile = (_fname: string = FLAGGEDCOINSTXT): Promise<MDSFile> => {
 
             }
 
+            
+            reject()
+
 
         })
 
@@ -501,29 +504,16 @@ const storeFlaggedCoinInMemory = (coin: FlaggedCoin): Promise<SaveSuccessPayload
 const getFirstTime = (): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         // if (currentRound > 0) console.log(`getFirstTime retrying.. ${currentRound}`);
-        loadFileMetaData(FIRSTTIMETXT).then((r) => {
-            console.log(`Found ${FIRSTTIMETXT}`, r);
-            loadFile(FIRSTTIMETXT).then((r: MDSFile) => {
-                // not their first time
-                resolve(false);               
-                
-            }).catch((err) => {   
-                
-               reject(err);
-
-            });
+        loadFile(FIRSTTIMETXT).then((r: MDSFile) => {
+            console.log(r)
+            // not their first time
+            resolve(false);               
+            
         }).catch((err) => {
-            
-            if (typeof err == "string" && err == "File not found") {
-                saveFile(FIRSTTIMETXT, []).then((r) => console.log(r)).catch((err) => console.error(err));
-                resolve(true)
-      
-            
-            } else {
+            if (err.length) console.error(err); 
+            saveFile(FIRSTTIMETXT, []).then((r) => console.log(r)).catch((err) => console.error(err));
+            resolve(true);
 
-                reject(err);
-
-            }
         });
 
     })
