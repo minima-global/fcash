@@ -38,7 +38,7 @@ const MiTokenListItem = styled("li")`
   }
 `;
 const MiSearchBar = styled("input")`
-  margin-top: 22px;
+  // margin-top: 22px;
   border: 1px solid #bdbdc4;
   border-radius: 8px;
   min-height: 48px;
@@ -58,7 +58,7 @@ const MiSearchBarWithIcon = styled("div")`
   & > svg {
     position: absolute;
     right: 16px;
-    top: 36px;
+    top: 14px;
     transition: 0.3s;
   }
 `;

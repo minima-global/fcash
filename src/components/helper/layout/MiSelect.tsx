@@ -95,6 +95,7 @@ const DropDownListHeader = styled("h6")`
   text-align: center;
   padding: 0;
   margin: 0;
+  margin-bottom: 32px;
 `;
 
 const MiSelect = (props: any) => {
