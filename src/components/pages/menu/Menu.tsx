@@ -7,10 +7,13 @@ import MiSmartContractIcon from "../../helper/layout/svgs/MiSmartContractIcon";
 import MiBalance from "../../helper/layout/svgs/MiBalance";
 import MiCurrentBlock from "../../helper/layout/svgs/MiCurrentBlock";
 import MiInstructions from "../../helper/layout/svgs/MiInstructions";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateDisplayChainHeight } from "../../../redux/slices/minima/statusSlice";
 import { useNavigate } from "react-router-dom";
-import { updateState } from "../../../redux/slices/app/menuSlice";
+import {
+  selectMenuStateStatus,
+  updateState,
+} from "../../../redux/slices/app/menuSlice";
 
 const BackDrop = styled("div")`
   background: rgba(0, 0, 0, 0.6);
@@ -28,7 +31,7 @@ const MenuContainer = styled("div")`
   left: 0;
   right: 0;
   margin-bottom: 56px;
-  min-height: 70vh;
+  height: 70vh;
   width: 100%;
   background-color: #fff;
   padding: 38px 0px;
@@ -92,6 +95,8 @@ const Menu = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const menuStatus = useAppSelector(selectMenuStateStatus);
+
   React.useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -129,7 +134,7 @@ const Menu = () => {
 
   return (
     <BackDrop>
-      <MenuContainer>
+      <MenuContainer className={menuStatus ? styles["slideIn"] : ""}>
         <MenuTitle>Menu</MenuTitle>
         <MenuList>
           <MenuListItem onClick={toggleNavigateBalance}>
