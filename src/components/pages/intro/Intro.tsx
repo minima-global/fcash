@@ -37,7 +37,6 @@ const Intro = () => {
       <MiSwipeableCarousel />
 
       <MiIntroActionsContainer>
-        <MiPagination />
         <MiIntroActionsButton
           onClick={() => {
             navigate("/instructions");
