@@ -28,7 +28,27 @@ Decimal.set({ precision: 64 });
 
 const formValidation = yup.object().shape({
   token: yup.object().required("Field is required."),
-  datetime: yup.object().required("Field is required"),
+  datetime: yup
+    .mixed()
+    .required("Field is required")
+    .test("check-my-webvalidator", "Invalid datetime", function (val) {
+      const { path, createError, parent } = this;
+
+      if (val === undefined) {
+        return false;
+      }
+
+      return createBlockTime(val)
+        .then(() => {
+          return true
+        })
+        .catch((err) => {
+          return createError({
+            path,
+            message: err.message,
+          });
+        });
+    }),
   address: yup
     .string()
     .required("Field is required.")

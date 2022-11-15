@@ -15,7 +15,6 @@ import { Stack } from "@mui/system";
 
 const TokenTimeSelection = (props: any) => {
   const walletTokens = useAppSelector(selectBalance);
-
   const [estimatedBlock, setEstimatedBlock] = React.useState(0);
 
   const {
@@ -41,8 +40,8 @@ const TokenTimeSelection = (props: any) => {
         setEstimatedBlock(blockHeight);
       })
       .catch((err) => {
-        dispatch(`${err}`, "warning", "");
-        console.error(err);
+        setFieldError("datetime", err.message);
+        console.error(err.message);
       });
 
     // whenever that changes, just update this..
@@ -68,27 +67,21 @@ const TokenTimeSelection = (props: any) => {
         <DateTimePicker
           disablePast={true}
           value={values.datetime}
-          onChange={(value) => setFieldValue("datetime", value, true)}
-          onClose={() => {
-            createBlockTime(values.datetime)
-              .then((blktime) => {
-                setEstimatedBlock(blktime);
-                // console.log("Success");
-              })
-              .catch((err) => {
-                setFieldError("datetime", err);
-              });
+          onChange={(value) => {
+            setFieldValue("datetime", value, true);
           }}
-          renderInput={(params: any) => (
-            <TextField
-              error={touched.datetime && Boolean(errors.datetime)}
-              helperText={touched.datetime && errors.datetime}
-              id="datetime"
-              name="datetime"
-              onBlur={handleBlur}
-              {...params}
-            />
-          )}
+          renderInput={(params: any) => {
+            return (
+              <TextField
+                error={Boolean(errors.datetime)}
+                helperText={dirty && errors.datetime}
+                id="datetime"
+                name="datetime"
+                onBlur={handleBlur}
+                {...params.inputProps}
+              />
+            )
+          }}
         />
       </InputWrapper>
       <InputWrapper>
