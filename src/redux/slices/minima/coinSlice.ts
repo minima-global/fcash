@@ -176,6 +176,8 @@ export const coinMiddleware = (store: any) => (next: any) => (action: any) => {
         store.dispatch(unflagCoinCollection())
     }
 
+    console.log(action)
+
 
     return next(action)
 }

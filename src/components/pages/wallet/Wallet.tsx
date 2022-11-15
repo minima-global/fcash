@@ -20,6 +20,9 @@ import {
   NoResults,
 } from "../../helper/layout/MiToken";
 import MiSearch from "../../helper/layout/svgs/MiSearch";
+import { MINIMA__TOKEN_ID } from "../../../minima/constants";
+
+import MinimaLogoSquare from "../../../assets/images/minimaLogoSquare.png";
 
 const Scroller = styled("div")`
   overflow: auto;
@@ -80,7 +83,13 @@ const Wallet = () => {
                 }}
                 className={styles["avatar"]}
                 variant="rounded"
-                src={`https://robohash.org/${t.tokenid}`}
+                src={
+                  t.tokenid === MINIMA__TOKEN_ID
+                    ? MinimaLogoSquare
+                    : t.token.url && t.token.url.length
+                    ? t.token.url
+                    : `https://robohash.org/${t.tokenid}`
+                }
               />
               <Stack
                 spacing={0.3}

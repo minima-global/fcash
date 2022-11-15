@@ -3,6 +3,7 @@ import { AppThunk, RootState } from '../../store';
 
 import { getWalletBalance } from '../../../minima/rpc-commands';
 import { MinimaToken } from '../../../minima/types/minima';
+import { makeTokenImage } from '../../../utils';
 
 const NEWBLOCK = "NEWBLOCK";
 
@@ -48,8 +49,20 @@ export const balanceSlice = createSlice({
     initialState,
     reducers: {
         updateBalance: (state, action: PayloadAction<any>) => {
+            
+        let balance = action.payload;
 
-            state.funds = action.payload;
+        
+        // make all nfts & tokens if uploaded content into renderable uris
+        balance.map((t: MinimaToken) => {
+            if (t.token.url && t.token.url.startsWith("<artimage>", 0)) {
+                t.token.url = makeTokenImage(t.token.url, t.tokenid)
+
+            }
+            return t;
+        })
+        
+        state.funds = balance;
 
 
         },
@@ -84,7 +97,7 @@ export const balanceMiddleware = (store: any) => (next: any) => (action: any) =>
         store.dispatch(callAndStoreWalletBalance())
     }
 
-
+    console.log(action);
     return next(action)
 }
 

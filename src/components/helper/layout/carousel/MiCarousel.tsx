@@ -40,6 +40,7 @@ const MiSwipeableCarousel = () => {
       threshold: 0.5,
     });
 
+
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].getAttribute(attribute) as string) {
         const index = elements[i].getAttribute(attribute);
