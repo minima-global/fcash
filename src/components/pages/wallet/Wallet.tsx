@@ -31,6 +31,9 @@ const Scroller = styled("div")`
 
 const dataTestIds = {
   container: 'Balance',
+  input: 'Balance__input',
+  token: 'Balance__token',
+  noResults: 'Balance__noResults',
 };
 
 const Wallet = () => {
@@ -59,6 +62,7 @@ const Wallet = () => {
       <MiSearchBarWithIcon>
         <MiSearchBar
           value={filterText}
+          data-testid={dataTestIds.input}
           onChange={(v: any) => {
             setFilterText(v.target.value);
           }}
@@ -99,6 +103,7 @@ const Wallet = () => {
                 spacing={0.3}
                 flexDirection="column"
                 alignItems="flex-start"
+                data-testid={`${dataTestIds.token}__${typeof t.token == "string" ? t.token : t.token.name}`}
               >
                 <MiTokenName>
                   {typeof t.token == "string" ? t.token : t.token.name}

@@ -1,9 +1,13 @@
-const getByTestId = require('./getByTestId');
 const pause = require('./pause');
+const getValue = require('./getValue');
+const getByTestId = require('./getByTestId');
+const getTextContent = require('./getTextContent');
 
 const helpers = {
-  getByTestId,
   pause,
+  getValue,
+  getByTestId,
+  getTextContent,
 }
 
 module.exports = helpers;

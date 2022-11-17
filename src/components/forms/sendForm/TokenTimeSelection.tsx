@@ -13,6 +13,10 @@ import { InputLabel, InputWrapper } from "./InputWrapper";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { Stack } from "@mui/system";
 
+const dataTestIds = {
+  cancel: 'TokenTimeSelection__cancel',
+};
+
 const TokenTimeSelection = (props: any) => {
   const walletTokens = useAppSelector(selectBalance);
   const [estimatedBlock, setEstimatedBlock] = React.useState(0);
@@ -135,6 +139,7 @@ const TokenTimeSelection = (props: any) => {
         Send Funds
       </Button>
       <Button
+        data-testid={dataTestIds.cancel}
         disabled={Boolean(errors.datetime) || Boolean(errors.token)}
         color="inherit"
         className={styles["cancelBtn"]}
