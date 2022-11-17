@@ -42,6 +42,10 @@ const MiArrowWrapper = styled("div")`
   }
 `;
 
+const dataTestIds = {
+  container: 'SmartContract',
+};
+
 const SmartContract = () => {
   const [address, setAddress] = React.useState("");
 
@@ -60,7 +64,7 @@ const SmartContract = () => {
       <MiSmartContractTitle>
         FutureCash uses the following Smart Contract script:
       </MiSmartContractTitle>
-      <MiSmartContract>
+      <MiSmartContract data-testid={dataTestIds.container}>
         <Stack>
           <MiCode>{futureCashScript}</MiCode>
           <MiArrowWrapper>

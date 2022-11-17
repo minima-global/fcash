@@ -40,6 +40,13 @@ const MiInstruction = styled("li")`
   margin-bottom: 8px;
 `;
 
+const dataTestIds = {
+  tabSend: 'Instructions__tabSend',
+  tabFuture: 'Instructions__tabFuture',
+  send: 'Instructions__send',
+  future: 'Instructions__future',
+};
+
 const Instructions = () => {
   const [tabOpen, setTabOpenIndex] = React.useState(0);
   const toggle = (i: number) => setTabOpenIndex(i);
@@ -48,12 +55,14 @@ const Instructions = () => {
       <Stack spacing={3}>
         <Tabs>
           <TabButton
+            data-testid={dataTestIds.tabSend}
             onClick={() => toggle(0)}
             className={tabOpen === 0 ? styles["tab-open"] : undefined}
           >
             Send
           </TabButton>
           <TabButton
+            data-testid={dataTestIds.tabFuture}
             onClick={() => toggle(1)}
             className={tabOpen === 1 ? styles["tab-open"] : undefined}
           >
@@ -62,7 +71,7 @@ const Instructions = () => {
         </Tabs>
         {tabOpen === 0 && (
           <MiCard>
-            <MiInstructionWrapper>
+            <MiInstructionWrapper data-testid={dataTestIds.send}>
               <MiInstructionTitle>
                 How to send funds to the future
               </MiInstructionTitle>
@@ -93,7 +102,7 @@ const Instructions = () => {
 
         {tabOpen === 1 && (
           <MiCard>
-            <MiInstructionWrapper>
+            <MiInstructionWrapper data-testid={dataTestIds.future}>
               <MiInstructionTitle>Collecting funds</MiInstructionTitle>
               <MiInstructionList>
                 <MiInstruction>Navigate to the Future page.</MiInstruction>

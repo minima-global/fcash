@@ -29,6 +29,10 @@ const Scroller = styled("div")`
   flex-grow: 1;
 `;
 
+const dataTestIds = {
+  container: 'Balance',
+};
+
 const Wallet = () => {
   const walletTokens = useAppSelector(selectBalance);
   const [filterText, setFilterText] = React.useState("");
@@ -62,7 +66,7 @@ const Wallet = () => {
         />
         <MiSearch color="#fff" size={20} />
       </MiSearchBarWithIcon>
-      <Scroller>
+      <Scroller data-testid={dataTestIds.container}>
         {filterWallet.length == 0 ? (
           <NoResults>
             <h6>No results</h6>

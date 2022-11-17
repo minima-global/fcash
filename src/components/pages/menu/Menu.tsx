@@ -91,6 +91,13 @@ const MenuListItem = styled("li")`
   }
 `;
 
+const dataTestIds = {
+  balance: 'Menu__balance',
+  currentBlock: 'Menu__currentBlock',
+  instructions: 'Menu__instructions',
+  smartContract: 'Menu__smartContract',
+};
+
 const Menu = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -137,19 +144,19 @@ const Menu = () => {
       <MenuContainer className={menuStatus ? styles["slideIn"] : ""}>
         <MenuTitle>Menu</MenuTitle>
         <MenuList>
-          <MenuListItem onClick={toggleNavigateBalance}>
+          <MenuListItem data-testid={dataTestIds.balance} onClick={toggleNavigateBalance}>
             <MiBalance size={19} color="#16181c" />
             Balance
           </MenuListItem>
-          <MenuListItem onClick={toggleBlockHeightComponent}>
+          <MenuListItem data-testid={dataTestIds.currentBlock} onClick={toggleBlockHeightComponent}>
             <MiCurrentBlock size={19} color="#16181C" />
             Current block
           </MenuListItem>
-          <MenuListItem onClick={toggleNavigateInstructions}>
+          <MenuListItem data-testid={dataTestIds.instructions} onClick={toggleNavigateInstructions}>
             <MiInstructions size={19} />
             Instructions
           </MenuListItem>
-          <MenuListItem onClick={toggleNavigateSmartContract}>
+          <MenuListItem data-testid={dataTestIds.smartContract} onClick={toggleNavigateSmartContract}>
             <MiSmartContractIcon size={19} color="#16181c" />
             Smart contract
           </MenuListItem>

@@ -10,6 +10,12 @@ import {
   updateState,
 } from "../../../redux/slices/app/menuSlice";
 
+const dataTestIds = {
+  send: 'MiNavigation__send',
+  future: 'MiNavigation__future',
+  menu: 'MiNavigation__menu',
+}
+
 const MiNavigation = () => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState(0);
@@ -32,6 +38,7 @@ const MiNavigation = () => {
       <BottomNavigationAction
         className={styles["font"]}
         label="Send"
+        data-testid={dataTestIds.send}
         onClick={() => toggleNavigation("/send")}
         sx={{
           color:
@@ -44,6 +51,7 @@ const MiNavigation = () => {
       <BottomNavigationAction
         className={styles["font"]}
         label="Future"
+        data-testid={dataTestIds.future}
         onClick={() => toggleNavigation("/future")}
         sx={{
           color:
@@ -57,6 +65,7 @@ const MiNavigation = () => {
         <BottomNavigationAction
           className={styles["font"]}
           label="Menu"
+          data-testid={dataTestIds.menu}
           sx={{ color: "#16181C" }}
           onClick={() => dispatch(toggleState(true))}
           icon={<MenuIcon size={24} />}

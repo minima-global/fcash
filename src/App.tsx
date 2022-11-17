@@ -36,6 +36,10 @@ import { selectMenuStateStatus } from "./redux/slices/app/menuSlice";
 
 import Menu from "./components/pages/menu/Menu";
 
+const dataTestIds = {
+  app: 'App',
+};
+
 function App() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -104,7 +108,7 @@ function App() {
       ) : (
         <>
           {/* the rest of the app */}
-          <div className="App">
+          <div data-testid={dataTestIds.app} className="App">
             <div className="pb-50">
               {/* {firstTime && introPage !== -1 ? null : <MiHeader />} */}
               {selectMenuStatus ? <Menu /> : null}

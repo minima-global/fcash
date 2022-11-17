@@ -18,6 +18,10 @@ const BackDrop = styled("div")`
   bottom: 0;
 `;
 
+const dataTestIds = {
+  container: 'MiCurrentBlockOverlay'
+};
+
 const MiCurrentBlockOverlay = () => {
   const currentHeight = useAppSelector(selectChainHeight);
   const dispatch = useAppDispatch();
@@ -30,7 +34,7 @@ const MiCurrentBlockOverlay = () => {
 
   return (
     <>
-      <BackDrop onClick={handleOverlayDismiss}>
+      <BackDrop data-testid={dataTestIds.container} onClick={handleOverlayDismiss}>
         <Stack
           justifyContent="center"
           sx={{ textAlign: "left", height: "100%", ml: 4, mr: 4, zIndex: 20 }}
