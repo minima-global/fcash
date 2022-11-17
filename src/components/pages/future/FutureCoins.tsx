@@ -112,6 +112,11 @@ const MiUnlockButton = styled("button")`
   }
 `;
 
+const dataTestIds = {
+  pending: 'FutureCoins__pending',
+  ready: 'FutureCoins__ready',
+};
+
 const FutureCoins = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -177,7 +182,7 @@ const FutureCoins = () => {
                   }}
                   // onClick={() => dispatch(showDetails(true))}
                 >
-                  <Stack direction="row">
+                  <Stack direction="row" data-testid={`${dataTestIds.pending}__${typeof c.token == "string" ? c.token : c.token.name}`}>
                     <Avatar
                       sx={{
                         width: "48px",
@@ -228,7 +233,7 @@ const FutureCoins = () => {
             <MiFutureContainer>
               {readyCoins.map((c: any) => (
                 <MiFutureCoin id="ready-coin" key={c.coinid}>
-                  <Stack direction="row">
+                  <Stack direction="row" data-testid={`${dataTestIds.ready}__${typeof c.token == "string" ? c.token : c.token.name}`}>
                     <Avatar
                       sx={{
                         width: "48px",

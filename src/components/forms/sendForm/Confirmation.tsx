@@ -8,6 +8,10 @@ import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
 import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
 import ConfirmationDetailList from "./ConfirmationDetailList";
 
+const dataTestIds = {
+  confirm: 'Confirmation__confirm',
+};
+
 const Confirmation = (props: any) => {
   const { values, page, isSubmitting, dispatch } = props;
 
@@ -54,6 +58,7 @@ const Confirmation = (props: any) => {
             color="secondary"
             disableElevation
             type="submit"
+            data-testid={dataTestIds.confirm}
             disabled={isSubmitting}
           >
             Confirm

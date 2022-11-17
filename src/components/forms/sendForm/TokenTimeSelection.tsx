@@ -14,6 +14,7 @@ import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { Stack } from "@mui/system";
 
 const dataTestIds = {
+  send: 'TokenTimeSelection__send',
   cancel: 'TokenTimeSelection__cancel',
 };
 
@@ -134,6 +135,7 @@ const TokenTimeSelection = (props: any) => {
         color="secondary"
         variant="contained"
         disableElevation
+        data-testid={dataTestIds.send}
         onClick={() => dispatch(updatePage(page + 1))}
       >
         Send Funds

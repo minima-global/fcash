@@ -2,9 +2,27 @@ const session = require("../session.json");
 const helpers = require("./helpers");
 
 describe('FutureCash - End to End', () => {
+  let secondPage;
+
+  beforeAll(async () => {
+    secondPage = await browser.newPage();
+    await secondPage.goto(session.SECOND_MINIDAPP_APP_URL);
+
+    // skips intro page for second instance
+    await secondPage.waitForSelector(helpers.getByTestId('SplashScreen'));
+  });
+
   beforeEach(async () => {
     await page.goto(session.MINIDAPP_APP_URL);
+    await secondPage.goto(session.SECOND_MINIDAPP_APP_URL);
     await page.bringToFront();
+  });
+
+  it('allows the user to skip the intro page', async () => {
+    await page.waitForSelector(helpers.getByTestId('SplashScreen'), { visible: false });
+    await page.waitForSelector(helpers.getByTestId('Intro__skip'), { timeout: 5000 });
+    await page.click(helpers.getByTestId('Intro__skip'));
+    await expect(page.$(helpers.getByTestId('App'))).resolves.toBeTruthy();
   });
 
   it('should be titled "Future Cash"', async () => {
@@ -15,12 +33,6 @@ describe('FutureCash - End to End', () => {
     await expect(page.$(helpers.getByTestId('SplashScreen'))).resolves.toBeTruthy();
   });
 
-  it('allows the user to skip the intro page', async () => {
-    await page.waitForSelector(helpers.getByTestId('SplashScreen'), { visible: false });
-    await page.waitForSelector(helpers.getByTestId('Intro__skip'));
-    await page.click(helpers.getByTestId('Intro__skip'));
-    await expect(page.$(helpers.getByTestId('App'))).resolves.toBeTruthy();
-  });
 
   it('displays the menu', async () => {
     await page.waitForSelector(helpers.getByTestId('App'));
@@ -147,5 +159,72 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('TokenTimeSelection__cancel'));
     await expect(helpers.getValue(page,'#address')).resolves.toEqual('');
     await expect(helpers.getValue(page,'#amount')).resolves.toEqual('');
+  });
+
+  it('allows the user to send a minima coin to another user', async () => {
+    const walletAddress = await helpers.getWalletAddress(session.SECOND_MINIMA_RPC_URL);
+
+    await secondPage.waitForSelector(helpers.getByTestId('App'));
+    await secondPage.click(helpers.getByTestId('MiNavigation__future'));
+
+    await page.waitForSelector(helpers.getByTestId('App'));
+    await page.type('#address', walletAddress);
+    await page.type('#amount', '1');
+    await helpers.pause(1000);
+    await page.click(helpers.getByTestId('TokenTimeSelection__send'));
+    await page.waitForSelector(helpers.getByTestId('Confirmation__confirm'));
+    await page.click(helpers.getByTestId('Confirmation__confirm'));
+
+    await secondPage.bringToFront();
+
+    await expect(secondPage.waitForSelector(helpers.getByTestId('FutureCoins__pending__Minima'))).resolves.toBeTruthy();
+  });
+
+  it('allows the user to send a token to another user', async () => {
+    const token = await helpers.createToken();
+    const walletAddress = await helpers.getWalletAddress(session.SECOND_MINIMA_RPC_URL);
+
+    await secondPage.waitForSelector(helpers.getByTestId('App'));
+    await secondPage.click(helpers.getByTestId('MiNavigation__future'));
+
+    await page.waitForSelector(helpers.getByTestId('App'));
+    await page.click(helpers.getByTestId('MiSelect'));
+    await helpers.pause(1000);
+    await page.waitForSelector(helpers.getByTestId(`MiSelect__token__${token}`), { timeout: 180000 });
+    await page.click(helpers.getByTestId(`MiSelect__token__${token}`));
+    await page.type('#address', walletAddress);
+    await page.type('#amount', '1');
+    await helpers.pause(1000);
+    await page.click(helpers.getByTestId('TokenTimeSelection__send'));
+    await page.waitForSelector(helpers.getByTestId('Confirmation__confirm'));
+    await page.click(helpers.getByTestId('Confirmation__confirm'));
+
+    await secondPage.bringToFront();
+
+    await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${token}`), { timeout: 180000 })).resolves.toBeTruthy();
+  });
+
+  it('allows the user to send a nft to another user', async () => {
+    const nft = await helpers.createNft();
+    const walletAddress = await helpers.getWalletAddress(session.SECOND_MINIMA_RPC_URL);
+
+    await secondPage.waitForSelector(helpers.getByTestId('App'));
+    await secondPage.click(helpers.getByTestId('MiNavigation__future'));
+
+    await page.waitForSelector(helpers.getByTestId('App'));
+    await page.click(helpers.getByTestId('MiSelect'));
+    await helpers.pause(1000);
+    await page.waitForSelector(helpers.getByTestId(`MiSelect__token__${nft}`), { timeout: 180000 });
+    await page.click(helpers.getByTestId(`MiSelect__token__${nft}`));
+    await page.type('#address', walletAddress);
+    await page.type('#amount', '1');
+    await helpers.pause(1000);
+    await page.click(helpers.getByTestId('TokenTimeSelection__send'));
+    await page.waitForSelector(helpers.getByTestId('Confirmation__confirm'));
+    await page.click(helpers.getByTestId('Confirmation__confirm'));
+
+    await secondPage.bringToFront();
+
+    await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${nft}`), { timeout: 180000 })).resolves.toBeTruthy();
   });
 });
