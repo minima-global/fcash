@@ -5,6 +5,9 @@ const createNft = require('./createNFT');
 const getByTestId = require('./getByTestId');
 const getTextContent = require('./getTextContent');
 const getWalletAddress = require('./getWalletAddress');
+const setAppPermission = require('./setAppPermission');
+const acceptPermissionRequest = require('./acceptPermissionRequest');
+const setTimeLock = require('./setTimeLock');
 
 const helpers = {
   pause,
@@ -14,6 +17,9 @@ const helpers = {
   createToken,
   createNft,
   getWalletAddress,
-}
+  setAppPermission,
+  acceptPermissionRequest,
+  setTimeLock,
+};
 
 module.exports = helpers;

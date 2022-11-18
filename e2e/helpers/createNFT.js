@@ -1,10 +1,16 @@
+require('dotenv').config({ path: '../../.env' });
 const axios = require("axios");
 const session = require("../../session.json");
 const { faker } = require("@faker-js/faker");
 
-async function createToken(name = undefined, amount = 1) {
+async function createNft(name = undefined, amount = 1) {
   const tokenName =
     name || `${faker.word.adjective()}__${faker.word.adjective()}`;
+
+  if (process.env.DEBUG === '1') {
+    console.log('Debug, nft name output ' + tokenName);
+  }
+
   const nft = {
     name: tokenName,
     type: "NFT",
@@ -20,4 +26,4 @@ async function createToken(name = undefined, amount = 1) {
   return tokenName;
 }
 
-module.exports = createToken;
+module.exports = createNft;

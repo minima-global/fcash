@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '../../.env' });
 const axios = require("axios");
 const session = require("../../session.json");
 const { faker } = require("@faker-js/faker");
@@ -5,6 +6,11 @@ const { faker } = require("@faker-js/faker");
 async function createToken(name = undefined, amount = 1) {
   const tokenName =
     name || `${faker.word.adjective()}__${faker.word.adjective()}`;
+
+  if (process.env.DEBUG === '1') {
+    console.log('Debug, token name output ' + tokenName);
+  }
+
   const token = {
     description: "",
     name: tokenName,

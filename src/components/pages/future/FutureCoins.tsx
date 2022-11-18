@@ -113,6 +113,8 @@ const MiUnlockButton = styled("button")`
 `;
 
 const dataTestIds = {
+  pendingTab: 'FutureCoins__pendingTab',
+  readyTab: 'FutureCoins__readyTab',
   pending: 'FutureCoins__pending',
   ready: 'FutureCoins__ready',
 };
@@ -158,12 +160,14 @@ const FutureCoins = () => {
         <Stack spacing={3}>
           <Tabs>
             <TabButton
+              data-testid={dataTestIds.pendingTab}
               onClick={() => toggle(0)}
               className={tabOpen == 0 ? styles["tab-open"] : undefined}
             >
               Pending
             </TabButton>
             <TabButton
+              data-testid={dataTestIds.readyTab}
               onClick={() => toggle(1)}
               className={tabOpen == 1 ? styles["tab-open"] : undefined}
             >
