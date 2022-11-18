@@ -5,7 +5,10 @@ module.exports = {
         devtools: false,
         headless: process.env.HEADLESS === '1',
         ignoreHTTPSErrors: true,
-        defaultViewport: null,
+        defaultViewport: {
+            width:1920,
+            height:1080
+        },
         args: [
             '--ignore-certificate-errors',
             '--disable-web-security',
