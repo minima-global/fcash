@@ -280,6 +280,7 @@ describe('FutureCash - End to End', () => {
   });
 
   it('allows the user to send a nft to another user (read mode)', async () => {
+    await helpers.setAppPermission(session.MINIMA_RPC_URL, session.MINIDAPP_UID, 'read');
     const nft = await helpers.createNft();
     const walletAddress = await helpers.getWalletAddress(session.SECOND_MINIMA_RPC_URL);
 
