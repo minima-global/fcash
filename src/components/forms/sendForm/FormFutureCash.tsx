@@ -13,7 +13,6 @@ import TokenTimeSelection from "./TokenTimeSelection";
 import Confirmation from "./Confirmation";
 import Success from "./Success";
 import * as yup from "yup";
-import { showToast } from "../../../redux/slices/app/toastSlice";
 import { AppDispatch } from "../../../redux/store";
 import {
   selectPageSelector,
@@ -41,7 +40,7 @@ const formValidation = yup.object().shape({
 
       return createBlockTime(val)
         .then(() => {
-          return true
+          return true;
         })
         .catch((err) => {
           return createError({
