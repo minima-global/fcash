@@ -296,7 +296,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('TokenTimeSelection__send'));
     await page.waitForSelector(helpers.getByTestId('Confirmation__confirm'));
     await page.click(helpers.getByTestId('Confirmation__confirm'));
-    await helpers.pause(1500);
+    await helpers.pause(3000);
     await helpers.acceptPermissionRequest(session.MINIMA_RPC_URL, session.MINIDAPP_UID);
 
     await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${nft}`), { timeout: 360000 })).resolves.toBeTruthy();
