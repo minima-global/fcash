@@ -52,21 +52,6 @@ jobs:
               cache: 'npm'
           - run: npm ci
           - run: npm run bootstrap
-          - run: npm run coverage
           - run: npm run e2e
             env:
                 CI: 1
-
-          - name: Upload Screenshot Artifacts
-            uses: actions/upload-artifact@v3
-            with:
-              name: 'E2E Screenshots'
-              path: |
-                screenshots
-                !screenshots/.gitignore
-
-          - name: Upload Coverage Artifacts
-            uses: actions/upload-artifact@v3
-            with:
-              name: 'Coverage Report'
-              path: coverage

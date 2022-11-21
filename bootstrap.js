@@ -143,7 +143,7 @@ const bootstrap = async (rpcPort, splitCoins = false) => {
 
     if (recentFile) {
         if (process.env.CI) {
-            command = `mds action:install file:/workspace/minidapp/${recentFile.file} trust:write`;
+            command = `mds action:install file:/workspace/${config.pathToMiniDAppBuildFolder || 'minidapp'}/${recentFile.file} trust:write`;
         } else {
             await removePreviousApps(rpcPort);
             command = `mds action:install file:${recentFile.fullPath} trust:write`;
