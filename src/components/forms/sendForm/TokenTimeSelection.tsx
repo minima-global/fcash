@@ -12,6 +12,7 @@ import MiSelect from "../../helper/layout/MiSelect";
 import { InputLabel, InputWrapper } from "./InputWrapper";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { Stack } from "@mui/system";
+import moment from "moment";
 
 const dataTestIds = {
   send: 'TokenTimeSelection__send',
@@ -69,6 +70,7 @@ const TokenTimeSelection = (props: any) => {
       <InputWrapper>
         <InputLabel>Date & time</InputLabel>
         <DateTimePicker
+          minDateTime={moment(new Date())}
           disablePast={true}
           value={values.datetime}
           onChange={(value) => {
@@ -77,6 +79,9 @@ const TokenTimeSelection = (props: any) => {
           renderInput={(params: any) => {
             return (
               <TextField
+                InputProps={{
+                  readOnly: true,
+                }}
                 error={Boolean(errors.datetime)}
                 helperText={dirty && errors.datetime}
                 id="datetime"
@@ -84,7 +89,7 @@ const TokenTimeSelection = (props: any) => {
                 onBlur={handleBlur}
                 {...params}
               />
-            )
+            );
           }}
         />
       </InputWrapper>
