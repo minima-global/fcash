@@ -25,14 +25,17 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Intro__skip'));
 
     await expect(page.$(helpers.getByTestId('App'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('should be titled "Future Cash"', async () => {
     await expect(page.title()).resolves.toMatch('Future Cash');
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays the splash screen the first time I open the app', async () => {
     await expect(page.$(helpers.getByTestId('SplashScreen'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
 
@@ -41,6 +44,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('MiNavigation__menu'));
 
     await expect(page.waitForSelector(helpers.getByTestId('Menu__balance'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays the balance (wallet)', async () => {
@@ -51,6 +55,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Menu__balance'));
 
     await expect(page.waitForSelector(helpers.getByTestId('Balance'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('allows the user to search for a token by name on the balance page', async () => {
@@ -65,6 +70,7 @@ describe('FutureCash - End to End', () => {
     await page.type(helpers.getByTestId('Balance__input'), 'minima');
 
     await expect(page.waitForSelector(helpers.getByTestId('Balance__token__Minima'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('allows the user to search for a token by id on the balance page', async () => {
@@ -79,6 +85,7 @@ describe('FutureCash - End to End', () => {
     await page.type(helpers.getByTestId('Balance__input'), '0x00');
 
     await expect(page.waitForSelector(helpers.getByTestId('Balance__token__Minima'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays no results message if no token could be matched by id or name', async () => {
@@ -93,6 +100,7 @@ describe('FutureCash - End to End', () => {
     await page.type(helpers.getByTestId('Balance__input'), 'DoesNotExist');
 
     await expect(page.$(helpers.getByTestId('Balance__token__Minima'))).resolves.toBeFalsy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays the current block information', async () => {
@@ -101,7 +109,9 @@ describe('FutureCash - End to End', () => {
     await page.waitForSelector(helpers.getByTestId('Menu__currentBlock'));
     await helpers.pause(1000);
     await page.click(helpers.getByTestId('Menu__currentBlock'));
+
     await expect(page.waitForSelector(helpers.getByTestId('MiCurrentBlockOverlay'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays the sending instructions', async () => {
@@ -112,6 +122,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Menu__instructions'));
 
     await expect(page.waitForSelector(helpers.getByTestId('Instructions__send'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays the future instructions', async () => {
@@ -123,6 +134,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Instructions__tabFuture'));
 
     await expect(page.waitForSelector(helpers.getByTestId('Instructions__future'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays the smart contract information', async () => {
@@ -133,6 +145,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Menu__smartContract'));
 
     await expect(page.waitForSelector(helpers.getByTestId('SmartContract'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays the you cant enter a date in the past', async () => {
@@ -140,6 +153,7 @@ describe('FutureCash - End to End', () => {
     await helpers.setTimeLock(page, 'past');
 
     await expect(page.waitForSelector('#datetime-helper-text')).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays "Invalid Address." if you enter an invalid address into the wallet address input field', async () => {
@@ -147,6 +161,7 @@ describe('FutureCash - End to End', () => {
     await page.type('#address', 'Invalid Address');
 
     await expect(helpers.getTextContent(page, '#address-helper-text')).resolves.toEqual('Invalid Address.');
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays "Invalid characters." if you enter an invalid amount into the amount input field', async () => {
@@ -154,6 +169,7 @@ describe('FutureCash - End to End', () => {
     await page.type('#amount', 'Invalid Amount');
 
     await expect(helpers.getTextContent(page, '#amount-helper-text')).resolves.toEqual('Invalid characters.');
+    console.log(expect.getState().currentTestName);
   });
 
   it('clears the form fields if I click the cancel button', async () => {
@@ -167,6 +183,7 @@ describe('FutureCash - End to End', () => {
 
     await expect(helpers.getValue(page,'#address')).resolves.toEqual('');
     await expect(helpers.getValue(page,'#amount')).resolves.toEqual('');
+    console.log(expect.getState().currentTestName);
   });
 
   it('allows the user to send a minima coin to another user', async () => {
@@ -184,6 +201,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Confirmation__confirm'));
 
     await expect(secondPage.waitForSelector(helpers.getByTestId('FutureCoins__pending__Minima'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('allows the user to send a token to another user', async () => {
@@ -206,6 +224,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Confirmation__confirm'));
 
     await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${token}`), { timeout: 360000 })).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('allows the user to send a nft to another user', async () => {
@@ -228,6 +247,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Confirmation__confirm'));
 
     await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${nft}`), { timeout: 360000 })).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('allows the user to send a minima coin to another user (read mode)', async () => {
@@ -249,6 +269,7 @@ describe('FutureCash - End to End', () => {
     await helpers.acceptPermissionRequest(session.MINIMA_RPC_URL, session.MINIDAPP_UID);
 
     await expect(secondPage.waitForSelector(helpers.getByTestId('FutureCoins__pending__Minima'))).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('allows the user to send a token to another user (read mode)', async () => {
@@ -275,6 +296,7 @@ describe('FutureCash - End to End', () => {
     await helpers.acceptPermissionRequest(session.MINIMA_RPC_URL, session.MINIDAPP_UID);
 
     await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${token}`), { timeout: 360000 })).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('allows the user to send a nft to another user (read mode)', async () => {
@@ -301,6 +323,7 @@ describe('FutureCash - End to End', () => {
     await helpers.acceptPermissionRequest(session.MINIMA_RPC_URL, session.MINIDAPP_UID);
 
     await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${nft}`), { timeout: 360000 })).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays a contract that is to be claimed in the future', async () => {
@@ -324,6 +347,7 @@ describe('FutureCash - End to End', () => {
     await page.click(helpers.getByTestId('Confirmation__confirm'));
 
     await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${nft}`), { timeout: 360000 })).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 
   it('displays a contract that is to be claimable', async () => {
@@ -349,5 +373,6 @@ describe('FutureCash - End to End', () => {
     await secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__pending__${nft}`), { timeout: 360000 });
     await secondPage.click(helpers.getByTestId('FutureCoins__readyTab'));
     await expect(secondPage.waitForSelector(helpers.getByTestId(`FutureCoins__ready__${nft}`), { timeout: 360000 })).resolves.toBeTruthy();
+    console.log(expect.getState().currentTestName);
   });
 });
