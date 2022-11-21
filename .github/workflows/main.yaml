@@ -1,5 +1,7 @@
 name: FutureCash Workflow
 run-name: FutureCash Workflow
+on:
+  workflow_dispatch
 jobs:
     node:
         runs-on: ubuntu-latest
