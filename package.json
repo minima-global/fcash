@@ -39,7 +39,9 @@
     "build": "react-scripts build",
     "build:dapp": "npm run build && rm dapp/futurecash_* && cd build && zip -r futurecash_$npm_package_version.mds.zip . && mv futurecash_$npm_package_version.mds.zip ../dapp/",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "bootstrap": "node --insecure-http-parser ./bootstrap.js",
+    "e2e": "cd e2e && node --insecure-http-parser ../node_modules/jest/bin/jest.js --runInBand"
   },
   "eslintConfig": {
     "extends": [
@@ -60,6 +62,10 @@
     ]
   },
   "devDependencies": {
-    "@redux-devtools/core": "^3.13.1"
+    "@faker-js/faker": "^7.6.0",
+    "@redux-devtools/core": "^3.13.1",
+    "axios": "^1.1.3",
+    "date-fns": "^2.29.3",
+    "jest-puppeteer": "^6.1.1"
   }
 }

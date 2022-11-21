@@ -1,0 +1,57 @@
+name: FutureCash Workflow
+run-name: FutureCash Workflow
+on:
+  workflow_dispatch
+jobs:
+    node:
+        runs-on: ubuntu-latest
+
+        services:
+          minima:
+            image: minimaglobal/minima:latest
+            ports:
+                - 9001:9001
+                - 9002:9002
+                - 9003:9003
+                - 9004:9004
+                - 9005:9005
+            env:
+                minima_server: true
+                minima_mdspassword: 123
+                minima_genesis: true
+                minima_test: true
+            volumes:
+                - ${{ github.workspace }}:/workspace
+          minima_second_node:
+            image: minimaglobal/minima:latest
+            ports:
+              - 8001:9001
+              - 8002:9002
+              - 8003:9003
+              - 8004:9004
+              - 8005:9005
+            env:
+              minima_server: true
+              minima_mdspassword: 123
+              minima_genesis: true
+              minima_test: true
+            volumes:
+              - ${{ github.workspace }}:/workspace
+
+        strategy:
+          matrix:
+            node-version: [16.x]
+
+        steps:
+
+          - uses: actions/checkout@v3
+          - name: Use Node.js ${{ matrix.node-version }}
+            uses: actions/setup-node@v3
+            with:
+              node-version: ${{ matrix.node-version }}
+              cache: 'npm'
+          - run: npm ci
+          - run: npm run bootstrap
+          - run: npm run e2e
+            env:
+                CI: 1

@@ -29,6 +29,13 @@ const Scroller = styled("div")`
   flex-grow: 1;
 `;
 
+const dataTestIds = {
+  container: 'Balance',
+  input: 'Balance__input',
+  token: 'Balance__token',
+  noResults: 'Balance__noResults',
+};
+
 const Wallet = () => {
   const walletTokens = useAppSelector(selectBalance);
   const [filterText, setFilterText] = React.useState("");
@@ -55,6 +62,7 @@ const Wallet = () => {
       <MiSearchBarWithIcon>
         <MiSearchBar
           value={filterText}
+          data-testid={dataTestIds.input}
           onChange={(v: any) => {
             setFilterText(v.target.value);
           }}
@@ -62,7 +70,7 @@ const Wallet = () => {
         />
         <MiSearch color="#fff" size={20} />
       </MiSearchBarWithIcon>
-      <Scroller>
+      <Scroller data-testid={dataTestIds.container}>
         {filterWallet.length == 0 ? (
           <NoResults>
             <h6>No results</h6>
@@ -95,6 +103,7 @@ const Wallet = () => {
                 spacing={0.3}
                 flexDirection="column"
                 alignItems="flex-start"
+                data-testid={`${dataTestIds.token}__${typeof t.token == "string" ? t.token : t.token.name}`}
               >
                 <MiTokenName>
                   {typeof t.token == "string" ? t.token : t.token.name}

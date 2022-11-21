@@ -20,6 +20,11 @@ export const displayIntroPages = [
   <ToSaveInvestSecure />,
   <UnlockTheFuture />,
 ];
+
+const dataTestIds = {
+  skip: 'Intro__skip'
+};
+
 const Intro = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -46,7 +51,7 @@ const Intro = () => {
           Instructions
         </MiIntroActionsButton>
 
-        <MiIntroSkipButton onClick={() => dispatch(setPage(-1))}>
+        <MiIntroSkipButton onClick={() => dispatch(setPage(-1))} data-testid={dataTestIds.skip}>
           Skip
         </MiIntroSkipButton>
       </MiIntroActionsContainer>

@@ -112,6 +112,13 @@ const MiUnlockButton = styled("button")`
   }
 `;
 
+const dataTestIds = {
+  pendingTab: 'FutureCoins__pendingTab',
+  readyTab: 'FutureCoins__readyTab',
+  pending: 'FutureCoins__pending',
+  ready: 'FutureCoins__ready',
+};
+
 const FutureCoins = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -153,12 +160,14 @@ const FutureCoins = () => {
         <Stack spacing={3}>
           <Tabs>
             <TabButton
+              data-testid={dataTestIds.pendingTab}
               onClick={() => toggle(0)}
               className={tabOpen == 0 ? styles["tab-open"] : undefined}
             >
               Pending
             </TabButton>
             <TabButton
+              data-testid={dataTestIds.readyTab}
               onClick={() => toggle(1)}
               className={tabOpen == 1 ? styles["tab-open"] : undefined}
             >
@@ -177,7 +186,7 @@ const FutureCoins = () => {
                   }}
                   // onClick={() => dispatch(showDetails(true))}
                 >
-                  <Stack direction="row">
+                  <Stack direction="row" data-testid={`${dataTestIds.pending}__${typeof c.token == "string" ? c.token : c.token.name}`}>
                     <Avatar
                       sx={{
                         width: "48px",
@@ -228,7 +237,7 @@ const FutureCoins = () => {
             <MiFutureContainer>
               {readyCoins.map((c: any) => (
                 <MiFutureCoin id="ready-coin" key={c.coinid}>
-                  <Stack direction="row">
+                  <Stack direction="row" data-testid={`${dataTestIds.ready}__${typeof c.token == "string" ? c.token : c.token.name}`}>
                     <Avatar
                       sx={{
                         width: "48px",

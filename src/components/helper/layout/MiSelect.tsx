@@ -97,6 +97,12 @@ const DropDownListHeader = styled("h6")`
   margin-bottom: 32px;
 `;
 
+const dataTestIds = {
+  container: "MiSelect",
+  token: "MiSelect__token",
+  tokenDisabled: "MiSelect__tokenDisabled",
+};
+
 const MiSelect = (props: any) => {
   const [isOpen, setOpen] = React.useState(false);
   const [filterWallet, setFilterWallet] = React.useState<MinimaToken[]>([]);
@@ -147,7 +153,7 @@ const MiSelect = (props: any) => {
   return (
     <>
       <DropDownContainer>
-        <DropDownHeader onClick={toggling}>
+        <DropDownHeader data-testid={dataTestIds.container} onClick={toggling}>
           {selectedOption && (
             <>
               <MiTokenListItem>
@@ -233,6 +239,13 @@ const MiSelect = (props: any) => {
                       {filterWallet.map((t: MinimaToken) => (
                         <MiTokenListItem
                           key={t.tokenid}
+                          data-testid={`${
+                            t.sendable === "0"
+                              ? dataTestIds.tokenDisabled
+                              : dataTestIds.token
+                          }__${
+                            typeof t.token == "string" ? t.token : t.token.name
+                          }`}
                           onClick={() => {
                             if (t.sendable === "0") {
                               return;
