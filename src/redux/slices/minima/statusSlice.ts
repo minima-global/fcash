@@ -21,7 +21,7 @@ export const callAndStoreChainHeight =
             
         }).catch((err) => {
             console.error(err);
-            dispatch(showToast(`${err}`, "warning", ""))
+            //dispatch(showToast(`${err}`, "warning", ""))
         })
 };
 export const displayChainHeight = 

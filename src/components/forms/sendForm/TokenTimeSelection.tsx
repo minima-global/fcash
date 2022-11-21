@@ -66,7 +66,7 @@ const TokenTimeSelection = (props: any) => {
       <InputWrapper>
         <InputLabel>Date & time</InputLabel>
         <DateTimePicker
-          minDateTime={moment(new Date())}
+          // minDateTime={moment(new Date())}
           disablePast={true}
           value={values.datetime}
           onChange={(value) => {

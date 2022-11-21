@@ -512,11 +512,8 @@ const getFirstTime = (): Promise<boolean> => {
         }).catch((err) => {
 
             if (err.length) console.error(err);
-                saveFile(FIRSTTIMETXT, []).then((r) => console.log(r)).catch((err) => console.error(err));
-                resolve(true)
-
-
-            ;
+            saveFile(FIRSTTIMETXT, []).then((r) => console.log(r)).catch((err) => console.error(err));
+            resolve(true);
 
         });
 

@@ -43,7 +43,7 @@ export const callAndStoreCoins =
             })
         }).catch((err) => {
             console.error(err);
-            dispatch(showToast(`${err}`, "warning", ""))
+            // dispatch(showToast(`${err}`, "warning", ""))
         })
 };
 
@@ -76,7 +76,7 @@ export const flagCoinCollection =
             })
         }).catch((err) => {
             console.error(err);
-            dispatch(showToast(`${err}`, "warning", ""))
+            //dispatch(showToast(`${err}`, "warning", ""))
         })
 };
 
@@ -128,7 +128,7 @@ export const unflagCoinCollection =
             })
         }).catch((err) => {
             console.error(err);
-            dispatch(showToast(`${err}`, "warning", ""))
+            //dispatch(showToast(`${err}`, "warning", ""))
         })
 };
 
