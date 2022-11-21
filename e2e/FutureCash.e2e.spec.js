@@ -178,10 +178,8 @@ describe('FutureCash - End to End', () => {
     await page.waitForSelector(helpers.getByTestId('App'));
     await page.type('#address', walletAddress);
     await page.type('#amount', '1');
-    await page.screenshot({ path: 'test1.png' });
     await page.waitForSelector(helpers.getByTestId('TokenTimeSelection__send', { notDisabled:  true }));
     await page.click(helpers.getByTestId('TokenTimeSelection__send'));
-    await page.screenshot({ path: 'test2.png' });
     await page.waitForSelector(helpers.getByTestId('Confirmation__confirm'));
     await page.click(helpers.getByTestId('Confirmation__confirm'));
 

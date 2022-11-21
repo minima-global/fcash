@@ -40,7 +40,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "bootstrap": "node --insecure-http-parser ./bootstrap.js",
-    "e2e": "cd e2e && jest --runInBand"
+    "e2e": "cd e2e && node --insecure-http-parser ../node_modules/jest/bin/jest.js --runInBand"
   },
   "eslintConfig": {
     "extends": [
