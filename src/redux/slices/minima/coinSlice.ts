@@ -32,20 +32,19 @@ const initialState: CoinState = {
 };
 
 export const callAndStoreCoins = (): AppThunk => async (dispatch, getState) => {
-  getFutureCashScriptAddress()
-    .then((s) => {
-      getFutureCoins(s, getState().coins.flaggedCoins)
-        .then((coins) => {
-          dispatch(updateFutureBalance(coins));
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    })
-    .catch((err) => {
-      console.error(err);
-      // dispatch(showToast(`${err}`, "warning", ""));
-    });
+  try {
+    // get the script address
+    const scriptAddress = await getFutureCashScriptAddress();
+    // if exists then find the coins related
+    const futureCoins = await getFutureCoins(
+      scriptAddress,
+      getState().coins.flaggedCoins
+    );
+    // update the redux state with the futureCoins
+    return dispatch(updateFutureBalance(futureCoins));
+  } catch (error) {
+    // do nothing here..
+  }
 };
 
 export const getFlaggedCoins = (): AppThunk => async (dispatch, getState) => {};

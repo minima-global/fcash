@@ -246,6 +246,7 @@ const getFutureCoins = (
         resolve([]);
       })
       .catch((err) => {
+        console.error(err);
         reject(err);
       });
   });
@@ -293,6 +294,8 @@ const getFutureCashScriptAddress = async () => {
     if (script && script.address) {
       return script.address;
     }
+
+    throw new Error("not found");
   } catch (error: any) {
     throw new Error(error);
   }
