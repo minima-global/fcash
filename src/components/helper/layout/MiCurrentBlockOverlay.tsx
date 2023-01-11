@@ -22,7 +22,7 @@ const MiCurrentBlockOverlay = () => {
   const currentHeight = useAppSelector(selectChainHeight);
   const dispatch = useAppDispatch();
 
-  console.log("displaying mi current");
+  // console.log("displaying mi current");
 
   const handleOverlayDismiss = () => {
     dispatch(updateDisplayChainHeight(false));

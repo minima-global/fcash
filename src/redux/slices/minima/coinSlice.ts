@@ -44,7 +44,7 @@ export const callAndStoreCoins = (): AppThunk => async (dispatch, getState) => {
     })
     .catch((err) => {
       console.error(err);
-      // dispatch(showToast(`${err}`, "warning", ""))
+      // dispatch(showToast(`${err}`, "warning", ""));
     });
 };
 

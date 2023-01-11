@@ -67,22 +67,6 @@ const loadFile = async (_fname: string = FLAGGEDCOINSTXT) => {
       }
     });
   });
-  try {
-    const res = await MDS.file.load(_fname);
-    console.log(res);
-    const foundFile = res.status;
-
-    if (!foundFile) {
-      throw new Error(res.error);
-    }
-
-    if (foundFile) {
-      const file = res.response.load;
-      return file;
-    }
-  } catch (error: any) {
-    throw new Error(error);
-  }
 };
 
 interface MDSFileMetaData {
@@ -306,7 +290,9 @@ const getFutureCashScriptAddress = async () => {
     const scripts = await rpc(`scripts`);
 
     const script = scripts.find((s: IScript) => s.script === futureCashScript);
-    return script.address;
+    if (script && script.address) {
+      return script.address;
+    }
   } catch (error: any) {
     throw new Error(error);
   }
@@ -395,9 +381,9 @@ const isAddressMine = (addr: string) => {
           resolve(scriptAddress);
         }
 
-        throw new Error(
-          "Address not found, this address doesn't belong to you."
-        );
+        // throw new Error(
+        //   "Address not found, this address doesn't belong to you."
+        // );
       })
       .catch((err) => {
         reject(err);
@@ -420,7 +406,7 @@ const getFirstTime = async () => {
 
     return false;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     try {
       await saveFile(FIRSTTIMETXT, []);
 

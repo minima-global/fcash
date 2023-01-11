@@ -42,7 +42,7 @@ const TokenTimeSelection = (props: any) => {
       })
       .catch((err) => {
         setFieldError("datetime", err.message);
-        console.error(err);
+        // console.error(err);
       });
 
     // whenever that changes, just update this..

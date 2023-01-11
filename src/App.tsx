@@ -63,7 +63,7 @@ function App() {
       try {
         await addFutureCashScript(futureCashScript, false);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
       firstTime ? navigate("intro") : navigate("/send");
     });
