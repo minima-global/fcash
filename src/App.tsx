@@ -51,21 +51,20 @@ function App() {
   const firstTime = useAppSelector(selectFirstTime);
 
   React.useEffect(() => {
-    events.onInit(() => {
-      // console.log("Minima inited");
+    events.onInit(async () => {
       setMinimaStarted(true);
       dispatch(callAndStoreChainHeight());
       dispatch(callAndStoreCoins());
       dispatch(callAndStoreWalletBalance());
       dispatch(getFlaggedCoins());
-      addFutureCashScript(futureCashScript, false).then(() => {
-        // dispatch(showToast("FutureCash script added.", "info", ""));
-      });
-
       dispatch(checkIfFirstTime());
-
       setTimeout(() => showSplashScreen(false), 2500);
       // TO-DO check if first time or switched off intro
+      try {
+        await addFutureCashScript(futureCashScript, false);
+      } catch (error) {
+        console.error(error);
+      }
       firstTime ? navigate("intro") : navigate("/send");
     });
 

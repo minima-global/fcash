@@ -1,14 +1,12 @@
-
-import { Txpow } from '../types/minima';
-
+import { Txpow } from "../types/minima";
 
 ////////////// response interfaces //////////
 interface InitResponse {
-  event: 'inited';
+  event: "inited";
 }
 
 interface MiningResponse {
-  event: 'MINING';
+  event: "MINING";
   data: MiningData;
 }
 interface MiningData {
@@ -17,13 +15,12 @@ interface MiningData {
 }
 
 interface NewBlockResponse {
-  event: 'NEWBLOCK';
+  event: "NEWBLOCK";
   data: NewBlockData;
 }
 
-
 interface MDSTimerResponse {
-  event: 'MDS_TIMER_10SECONDS';
+  event: "MDS_TIMER_10SECONDS";
   data: Object;
 }
 
@@ -32,7 +29,7 @@ interface NewBlockData {
 }
 
 interface MinimaLogResponse {
-  event: 'MINIMALOG';
+  event: "MINIMALOG";
   data: MinimaLogData;
 }
 interface MinimaLogData {
@@ -40,7 +37,7 @@ interface MinimaLogData {
 }
 
 interface NewBalanceResponse {
-  event: 'NEWBALANCE';
+  event: "NEWBALANCE";
   data: NewBalanceData;
 }
 interface NewBalanceData {
@@ -53,7 +50,7 @@ interface MaximaHosts {
 }
 
 interface MaximaResponse {
-  event: 'MAXIMA';
+  event: "MAXIMA";
   data: MaximaData;
 }
 interface MaximaData {
@@ -66,7 +63,6 @@ interface MaximaData {
   timemilli: number;
   to: string;
 }
-
 
 //////////////////////// empty functions before registration //////////////////////
 let whenNewBlock = (d: NewBlockData) => {
@@ -101,49 +97,61 @@ const initializeMinima = () => {
   //   MDS.DEBUG_PORT = 9003;
   //   MDS.DEBUG_MINIDAPPID = process.env.REACT_APP_MINIDAPPID;
   // }
-  
-  // MDS.DEBUG_HOST="127.0.0.1"
-  // MDS.DEBUG_PORT=11003
-  // MDS.DEBUG_MINIDAPPID = "0xCF715CAC838F72F3E41E1049B0177009433BE238DFDCD86234FA9BDD6C4ED97C"
 
-  MDS.init((nodeEvent: InitResponse | MiningResponse | NewBlockResponse | MinimaLogResponse | NewBalanceResponse | MaximaResponse | MDSTimerResponse | MaximaHosts) => {
+  // MDS.DEBUG_HOST = "127.0.0.1";
+  // MDS.DEBUG_PORT = 12003;
+  // MDS.DEBUG_MINIDAPPID =
+  //   "0x9118CE24F8BE0C21661252AF1D9A56C8079E6DCD22C8C3801A1FC21D4B0927A0";
 
+  MDS.init(
+    (
+      nodeEvent:
+        | InitResponse
+        | MiningResponse
+        | NewBlockResponse
+        | MinimaLogResponse
+        | NewBalanceResponse
+        | MaximaResponse
+        | MDSTimerResponse
+        | MaximaHosts
+    ) => {
       switch (nodeEvent.event) {
-          case 'inited':
-              // will have to dispatch from here..
-              whenInit()
-              break;
-          case 'NEWBLOCK':
-              const newBlockData = nodeEvent.data
-              whenNewBlock(newBlockData);
-              break;
-          case 'MINING':
-              const miningData = nodeEvent.data
-              whenMining(miningData);
-              break;
-          case 'MAXIMA':
-              const maximaData = nodeEvent.data
-              whenMaxima(maximaData);
-              break;
-          case 'NEWBALANCE':
-              const newBalanceData = nodeEvent.data
-              
-              whenNewBalance(newBalanceData);
-              break;
-          case 'MINIMALOG':
-              const minimaLogeData = nodeEvent.data
-              whenMinimaLog(minimaLogeData);
-              break;
-          case 'MDS_TIMER_10SECONDS':
-            const mdstimerdata = nodeEvent.data;
-            whenMDSTimer(mdstimerdata)
-            break;
-          case 'MAXIMAHOSTS':
-            break;
-          default:
-              console.error("Unknown event type: ", nodeEvent);
+        case "inited":
+          // will have to dispatch from here..
+          whenInit();
+          break;
+        case "NEWBLOCK":
+          const newBlockData = nodeEvent.data;
+          whenNewBlock(newBlockData);
+          break;
+        case "MINING":
+          const miningData = nodeEvent.data;
+          whenMining(miningData);
+          break;
+        case "MAXIMA":
+          const maximaData = nodeEvent.data;
+          whenMaxima(maximaData);
+          break;
+        case "NEWBALANCE":
+          const newBalanceData = nodeEvent.data;
+
+          whenNewBalance(newBalanceData);
+          break;
+        case "MINIMALOG":
+          const minimaLogeData = nodeEvent.data;
+          whenMinimaLog(minimaLogeData);
+          break;
+        case "MDS_TIMER_10SECONDS":
+          const mdstimerdata = nodeEvent.data;
+          whenMDSTimer(mdstimerdata);
+          break;
+        case "MAXIMAHOSTS":
+          break;
+        default:
+          console.error("Unknown event type: ", nodeEvent);
       }
-  });
+    }
+  );
 };
 
 // Do registration
@@ -175,7 +183,6 @@ function onInit(callback: () => void) {
 
 function onMDSTimer(callback: (data: any) => void) {
   whenMDSTimer = callback;
-
 }
 
 function onMinimaLog(callback: (data: MinimaLogData) => void) {
@@ -189,5 +196,5 @@ export const events = {
   onNewBalance,
   onInit,
   onMinimaLog,
-  onMDSTimer
+  onMDSTimer,
 };
