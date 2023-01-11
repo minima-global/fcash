@@ -52,7 +52,7 @@ export interface MDSFile {
 const loadFile = async (_fname: string = FLAGGEDCOINSTXT) => {
   return new Promise((resolve, reject) => {
     MDS.file.load(_fname, (res: any) => {
-      console.log(res);
+      //console.log(res);
       if (!res.status && !res.pending) {
         reject(res.error);
       }
