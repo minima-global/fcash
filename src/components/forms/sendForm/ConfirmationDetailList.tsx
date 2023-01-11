@@ -81,6 +81,7 @@ const ConfirmationDetailList: FC<IConfirmationList> = ({
         copyable={true}
         copyPayload={tokenId}
       ></MiTokenDetailItem>
+      <MiTokenDetailItem title="Amount" value={amount}></MiTokenDetailItem>
     </MiOverlayDetailsContainer>
   );
 };
