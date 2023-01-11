@@ -69,7 +69,12 @@ const Confirmation = (props: any) => {
             disabled={isSubmitting}
             color="inherit"
             className={styles["cancelBtn"]}
-            onClick={() => dispatch(updatePage(page - 1))}
+            onClick={() => {
+              dispatch(updatePage(page - 1));
+              if (status) {
+                setStatus(undefined);
+              }
+            }}
           >
             Cancel
           </Button>
