@@ -59,8 +59,6 @@
   line-height: 21px;
   letter-spacing: 2px;
   text-align: center;
-
-  margin-top: 16px!important;
 }
 .cancelBtn:disabled {
   background: none!important;

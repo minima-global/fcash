@@ -156,13 +156,14 @@ const FutureCoins = () => {
               onClick={() => toggle(0)}
               className={tabOpen == 0 ? styles["tab-open"] : undefined}
             >
-              Pending
+              Pending{" "}
+              {pendingCoins.length > 0 ? `(${pendingCoins.length})` : ""}
             </TabButton>
             <TabButton
               onClick={() => toggle(1)}
               className={tabOpen == 1 ? styles["tab-open"] : undefined}
             >
-              Ready
+              Ready {readyCoins.length > 0 ? `(${readyCoins.length})` : ""}
             </TabButton>
           </Tabs>
           {/* Pending Coins */}

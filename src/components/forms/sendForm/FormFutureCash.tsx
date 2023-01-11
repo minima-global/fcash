@@ -96,7 +96,7 @@ interface FormValues {
 }
 
 const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
-  const { handleSubmit } = props;
+  const { handleSubmit, status } = props;
   const sendFormSelector = useAppSelector(selectPageSelector);
 
   const formTransition = [
@@ -134,15 +134,20 @@ const MyEnhancedTransitionalFormHandler = withFormik<
     dispatch: {},
   }),
   enableReinitialize: false,
-  handleSubmit: async (dt, { props, setSubmitting, setFieldError }) => {
+  handleSubmit: async (
+    dt,
+    { props, setSubmitting, setFieldError, setStatus }
+  ) => {
+    setStatus(undefined);
     try {
       const blocktime = await createBlockTime(dt.datetime);
       const scriptAddress = await getFutureCashScriptAddress();
       const difference = await getBlockDifference(blocktime);
 
+      // console.log(`submitting..`, dt);
+
       if (dt.token == undefined) {
-        setFieldError("token", "Please select a token");
-        return;
+        return setFieldError("token", "Please select a token");
       }
       await sendFutureCash({
         amount: dt.amount,
@@ -155,16 +160,15 @@ const MyEnhancedTransitionalFormHandler = withFormik<
       });
 
       props.dispatch(updatePage(props.page + 1));
-    } catch (err) {
+    } catch (err: any) {
       if (err === "pending") {
-        props.dispatch(updatePage(props.page + 2));
+        return props.dispatch(updatePage(props.page + 2));
       }
 
       // props.dispatch(showToast(`${err}`, "warning", ""));
 
       setSubmitting(false);
-
-      return;
+      setStatus(err);
     }
   },
   displayName: "FutureCash",
