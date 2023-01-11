@@ -69,7 +69,7 @@ const ConfirmationDetailList: FC<IConfirmationList> = ({
       <MiTokenDetailItem title="Address" value={address}></MiTokenDetailItem>
       <MiTokenDetailItem
         title="Unlock date & time"
-        value={datetime.format("ddd MMM D YYYY, hh:m:s A")}
+        value={datetime.format("ddd MMM D YYYY, hh:mm:ss A")}
       ></MiTokenDetailItem>
       <MiTokenDetailItem
         title="Unlock blocktime"

@@ -7,9 +7,10 @@ import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
 
 import styles from "../../helper/layout/styling/sendpage/Confirmation.module.css";
 import ConfirmationDetailList from "./ConfirmationDetailList";
+import ErrorMessage from "./ErrorMessage/ErrorMessage";
 
 const Confirmation = (props: any) => {
-  const { values, page, isSubmitting, dispatch } = props;
+  const { values, page, isSubmitting, dispatch, status, setStatus } = props;
 
   const token = props.values.token;
   const [estimatedBlockTime, setEstimatedBlockTime] = React.useState(0);
@@ -21,6 +22,7 @@ const Confirmation = (props: any) => {
       })
       .catch((err) => {
         console.error(err);
+        setStatus(err.message);
       });
   }, []);
 
@@ -49,6 +51,11 @@ const Confirmation = (props: any) => {
           address={details.address}
         />
         <MiOverlayActionsContainer>
+          {status && (
+            <ErrorMessage>
+              <label>{status}</label>
+            </ErrorMessage>
+          )}
           <Button
             variant="contained"
             color="secondary"
