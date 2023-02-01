@@ -107,7 +107,7 @@ const loadFileMetaData = (_f: string): Promise<MDSFileMetaData> => {
 const rpc = (command: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     MDS.cmd(command, (resp: any) => {
-      //console.log(resp)
+      // console.log(resp);
 
       if (resp.length > 0) {
         //console.log(`multi command activity.`);
@@ -319,20 +319,24 @@ const collectFutureCash = (futureCash: IFutureCashCollection) => {
 
 /** Send To Future */
 
-const sendFutureCash = (fCash: IFutureCashPost): Promise<object> => {
-  // console.log('fCash', fCash);
-  const command = `send amount:${fCash.amount} address:${fCash.scriptAddress} tokenid:${fCash.tokenid} state:{"1": "${fCash.state1}", "2":"${fCash.state2}", "3":"${fCash.state3}", "4": "${fCash.state4}"}`;
+const sendFutureCash = async (fCash: IFutureCashPost): Promise<object> => {
+  try {
+    const hasPassword =
+      fCash.password && fCash.password.length ? fCash.password : false;
+    const hasBurn = fCash.burn && fCash.burn.length ? fCash.burn : false;
 
-  return new Promise((resolve, reject) => {
-    rpc(command)
-      .then((r) => {
-        // console.log(r)
-        resolve(r);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+    return await rpc(
+      `send amount:${fCash.amount} address:${fCash.scriptAddress} tokenid:${
+        fCash.tokenid
+      } ${hasBurn ? "burn:" + hasBurn : ""} ${
+        hasPassword ? "password:" + hasPassword : ""
+      } state:{"1": "${fCash.state1}", "2":"${fCash.state2}", "3":"${
+        fCash.state3
+      }", "4": "${fCash.state4}"}`
+    );
+  } catch (err: any) {
+    throw new Error(err);
+  }
 };
 
 /** Transaction constructor */

@@ -15,5 +15,12 @@ const InputLabel = styled("label")`
   margin-left: 16px;
   margin-bottom: 4px;
 `;
-
-export { InputWrapper, InputLabel };
+const InputHelper = styled("div")`
+  font-family: Manrope-regular;
+  font-size: 0.775rem;
+  font-weight: 500;
+  text-align: left;
+  padding: 8px;
+  padding-bottom: 0;
+`;
+export { InputWrapper, InputLabel, InputHelper };

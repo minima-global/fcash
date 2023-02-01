@@ -87,12 +87,15 @@ const formValidation = yup.object().shape({
 
       return true;
     }),
+  burn: yup.string().matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters."),
 });
 interface FormValues {
   token: MinimaToken | undefined;
   datetime: moment.Moment;
   address: string;
   amount: string;
+  burn: string;
+  password: string;
 }
 
 const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
@@ -131,6 +134,8 @@ const MyEnhancedTransitionalFormHandler = withFormik<
     datetime: props.initialTime,
     address: "",
     amount: "",
+    burn: "",
+    password: "",
     dispatch: {},
   }),
   enableReinitialize: false,
@@ -144,8 +149,6 @@ const MyEnhancedTransitionalFormHandler = withFormik<
       const scriptAddress = await getFutureCashScriptAddress();
       const difference = await getBlockDifference(blocktime);
 
-      // console.log(`submitting..`, dt);
-
       if (dt.token == undefined) {
         return setFieldError("token", "Please select a token");
       }
@@ -157,18 +160,22 @@ const MyEnhancedTransitionalFormHandler = withFormik<
         state2: dt.address,
         state3: dt.datetime.valueOf(),
         state4: difference,
+        burn: dt.burn,
+        password: dt.password,
       });
 
       props.dispatch(updatePage(props.page + 1));
     } catch (err: any) {
-      if (err === "pending") {
+      // console.log("formError", err);
+      if (
+        err === "pending" ||
+        (err && err.message && err.message === "pending")
+      ) {
         return props.dispatch(updatePage(props.page + 2));
       }
 
-      // props.dispatch(showToast(`${err}`, "warning", ""));
-
       setSubmitting(false);
-      setStatus(err);
+      setStatus(err && err.message ? err.message : err);
     }
   },
   displayName: "FutureCash",

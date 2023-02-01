@@ -9,7 +9,7 @@ import styles from "../../helper/layout/styling/sendpage/TokenSelect.module.css"
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { createBlockTime } from "../../../minima/rpc-commands";
 import MiSelect from "../../helper/layout/MiSelect";
-import { InputLabel, InputWrapper } from "./InputWrapper";
+import { InputHelper, InputLabel, InputWrapper } from "./InputWrapper";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { Stack } from "@mui/system";
 
@@ -129,6 +129,48 @@ const TokenTimeSelection = (props: any) => {
           onChange={handleChange}
           onBlur={handleBlur}
         />
+      </InputWrapper>
+      <InputWrapper>
+        <InputLabel>Burn</InputLabel>
+        <TextField
+          id="burn"
+          name="burn"
+          placeholder="Burn"
+          inputProps={{
+            autoComplete: "burn",
+          }}
+          type="text"
+          value={values.burn}
+          helperText={dirty && errors.burn}
+          error={touched.burn && Boolean(errors.burn)}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        <InputHelper>
+          Prioritize your transaction by adding a burn. Burn amounts are
+          denominated in Minima only.
+        </InputHelper>
+      </InputWrapper>
+      <InputWrapper>
+        <InputLabel>Vault Password</InputLabel>
+        <TextField
+          id="password"
+          name="password"
+          placeholder="Vault Password"
+          inputProps={{
+            autoComplete: "new-password",
+          }}
+          type="password"
+          value={values.password}
+          helperText={dirty && errors.password}
+          error={touched.password && Boolean(errors.password)}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        <InputHelper>
+          If your database (vault) is locked, use the password here otherwise
+          ignore this
+        </InputHelper>
       </InputWrapper>
       <Button
         className={styles["btn"]}
