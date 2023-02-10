@@ -1,0 +1,23 @@
+
+
+.copyContainer {
+  display: flex!important;
+  flex-direction: row!important;
+  justify-content: space-between;
+  align-items: center!important;
+  border-bottom: 1px solid #d3d3d8;
+  padding-bottom: 8px;
+}
+.copyContainer h5, .copyContainer p {
+  display: inline;
+}
+.copyContainer div {
+  border-bottom: none!important; 
+}
+.pt-8 {
+  margin-top: 8px!important;
+}
+
+.copyContainer svg {
+  cursor: pointer;
+}

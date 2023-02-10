@@ -45,12 +45,6 @@ var MDS = {
     var host = window.location.hostname;
     var port = Math.floor(window.location.port);
 
-    if (MDS.logging) {
-      MDS.log("Location : " + window.location);
-      MDS.log("Host     : " + host);
-      MDS.log("port     : " + port);
-    }
-
     //Get ther MiniDAPP UID
     MDS.minidappuid = MDS.form.getParams("uid");
 
@@ -69,10 +63,6 @@ var MDS = {
     //Is one specified..
     if (MDS.minidappuid == "0x00") {
       MDS.log("No MiniDAPP UID specified.. using test value");
-    }
-
-    if (MDS.logging) {
-      MDS.log("MDS UID  : " + MDS.minidappuid);
     }
 
     //The ports..
@@ -125,14 +115,146 @@ var MDS = {
   },
 
   /**
-   * Form GET / POST parameters..
+   * Network Commands
+   */
+  net: {
+    /**
+     * Make a GET request
+     */
+    GET: function (url, callback) {
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "net?" + "uid=" + MDS.minidappuid,
+        url,
+        callback
+      );
+    },
+
+    /**
+     * Make a POST request
+     */
+    POST: function (url, data, callback) {
+      //Create the sinlg eline version..
+      var postline = url + "&" + data;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "netpost?" + "uid=" + MDS.minidappuid,
+        postline,
+        callback
+      );
+    },
+  },
+
+  /**
+   * COMMS - send a message to ALL minidapps or JUST your own service.js
+   */
+  comms: {
+    /**
+     * PUBLIC message broadcast to ALL (callback is optional)
+     */
+    broadcast: function (msg, callback) {
+      //Create the single line
+      var commsline = "public&" + msg;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "comms?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
+     * PRIVATE message send just to this MiniDAPP (callback is optional)
+     */
+    solo: function (msg, callback) {
+      //Create the single line
+      var commsline = "private&" + msg;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "comms?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+  },
+
+  /**
+   * File access
+   */
+  file: {
+    /**
+     * List file in a folder .. start at /
+     */
+    list: function (folder, callback) {
+      //Create the single line
+      var commsline = "list&" + folder;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
+     * Save text - can be text, a JSON in string format or hex encoded data
+     */
+    save: function (filename, text, callback) {
+      //Create the single line
+      var commsline = "save&" + filename + "&" + text;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
+     * Load text - can be text, a JSON in string format or hex encoded data
+     */
+    load: function (filename, callback) {
+      //Create the single line
+      var commsline = "load&" + filename;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
+     * Delete a file
+     */
+    delete: function (filename, callback) {
+      //Create the single line
+      var commsline = "delete&" + filename;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+  },
+
+  /**
+   * Utility function for GET parameters..
    */
   form: {
     //Return the GET parameter by scraping the location..
     getParams: function (parameterName) {
       var result = null,
         tmp = [];
-      var items = location.search.substr(1).split("&");
+      var items = window.location.search.substr(1).split("&");
       for (var index = 0; index < items.length; index++) {
         tmp = items[index].split("=");
         //console.log("TMP:"+tmp);
@@ -157,8 +279,8 @@ var PollCounter = 0;
 var PollSeries = 0;
 function PollListener() {
   //The POLL host
-  pollhost = MDS.mainhost + "poll?" + "uid=" + MDS.minidappuid;
-  polldata = "series=" + PollSeries + "&counter=" + PollCounter;
+  var pollhost = MDS.mainhost + "poll?" + "uid=" + MDS.minidappuid;
+  var polldata = "series=" + PollSeries + "&counter=" + PollCounter;
 
   httpPostAsyncPoll(pollhost, polldata, function (msg) {
     //Are we on the right Series..
@@ -225,27 +347,27 @@ function httpPostAsync(theUrl, params, callback) {
  * @returns
  */
 /*function httpGetAsync(theUrl, callback)
-{	
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-        	if(MDS.logging){
-				console.log("RPC      : "+theUrl);
-				console.log("RESPONSE : "+xmlHttp.responseText);
-			}
-
-			//Always a JSON ..
-        	var rpcjson = JSON.parse(xmlHttp.responseText);
-        	
-        	//Send it to the callback function..
-        	if(callback){
-        		callback(rpcjson);
-        	}
-        }
-    }
-	xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-    xmlHttp.send(null);
-}*/
+ {	
+     var xmlHttp = new XMLHttpRequest();
+     xmlHttp.onreadystatechange = function() { 
+         if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+           if(MDS.logging){
+         console.log("RPC      : "+theUrl);
+         console.log("RESPONSE : "+xmlHttp.responseText);
+       }
+ 
+       //Always a JSON ..
+           var rpcjson = JSON.parse(xmlHttp.responseText);
+           
+           //Send it to the callback function..
+           if(callback){
+             callback(rpcjson);
+           }
+         }
+     }
+   xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+     xmlHttp.send(null);
+ }*/
 
 function httpPostAsyncPoll(theUrl, params, callback) {
   //Do we log it..

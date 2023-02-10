@@ -1,0 +1,11 @@
+.root {
+  position: relative;
+}
+
+.root * {
+  margin: 0 2px;
+}
+.mi__slide {
+  display: flex;
+  flex-direction: column;
+}

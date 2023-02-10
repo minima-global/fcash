@@ -1,0 +1,42 @@
+.carousel__container {
+  position: relative;
+  height: 100%;
+  width: 100vw;
+  padding: 0;
+  overflow-x: scroll;
+  --slide-count: 5;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.carousel__wrapper {
+  width: calc(100% * var(--slide-count));
+  display: flex;
+}
+
+.slide {
+  scroll-snap-align: start;
+  width: 100vw;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.slide svg {
+  /* keep a nice height according to the size of screen */
+  height: 35vh;
+  object-fit: cover;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.carousel__container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.carousel__container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

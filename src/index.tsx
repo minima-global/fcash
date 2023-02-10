@@ -11,7 +11,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { CssBaseline } from "@mui/material";
 
-import MiSnackBar from "./components/MiSnackBar";
+import MiSnackBar from "./components/helper/layout/MiSnackBar";
 
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";

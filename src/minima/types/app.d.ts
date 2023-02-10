@@ -1,6 +1,6 @@
 /**
  * (coinid: string, address: string, amount: string, tokenid: string, publickey: string) => Promise<string | boolean>
- * 
+ *
  */
 interface IFutureCashCollection {
   coinid: string;
@@ -12,7 +12,11 @@ interface IFutureCashPost {
   amount: string;
   scriptAddress: string;
   tokenid: string;
-  state1: number;
-  state2: string;
+  state1: number; // future in block time
+  state2: string; // address to be collected
+  state3: number; // future in ms
+  state4: number; // calculated future block time - current block time
+  password?: string;
+  burn?: string;
 }
-export {IFutureCashCollection, IFutureCashPost};
+export { IFutureCashCollection, IFutureCashPost };

@@ -110,7 +110,7 @@ interface NFT {
   }
 
 interface MinimaToken {
-    token: string | CustomTokenJson | NFT;
+    token: any;
     coins: string;
     tokenid: string;
     confirmed: string;
@@ -183,6 +183,8 @@ interface Coin {
     tokenid: string;
     floating: boolean;
     storestate: boolean;
+    created: number;
+    mmrentry: string;
     state: State[];
     token?: any;
     tokenamount?: string;

@@ -1,0 +1,13 @@
+@keyframes slidein {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: 70vh;
+  }
+}
+
+.slideIn {
+  animation: 0.5s alternate slidein;
+}

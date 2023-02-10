@@ -29,6 +29,16 @@ code {
   src: url('./assets/fonts/manrope/Manrope-SemiBold.ttf');
 }
 
+.App-content {
+  margin: 32px 20.5px;
+}
 .App {
-  margin: 22px 16px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pb-50 {
+  padding-bottom: 50px;
 }
