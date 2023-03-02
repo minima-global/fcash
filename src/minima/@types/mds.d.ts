@@ -10,6 +10,9 @@ declare namespace MDS {
   function cmd(command: string, callback: (data: any) => void);
   function sql(query: string, callback: (data: any) => void);
   let file: any;
-  interface form {getParams: (param: string) => void}
+  interface form {
+    getParams: (param: string) => void;
+  }
   let net: any;
+  let util: any;
 }

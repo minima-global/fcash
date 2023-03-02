@@ -23,9 +23,8 @@ import styles from "./FutureCoins.module.css";
 import moment from "moment";
 import { mergeArray } from "../../../utils";
 import Decimal from "decimal.js";
-import MiFutureNoResults from "../../helper/layout/svgs/MiFutureNoResults";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Coin, MinimaToken } from "../../../minima/types/minima";
+import { Coin, MinimaToken } from "../../../minima/@types/minima";
 import { collectFutureCash } from "../../../minima/rpc-commands";
 import {
   selectPageSelector,
@@ -128,12 +127,17 @@ const FutureCoins = () => {
   const toggle = (i: number) => setTabOpenIndex(i);
 
   const filterForPending = (c: Coin & MinimaToken) => {
-    return new Decimal(chainHeight).lessThan(new Decimal(c.state[0].data));
+    const endOfContractBlockHeight = MDS.util.getStateVariable(c, 1);
+
+    return new Decimal(chainHeight).lessThan(
+      new Decimal(endOfContractBlockHeight)
+    );
   };
 
   const filterForReady = (c: Coin & MinimaToken) => {
+    const endOfContractBlockHeight = MDS.util.getStateVariable(c, 1);
     return new Decimal(chainHeight).greaterThanOrEqualTo(
-      new Decimal(c.state[0].data)
+      new Decimal(endOfContractBlockHeight)
     );
   };
 
@@ -205,21 +209,23 @@ const FutureCoins = () => {
                       </MiCoinAmount>
                     </Stack>
                   </Stack>
-                  <MiUnlockDate>
-                    {c.state[2] ? (
+                  {c.state.length && (
+                    <MiUnlockDate>
                       <>
-                        {moment(new Decimal(c.state[2].data).toNumber()).format(
-                          "MMM Do, YY"
-                        )}{" "}
+                        {moment(
+                          new Decimal(
+                            MDS.util.getStateVariable(c, 3)
+                          ).toNumber()
+                        ).format("MMM Do, YY")}{" "}
                         <br />
-                        {moment(new Decimal(c.state[2].data).toNumber()).format(
-                          "H:mm A"
-                        )}
+                        {moment(
+                          new Decimal(
+                            MDS.util.getStateVariable(c, 3)
+                          ).toNumber()
+                        ).format("H:mm A")}
                       </>
-                    ) : (
-                      "Unavailable"
-                    )}
-                  </MiUnlockDate>
+                    </MiUnlockDate>
+                  )}
                 </MiFutureCoin>
               ))}
             </MiFutureContainer>
@@ -263,15 +269,11 @@ const FutureCoins = () => {
                         // dispatch a flag on the coin being collected.
                         dispatch(flagCoinCollection(c.coinid)); // flag this coin as being collected
                         dispatch(updatePendingStatus(true)); // there are pending collection coins in our balance
-                        // console.log(`COLLECTING TKN WITH ${c.amount}`);
 
-                        // if (typeof c.amount == "string") {
-                        //   console.log("AMOUNT IS STRING");
-                        // }
                         try {
                           await collectFutureCash({
                             coinid: c.coinid,
-                            address: c.state[1].data,
+                            address: MDS.util.getStateVariable(c, 2),
                             tokenid: c.tokenid,
                             amount:
                               c.tokenid == "0x00" ? c.amount : c.tokenamount,

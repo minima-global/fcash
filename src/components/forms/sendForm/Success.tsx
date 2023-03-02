@@ -28,36 +28,40 @@ const Success = (props: any) => {
 
   return (
     <MiColoredOverlay color="white">
-      {relevantAddress ? (
-        <MiConfirmationSuccessMyAddress width={290} height={190} />
-      ) : (
-        <MiConfirmationSuccessOtherAddress width={183} height={195} />
-      )}
-      <MiHeader>
-        Funds <br /> successfully sent
-      </MiHeader>
-      {relevantAddress ? (
-        <MiContent>
-          You can find your contract in the Future screen, where it will remain
-          in pending status until it is ready to be collected.
-        </MiContent>
-      ) : (
-        <MiContent>
-          Please now inform your recipient that they can find the contract in
-          the Future screen in their FutureCash MiniDapp.
-        </MiContent>
-      )}
-      <Button
-        onClick={() => {
-          resetForm();
-          dispatch(updatePage(page - 2));
-        }}
-        color="secondary"
-        fullWidth
-        variant="contained"
-      >
-        Close
-      </Button>
+      <Stack spacing={5}>
+        <Stack alignItems="center">
+          {relevantAddress ? (
+            <MiConfirmationSuccessMyAddress width={290} height={190} />
+          ) : (
+            <MiConfirmationSuccessOtherAddress width={183} height={195} />
+          )}
+          <MiHeader>
+            Funds <br /> successfully sent
+          </MiHeader>
+          {relevantAddress ? (
+            <MiContent>
+              You can find your contract in the Future screen, where it will
+              remain in pending status until it is ready to be collected.
+            </MiContent>
+          ) : (
+            <MiContent>
+              Please now inform your recipient that they can find the contract
+              in the Future screen in their FutureCash MiniDapp.
+            </MiContent>
+          )}
+        </Stack>
+        <Button
+          onClick={() => {
+            resetForm();
+            dispatch(updatePage(page - 2));
+          }}
+          color="secondary"
+          fullWidth
+          variant="contained"
+        >
+          Close
+        </Button>
+      </Stack>
     </MiColoredOverlay>
   );
 };

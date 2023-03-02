@@ -1,7 +1,6 @@
 import { FlaggedCoin } from "./../redux/slices/minima/coinSlice";
-import { IFutureCashCollection, IFutureCashPost } from "./types/app";
-import { Coin, IScript, MinimaToken, Status } from "./types/minima";
-import { IGetAddress } from "./types/rpc";
+import { IFutureCashCollection, IFutureCashPost } from "./@types/app";
+import { Coin, IScript, MinimaToken, Status } from "./@types/minima";
 import moment, { Moment } from "moment";
 import Decimal from "decimal.js";
 import { futureCashScript } from "./scripts";
@@ -102,49 +101,31 @@ const loadFileMetaData = (_f: string): Promise<MDSFileMetaData> => {
   });
 };
 
-/** Rpc cmd */
-
 const rpc = (command: string): Promise<any> => {
   return new Promise((resolve, reject) => {
-    MDS.cmd(command, (resp: any) => {
-      // console.log(resp);
+    MDS.cmd(command, (res) => {
+      const multiResponse = res.length > 1;
+      if (!multiResponse && !res.status) {
+        reject(res.error ? res.error : "RPC Failed");
+      }
 
-      if (resp.length > 0) {
-        //console.log(`multi command activity.`);
-        let success = true;
-        let error = "";
-        resp.forEach((r: any) => {
+      if (multiResponse) {
+        res.map((r: any) => {
+          if (!r.status && r.pending) {
+            reject("pending");
+          }
           if (!r.status) {
-            success = false;
-            error = r.error;
-            return;
+            const error = r.error
+              ? r.error
+              : r.message
+              ? r.message
+              : `${r.command} failed`;
+            reject(error);
           }
         });
-
-        if (success) {
-          resolve(resp[resp.length - 1].response);
-        } else {
-          reject(error);
-        }
       }
 
-      if (resp.status && !resp.pending) {
-        resolve(resp.response);
-      }
-
-      if (!resp.status && resp.pending) {
-        reject("pending");
-      }
-
-      if (!resp.status && !resp.pending) {
-        reject(
-          resp.message
-            ? resp.message
-            : resp.error
-            ? resp.error
-            : `RPC ${command} has failed to fire off, please open this as an issue on Minima's official repo!`
-        );
-      }
+      resolve(res.response);
     });
   });
 };
@@ -330,9 +311,9 @@ const sendFutureCash = async (fCash: IFutureCashPost): Promise<object> => {
         fCash.tokenid
       } ${hasBurn ? "burn:" + hasBurn : ""} ${
         hasPassword ? "password:" + hasPassword : ""
-      } state:{"1": "${fCash.state1}", "2":"${fCash.state2}", "3":"${
-        fCash.state3
-      }", "4": "${fCash.state4}"}`
+      } state:{"0": "0xFF","1": "${fCash.state1}", "2":"${
+        fCash.state2
+      }", "3":"${fCash.state3}", "4": "${fCash.state4}"}`
     );
   } catch (err: any) {
     throw new Error(err);

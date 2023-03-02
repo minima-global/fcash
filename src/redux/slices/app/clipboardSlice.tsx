@@ -13,7 +13,7 @@ export const setClipboardStatus =
   async (dispatch) => {
     // change page
     dispatch(updateStatus(s));
-    console.log(`dispatching.. copy..`);
+    // console.log(`dispatching.. copy..`);
     setTimeout(() => {
       dispatch(updateStatus(!s));
     }, 1500);

@@ -18,9 +18,11 @@ import {
   selectPageSelector,
   updatePage,
 } from "../../../redux/slices/app/sendFormSlice";
-import { MinimaToken } from "../../../minima/types/minima";
+import { MinimaToken } from "../../../minima/@types/minima";
 import Decimal from "decimal.js";
 import Pending from "./Pending";
+
+import * as RPC from "../../../minima/commands";
 
 // precision to 64 decimal places
 Decimal.set({ precision: 64 });
@@ -148,21 +150,25 @@ const MyEnhancedTransitionalFormHandler = withFormik<
       const blocktime = await createBlockTime(dt.datetime);
       const scriptAddress = await getFutureCashScriptAddress();
       const difference = await getBlockDifference(blocktime);
+      const stateVars = [
+        { port: 1, data: blocktime },
+        { port: 2, data: dt.address },
+        { port: 3, data: dt.datetime.valueOf() },
+        { port: 4, data: difference },
+      ];
 
       if (dt.token == undefined) {
         return setFieldError("token", "Please select a token");
       }
-      await sendFutureCash({
-        amount: dt.amount,
-        scriptAddress: scriptAddress,
-        tokenid: dt.token.tokenid,
-        state1: blocktime,
-        state2: dt.address,
-        state3: dt.datetime.valueOf(),
-        state4: difference,
-        burn: dt.burn,
-        password: dt.password,
-      });
+
+      await RPC.createFutureCashTransaction(
+        dt.amount,
+        scriptAddress,
+        dt.token.tokenid,
+        stateVars,
+        dt.password.length ? dt.password : false,
+        dt.burn.length ? dt.burn : false
+      );
 
       props.dispatch(updatePage(props.page + 1));
     } catch (err: any) {

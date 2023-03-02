@@ -2,7 +2,7 @@ import { Decimal } from "decimal.js";
 import { showToast } from "./../app/toastSlice";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AppThunk, RootState } from "../../store";
-import { Coin } from "../../../minima/types/minima";
+import { Coin } from "../../../minima/@types/minima";
 import {
   getFutureCashScriptAddress,
   getFutureCoins,

@@ -91,6 +91,25 @@ var MDS = {
   },
 
   /**
+   * Notify the User - on Phone it pops up in status bar. On desktop appears in Logs
+   */
+  notify: function (output) {
+    //Send via POST
+    httpPostAsync(MDS.mainhost + "notify?" + "uid=" + MDS.minidappuid, output);
+  },
+
+  /**
+   * Cancel this MiniDAPPs notification
+   */
+  notifycancel: function () {
+    //Send via POST
+    httpPostAsync(
+      MDS.mainhost + "notifycancel?" + "uid=" + MDS.minidappuid,
+      "*"
+    );
+  },
+
+  /**
    * Runs a function on the Minima Command Line - same format as MInima
    */
   cmd: function (command, callback) {
@@ -216,11 +235,41 @@ var MDS = {
     },
 
     /**
+     * Save Binary Data - supply as a HEX string
+     */
+    savebinary: function (filename, hexdata, callback) {
+      //Create the single line
+      var commsline = "savebinary&" + filename + "&" + hexdata;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
      * Load text - can be text, a JSON in string format or hex encoded data
      */
     load: function (filename, callback) {
       //Create the single line
       var commsline = "load&" + filename;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
+     * Load Binary data - returns the HEX data
+     */
+    loadbinary: function (filename, callback) {
+      //Create the single line
+      var commsline = "loadbinary&" + filename;
 
       //Send via POST
       httpPostAsync(
@@ -244,10 +293,70 @@ var MDS = {
         callback
       );
     },
+
+    /**
+     * Get the full path - if you want to run a command on the file / import a txn / unsigned txn etc
+     */
+    getpath: function (filename, callback) {
+      //Create the single line
+      var commsline = "getpath&" + filename;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
+     * Make a directory
+     */
+    makedir: function (filename, callback) {
+      //Create the single line
+      var commsline = "makedir&" + filename;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
+     * Copy a file
+     */
+    copy: function (filename, newfilename, callback) {
+      //Create the single line
+      var commsline = "copy&" + filename + "&" + newfilename;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
+
+    /**
+     * Move a file
+     */
+    move: function (filename, newfilename, callback) {
+      //Create the single line
+      var commsline = "move&" + filename + "&" + newfilename;
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "file?" + "uid=" + MDS.minidappuid,
+        commsline,
+        callback
+      );
+    },
   },
 
   /**
-   * Utility function for GET parameters..
+   * Function for GET parameters..
    */
   form: {
     //Return the GET parameter by scraping the location..
@@ -261,6 +370,66 @@ var MDS = {
         if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
       }
       return result;
+    },
+  },
+
+  /**
+   * UTILITY functions.. very useful
+   */
+  util: {
+    //Convert HEX to Base 64 - removes the 0x if necessary
+    hexToBase64(hexstring) {
+      //Check if starts with 0x
+      var thex = hexstring;
+      if (hexstring.startsWith("0x")) {
+        thex = hexstring.substring(2);
+      }
+
+      return btoa(
+        thex
+          .match(/\w{2}/g)
+          .map(function (a) {
+            return String.fromCharCode(parseInt(a, 16));
+          })
+          .join("")
+      );
+    },
+
+    //Convert Base64 to HEX
+    base64ToHex(str) {
+      const raw = atob(str);
+      let result = "";
+      for (let i = 0; i < raw.length; i++) {
+        const hex = raw.charCodeAt(i).toString(16);
+        result += hex.length === 2 ? hex : "0" + hex;
+      }
+      return result.toUpperCase();
+    },
+
+    //Convert Base64 to a Uint8Array - useful for Blobs
+    base64ToArrayBuffer(base64) {
+      var binary_string = window.atob(base64);
+      var len = binary_string.length;
+      var bytes = new Uint8Array(len);
+      for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+      }
+      return bytes.buffer;
+    },
+
+    //Return a state variable given the coin
+    getStateVariable(coin, port) {
+      //Get the state vars
+      var statvars = coin.state;
+      var len = statvars.length;
+      for (var i = 0; i < len; i++) {
+        var state = statvars[i];
+        if (state.port == port) {
+          return state.data;
+        }
+      }
+
+      return undefined;
     },
   },
 };
@@ -347,27 +516,27 @@ function httpPostAsync(theUrl, params, callback) {
  * @returns
  */
 /*function httpGetAsync(theUrl, callback)
- {	
-     var xmlHttp = new XMLHttpRequest();
-     xmlHttp.onreadystatechange = function() { 
-         if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-           if(MDS.logging){
-         console.log("RPC      : "+theUrl);
-         console.log("RESPONSE : "+xmlHttp.responseText);
-       }
- 
-       //Always a JSON ..
-           var rpcjson = JSON.parse(xmlHttp.responseText);
-           
-           //Send it to the callback function..
-           if(callback){
-             callback(rpcjson);
-           }
-         }
-     }
-   xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-     xmlHttp.send(null);
- }*/
+{	
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+        	if(MDS.logging){
+				console.log("RPC      : "+theUrl);
+				console.log("RESPONSE : "+xmlHttp.responseText);
+			}
+
+			//Always a JSON ..
+        	var rpcjson = JSON.parse(xmlHttp.responseText);
+        	
+        	//Send it to the callback function..
+        	if(callback){
+        		callback(rpcjson);
+        	}
+        }
+    }
+	xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+}*/
 
 function httpPostAsyncPoll(theUrl, params, callback) {
   //Do we log it..
