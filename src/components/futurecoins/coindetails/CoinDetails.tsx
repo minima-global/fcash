@@ -60,7 +60,7 @@ const CoinDetails = () => {
   const chainHeight = useAppSelector(selectChainHeight);
   const location = useLocation();
   const { state: coin } = location;
-  console.log("STATE", coin);
+
   return (
     <MiColoredOverlay color="white">
       {coin && (

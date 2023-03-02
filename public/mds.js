@@ -419,7 +419,6 @@ var MDS = {
 
     //Return a state variable given the coin
     getStateVariable(coin, port) {
-      console.log("Coin", coin);
       //Get the state vars
       var statvars = coin.state;
       var len = statvars.length;

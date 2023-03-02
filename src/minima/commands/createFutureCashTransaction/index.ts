@@ -14,7 +14,11 @@ export const createFutureCashTransaction = (
         burn ? `burn:${burn}` : ""
       }`,
       (res) => {
-        if (!res.status) reject(res.error ? res.error : "RPC Failed");
+        if (!res.status && !res.pending)
+          reject(
+            res.error ? res.error : res.message ? res.message : "RPC Failed"
+          );
+        if (!res.status && res.pending) reject("pending");
 
         resolve(true);
       }
