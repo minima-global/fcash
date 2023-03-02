@@ -56,109 +56,121 @@ const MiCoinDetailItem = ({
 };
 
 const CoinDetails = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const chainHeight = useAppSelector(selectChainHeight);
-
-  const [coinDetail, setCoinDetail] = React.useState<ICoinStatus | undefined>(
-    undefined
-  );
   const location = useLocation();
-
-  React.useEffect(() => {
-    setCoinDetail(location.state);
-  }, [dispatch, location]);
-
+  const { state: coin } = location;
+  console.log("STATE", coin);
   return (
     <MiColoredOverlay color="white">
-      {typeof coinDetail !== "undefined" ? (
+      {coin && (
         <>
           <MiOverlayDetailsContainer>
-            <MiCoinDetailItem
-              title="Token"
-              value={
-                typeof coinDetail.token == "string"
-                  ? coinDetail.token
-                  : coinDetail.token.name
-              }
-            />
-            <MiCoinDetailItem
-              title="Amount"
-              value={
-                coinDetail.tokenid == "0x00"
-                  ? coinDetail.amount
-                  : coinDetail.tokenamount
-              }
-            />
-            <MiCoinDetailItem title="Coin created" value={coinDetail.created} />
-            <MiCoinDetailItem
-              title="Current block height"
-              value={chainHeight}
-            />
-            <MiCoinDetailItem
-              title="Remaining blocks until unlock"
-              value={
-                coinDetail.state && coinDetail.state[2]
-                  ? new Decimal(coinDetail.state[0].data)
+            <Stack spacing={5}>
+              <Stack>
+                {coin.tokenid === "0x00" && (
+                  <MiCoinDetailItem title="Token" value={coin.token} />
+                )}
+                {coin.tokenid !== "0x00" && (
+                  <MiCoinDetailItem
+                    title="Token"
+                    value={coin.token.name ? coin.token.name : "N/A"}
+                  />
+                )}
+                {coin.tokenid === "0x00" && (
+                  <MiCoinDetailItem title="Amount" value={coin.amount} />
+                )}
+                {coin.tokenid !== "0x00" && (
+                  <MiCoinDetailItem title="Amount" value={coin.tokenamount} />
+                )}
+
+                <MiCoinDetailItem
+                  title="Coin's age since created"
+                  value={chainHeight - coin.created}
+                />
+
+                <MiCoinDetailItem
+                  title="Current block height"
+                  value={chainHeight}
+                />
+
+                {coin.state.length && (
+                  <MiCoinDetailItem
+                    title="Remaining blocks until unlock"
+                    value={new Decimal(MDS.util.getStateVariable(coin, 1))
                       .minus(chainHeight)
-                      .toNumber()
-                  : null
-              }
-            />
-            <MiCoinDetailItem
-              title="Coin age at unlock"
-              value={coinDetail.state[3].data}
-            />
-            <MiCoinDetailItem
-              title="Unlock block height"
-              value={coinDetail.state[0].data}
-            />
-            <MiCoinDetailItem
-              title="Approximate unlock date and time"
-              value={
-                coinDetail.state && coinDetail.state[2]
-                  ? moment(
-                      new Decimal(coinDetail.state[2].data)
-                        // .times(new Decimal(1000))
-                        .toNumber()
-                    ).format("MMM Do, YYYY H:mm A")
-                  : "Unavailable"
-              }
-            />
-            <MiCoinDetailItem
-              title="Coin assigned to address"
-              value={
-                coinDetail.state && coinDetail.state[1]
-                  ? coinDetail.state[1].data
-                  : "Unavailable"
-              }
-              copyable={true}
-              copyPayload={
-                coinDetail.state && coinDetail.state[1]
-                  ? coinDetail.state[1].data
-                  : "Unavailable"
-              }
-            />
-            <MiCoinDetailItem
-              title="Coin ID"
-              value={coinDetail.coinid}
-              copyable={true}
-              copyPayload={coinDetail.coinid}
-            />
+                      .toNumber()}
+                  />
+                )}
+
+                {coin.state.length && (
+                  <MiCoinDetailItem
+                    title="Coin age till unlock"
+                    value={
+                      MDS.util.getStateVariable(coin, 4)
+                        ? MDS.util.getStateVariable(coin, 4)
+                        : "N/A"
+                    }
+                  />
+                )}
+
+                {coin.state.length && (
+                  <MiCoinDetailItem
+                    title="Unlock block height"
+                    value={
+                      MDS.util.getStateVariable(coin, 1)
+                        ? MDS.util.getStateVariable(coin, 1)
+                        : "N/A"
+                    }
+                  />
+                )}
+
+                {coin.state.length && (
+                  <MiCoinDetailItem
+                    title="Approximate unlock date and time"
+                    value={moment(
+                      new Decimal(MDS.util.getStateVariable(coin, 3)).toNumber()
+                    ).format("MMM Do, YYYY H:mm A")}
+                  />
+                )}
+                {coin.state.length && (
+                  <MiCoinDetailItem
+                    title="Coin assigned to address"
+                    value={
+                      MDS.util.getStateVariable(coin, 2)
+                        ? MDS.util.getStateVariable(coin, 2)
+                        : "N/A"
+                    }
+                    copyable={true}
+                    copyPayload={
+                      MDS.util.getStateVariable(coin, 2)
+                        ? MDS.util.getStateVariable(coin, 2)
+                        : "N/A"
+                    }
+                  />
+                )}
+                <MiCoinDetailItem
+                  title="Coin ID"
+                  value={coin.coinid}
+                  copyable={true}
+                  copyPayload={coin.coinid}
+                />
+              </Stack>
+              <Button
+                variant="contained"
+                disableElevation
+                fullWidth
+                color="secondary"
+                onClick={() => navigate(-1)}
+              >
+                Close
+              </Button>
+            </Stack>
           </MiOverlayDetailsContainer>
-          <MiOverlayActionsContainer>
-            <Button
-              variant="contained"
-              disableElevation
-              fullWidth
-              color="secondary"
-              onClick={() => navigate(-1)}
-            >
-              Close
-            </Button>
-          </MiOverlayActionsContainer>
         </>
-      ) : null}
+      )}
+
+      {!coin && <div>Coin not found.</div>}
     </MiColoredOverlay>
   );
 };

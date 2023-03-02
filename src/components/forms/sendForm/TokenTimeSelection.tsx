@@ -13,8 +13,6 @@ import { InputHelper, InputLabel, InputWrapper } from "./InputWrapper";
 import { updatePage } from "../../../redux/slices/app/sendFormSlice";
 import { Stack } from "@mui/system";
 
-import moment from "moment";
-
 const TokenTimeSelection = (props: any) => {
   const walletTokens = useAppSelector(selectBalance);
   const [estimatedBlock, setEstimatedBlock] = React.useState(0);

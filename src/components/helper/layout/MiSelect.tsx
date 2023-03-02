@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 import styles from "./styling/sendpage/TokenSelect.module.css";
-import { MinimaToken } from "../../../minima/types/minima";
+import { MinimaToken } from "../../../minima/@types/minima";
 import React from "react";
 import MiDismiss from "./svgs/MiDismiss";
 import { Stack } from "@mui/system";

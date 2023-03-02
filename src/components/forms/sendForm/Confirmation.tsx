@@ -42,43 +42,47 @@ const Confirmation = (props: any) => {
   return (
     <>
       <MiColoredOverlay color="white">
-        <ConfirmationDetailList
-          tokenName={details.tokenName}
-          amount={details.amount}
-          datetime={details.datetime}
-          estimatedBlock={details.estimatedBlock}
-          tokenId={details.tokenId}
-          address={details.address}
-        />
-        <MiOverlayActionsContainer>
-          {status && (
-            <ErrorMessage>
-              <label>{status}</label>
-            </ErrorMessage>
-          )}
-          <Button
-            variant="contained"
-            color="secondary"
-            disableElevation
-            type="submit"
-            disabled={isSubmitting}
-          >
-            Confirm
-          </Button>
-          <Button
-            disabled={isSubmitting}
-            color="inherit"
-            className={styles["cancelBtn"]}
-            onClick={() => {
-              dispatch(updatePage(page - 1));
-              if (status) {
-                setStatus(undefined);
-              }
-            }}
-          >
-            Cancel
-          </Button>
-        </MiOverlayActionsContainer>
+        <Stack spacing={5}>
+          <Stack>
+            <ConfirmationDetailList
+              tokenName={details.tokenName}
+              amount={details.amount}
+              datetime={details.datetime}
+              estimatedBlock={details.estimatedBlock}
+              tokenId={details.tokenId}
+              address={details.address}
+            />
+          </Stack>
+          <MiOverlayActionsContainer>
+            {status && (
+              <ErrorMessage>
+                <label>{status}</label>
+              </ErrorMessage>
+            )}
+            <Button
+              variant="contained"
+              color="secondary"
+              disableElevation
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Confirm
+            </Button>
+            <Button
+              disabled={isSubmitting}
+              color="inherit"
+              className={styles["cancelBtn"]}
+              onClick={() => {
+                dispatch(updatePage(page - 1));
+                if (status) {
+                  setStatus(undefined);
+                }
+              }}
+            >
+              Cancel
+            </Button>
+          </MiOverlayActionsContainer>
+        </Stack>
       </MiColoredOverlay>
     </>
   );
