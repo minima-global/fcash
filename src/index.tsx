@@ -13,8 +13,7 @@ import { CssBaseline } from "@mui/material";
 
 import MiSnackBar from "./components/helper/layout/MiSnackBar";
 
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 
 const root = ReactDOM.createRoot(
@@ -22,7 +21,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
       <ThemeProvider theme={theme}>
         <Provider store={appStore}>
           <HashRouter>

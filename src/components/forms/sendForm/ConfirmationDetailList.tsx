@@ -1,3 +1,4 @@
+import { Stack } from "@mui/material";
 import { FC } from "react";
 
 import MiCopy from "../../helper/layout/svgs/MiCopy";
@@ -9,12 +10,10 @@ import {
   MiOverlayDetailsContainer,
 } from "../../helper/layout/MiOverlay";
 
-import { format } from "date-fns";
-
 export interface IConfirmationList {
   tokenName: string;
   amount: string;
-  datetime: Date;
+  datetime: moment.Moment;
   estimatedBlock: number;
   tokenId: string;
   address: string;
@@ -70,7 +69,7 @@ const ConfirmationDetailList: FC<IConfirmationList> = ({
       <MiTokenDetailItem title="Address" value={address}></MiTokenDetailItem>
       <MiTokenDetailItem
         title="Unlock date & time"
-        value={format(datetime, "d MMMM yyyy, hh:mm b")}
+        value={datetime.format("ddd MMM D YYYY, hh:mm:ss A")}
       ></MiTokenDetailItem>
       <MiTokenDetailItem
         title="Unlock blocktime"

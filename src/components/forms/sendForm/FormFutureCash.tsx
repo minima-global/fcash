@@ -2,9 +2,11 @@ import { Stack } from "@mui/material";
 import { withFormik, FormikProps } from "formik";
 import { useAppSelector } from "../../../redux/hooks";
 
+import moment from "moment";
 import {
   createBlockTime,
   getFutureCashScriptAddress,
+  sendFutureCash,
   getBlockDifference,
 } from "../../../minima/rpc-commands";
 import TokenTimeSelection from "./TokenTimeSelection";
@@ -18,10 +20,9 @@ import {
 } from "../../../redux/slices/app/sendFormSlice";
 import { MinimaToken } from "../../../minima/@types/minima";
 import Decimal from "decimal.js";
-import Pending from "./Pending/Pending";
+import Pending from "./Pending";
 
 import * as RPC from "../../../minima/commands";
-import { isDate } from "date-fns";
 
 // precision to 64 decimal places
 Decimal.set({ precision: 64 });
@@ -33,14 +34,10 @@ const formValidation = yup.object().shape({
     .mixed()
     .required("Field is required")
     .test("check-my-webvalidator", "Invalid datetime", function (val) {
-      const { path, createError } = this;
+      const { path, createError, parent } = this;
 
       if (val === undefined) {
         return false;
-      }
-
-      if (!isDate(val)) {
-        return createError({ path, message: "Please select a valid date" });
       }
 
       return createBlockTime(val)
@@ -79,7 +76,7 @@ const formValidation = yup.object().shape({
 
         return createError({
           path,
-          message: `Insufficient funds, you need another ${requiredAmount.toString()} ${
+          message: `Insufficient funds, you need another ${requiredAmount.toFixed()} ${
             typeof selectedToken.token == "string"
               ? selectedToken.token
               : typeof selectedToken.token == "object" &&
@@ -95,8 +92,8 @@ const formValidation = yup.object().shape({
   burn: yup.string().matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters."),
 });
 interface FormValues {
-  token?: MinimaToken;
-  datetime: any;
+  token: MinimaToken | undefined;
+  datetime: moment.Moment;
   address: string;
   amount: string;
   burn: string;
@@ -104,7 +101,7 @@ interface FormValues {
 }
 
 const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
-  const { handleSubmit } = props;
+  const { handleSubmit, status } = props;
   const sendFormSelector = useAppSelector(selectPageSelector);
 
   const formTransition = [
@@ -125,6 +122,7 @@ const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
 
 interface MyEnhancedFutureCashFormProps {
   initialToken: MinimaToken;
+  initialTime: moment.Moment;
   dispatch: AppDispatch;
   page: number;
 }
@@ -135,7 +133,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
   validationSchema: formValidation,
   mapPropsToValues: (props) => ({
     token: props.initialToken,
-    datetime: null,
+    datetime: props.initialTime,
     address: "",
     amount: "",
     burn: "",
@@ -149,8 +147,6 @@ const MyEnhancedTransitionalFormHandler = withFormik<
   ) => {
     setStatus(undefined);
     try {
-      if (!isDate(dt.datetime)) throw new Error("Not a date..");
-
       const blocktime = await createBlockTime(dt.datetime);
       const scriptAddress = await getFutureCashScriptAddress();
       const difference = await getBlockDifference(blocktime);
