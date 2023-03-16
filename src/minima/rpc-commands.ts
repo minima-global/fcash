@@ -132,32 +132,25 @@ const rpc = (command: string): Promise<any> => {
 
 /** Setup block time */
 
-const createBlockTime = async (
-  dateTimeChosenByUser: Moment
-): Promise<number> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      // get current time
-      const now = new Date().getTime();
-      const mNow = moment(now);
-      const currentBlockHeight = await getBlockTime();
-      const duration =
-        dateTimeChosenByUser.toDate().getTime() -
-        moment(mNow).toDate().getTime();
+const createBlockTime = async (dateTimeChosenByUser: Date) => {
+  try {
+    // get current time
+    const now = new Date().getTime();
+    const duration = dateTimeChosenByUser.getTime() - now;
+    const currentBlockHeight = await getBlockTime();
 
-      if (duration <= 0) {
-        throw new Error(
-          "You have to send cash to the future, not the present or the past."
-        );
-      }
-
-      const calculatedBlocktime = blockTimeCalculator(duration);
-
-      resolve(calculatedBlocktime.add(currentBlockHeight).round().toNumber());
-    } catch (err) {
-      reject(err);
+    if (duration <= 0) {
+      throw new Error(
+        "You have to send cash to the future, not the present or the past."
+      );
     }
-  });
+
+    const calculatedBlocktime = blockTimeCalculator(duration);
+
+    return calculatedBlocktime.add(currentBlockHeight).round().toNumber();
+  } catch (err) {
+    throw err;
+  }
 };
 
 /** Block Time Calculator */

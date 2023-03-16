@@ -1,8 +1,10 @@
-import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
-import MiPending from "../../helper/layout/svgs/MiPending";
-import { MiHeader, MiContent } from "../../helper/layout/MiOverlay";
+import MiColoredOverlay from "../../../helper/layout/MiColoredOverlay";
+import MiPending from "../../../helper/layout/svgs/MiPending";
+import { MiHeader, MiContent } from "../../../helper/layout/MiOverlay";
 import { Button, Stack } from "@mui/material";
-import { updatePage } from "../../../redux/slices/app/sendFormSlice";
+import { updatePage } from "../../../../redux/slices/app/sendFormSlice";
+
+import styles from "./Pending.module.css";
 
 const Pending = (props: any) => {
   const { page, resetForm, dispatch } = props;
@@ -16,13 +18,14 @@ const Pending = (props: any) => {
             Just one <br /> more thing
           </MiHeader>
           <MiContent>
-            Your action is now pending. You can accept/deny this action in the
-            pending transactions page. <br />
-            If you are on desktop, you can type <code>
-              mds action:pending
-            </code>{" "}
-            to list your pending transactions and then{" "}
-            <code>mds action:accept/deny uid:actionId</code>.
+            Your transaction is now pending. <br />
+            Click on the{" "}
+            <img
+              className={styles["pending-icon"]}
+              src="./assets/pendingTransaction.svg"
+            />{" "}
+            icon from the Home page to accept the transaction. If on Desktop,
+            select Pending Actions from your Minidapp hub.
           </MiContent>
         </Stack>
 
