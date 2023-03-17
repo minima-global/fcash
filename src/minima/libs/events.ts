@@ -43,6 +43,14 @@ interface NewBalanceResponse {
 interface NewBalanceData {
   // TODO
 }
+interface NewMDSFail {
+  event: "MDSFAIL";
+  data: {
+    command: string;
+    error: number;
+    params: string;
+  };
+}
 
 interface MaximaHosts {
   event: "MAXIMAHOSTS";
@@ -87,6 +95,9 @@ let whenMinimaLog = (d: MinimaLogData) => {
 let whenMDSTimer = (d: any) => {
   // console.log("MINIMA MDS TIMER event ... please register custom callback", d);
 };
+let whenFail = (d: any) => {
+  // console.log("MINIMA MDS TIMER event ... please register custom callback", d);
+};
 
 ///////////////////////////
 
@@ -94,7 +105,7 @@ const initializeMinima = () => {
   MDS.DEBUG_HOST = "127.0.0.1";
   MDS.DEBUG_PORT = 9003;
   MDS.DEBUG_MINIDAPPID =
-    "0x2F20585AB3397E27013C8AAD9152E2AA793C81EAB7279874B9F9F328E24EE9F8071E05F34A7FD0AE49A949B591AB9DECD86F1723153D06DE0BE101E15E83B7BA588612A03573B4E4485CF6B856F01D9ED322922E6296181B79ADF485E866504E98F97CF79A9D2CF28863AB872EE1932E3320377BEB760DE7EBA3B1570AB13AE5";
+    "0x962842607D6BAD13F1B3F2E7C576E02F5631422B2F0C79392D0EECDE2590B4D15878B4C12781EE79ECB67C8A940D7EFD049F8F3836C18F43215005E236BBC83FD170D868B1307147CEEF0F8D1944E216D77112628E4E4C919DB7E78126C7AB1F740193039103E548B7B7F286DE34E10BB1340A1C376D55B9B5B0FDF4C2780EAB";
 
   MDS.init(
     (
@@ -107,10 +118,15 @@ const initializeMinima = () => {
         | MaximaResponse
         | MDSTimerResponse
         | MaximaHosts
+        | NewMDSFail
     ) => {
       switch (nodeEvent.event) {
         case "inited":
           whenInit();
+          break;
+        case "MDSFAIL":
+          const errorData = nodeEvent.data;
+          whenFail(errorData);
           break;
         case "NEWBLOCK":
           const newBlockData = nodeEvent.data;
@@ -154,6 +170,9 @@ const initializeMinima = () => {
 function onNewBlock(callback: (data: NewBlockData) => void) {
   whenNewBlock = callback;
 }
+function onFail(callback: (data: NewMDSFail) => void) {
+  whenFail = callback;
+}
 
 function onMining(callback: (data: MiningData) => void) {
   whenMining = callback;
@@ -189,4 +208,5 @@ export const events = {
   onInit,
   onMinimaLog,
   onMDSTimer,
+  onFail,
 };

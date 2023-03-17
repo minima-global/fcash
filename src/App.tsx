@@ -36,6 +36,7 @@ import { selectMenuStateStatus } from "./redux/slices/app/menuSlice";
 
 import Menu from "./components/pages/menu/Menu";
 import { NoResults } from "./components/helper/layout/MiToken";
+import Unavailable from "./components/Unavailable";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -43,6 +44,7 @@ function App() {
   const routes = useRoutes(Routes);
   const [splashScreen, showSplashScreen] = React.useState(true);
   const [minimaStarted, setMinimaStarted] = React.useState(false);
+  const [MDSStatus, setMDSStatus] = React.useState(true);
 
   const displayChainHeightComponent = useAppSelector(selectDisplayChainHeight);
   const selectMenuStatus = useAppSelector(selectMenuStateStatus);
@@ -50,6 +52,10 @@ function App() {
   const firstTime = useAppSelector(selectFirstTime);
 
   React.useEffect(() => {
+    events.onFail(() => {
+      console.log("Failed!");
+      setMDSStatus(false);
+    });
     events.onInit(async () => {
       setMinimaStarted(true);
       dispatch(callAndStoreChainHeight());
@@ -75,30 +81,51 @@ function App() {
 
   return (
     <>
-      {displayChainHeightComponent ? <MiCurrentBlockOverlay /> : null}
-
-      {!!splashScreen && <SplashScreen />}
-
-      {!splashScreen && firstTime && introPage !== -1 && <Intro />}
-
-      {!(!splashScreen && firstTime && introPage !== -1) && (
-        <div className="App">
-          <Stack className="App-wrapper">
-            {!!selectMenuStatus && <Menu />}
-
-            <div className="App-content">
-              {!!minimaStarted && <>{routes}</>}
-
-              {!minimaStarted && (
-                <NoResults>
-                  <h6>Minima is offline</h6>
-                  <p>check your node status, or refresh this page.</p>
-                </NoResults>
-              )}
-            </div>
-            {!(firstTime && introPage !== -1) && <MiNavigation />}
+      {!MDSStatus && (
+        <Unavailable>
+          <Stack spacing={1} alignItems="center">
+            <img src="./assets/failed.svg" />
+            <Stack>
+              <NoResults>
+                <h6>MDS Unavailable</h6>
+                <p>
+                  Make sure you are logged into your MDS hub. Refresh this page
+                  and try again.
+                </p>
+              </NoResults>
+            </Stack>
           </Stack>
-        </div>
+        </Unavailable>
+      )}
+
+      {MDSStatus && (
+        <>
+          {displayChainHeightComponent ? <MiCurrentBlockOverlay /> : null}
+
+          {!!splashScreen && <SplashScreen />}
+
+          {!splashScreen && firstTime && introPage !== -1 && <Intro />}
+
+          {!(!splashScreen && firstTime && introPage !== -1) && (
+            <div className="App">
+              <Stack className="App-wrapper">
+                {!!selectMenuStatus && <Menu />}
+
+                <div className="App-content">
+                  {!!minimaStarted && <>{routes}</>}
+
+                  {!minimaStarted && (
+                    <NoResults>
+                      <h6>Minima is offline</h6>
+                      <p>check your node status, or refresh this page.</p>
+                    </NoResults>
+                  )}
+                </div>
+                {!(firstTime && introPage !== -1) && <MiNavigation />}
+              </Stack>
+            </div>
+          )}
+        </>
       )}
     </>
   );

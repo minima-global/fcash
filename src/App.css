@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 .App-wrapper {
-  overflow: scroll;
+  overflow: auto;
   padding-bottom: 48px;
 }
 @media (prefers-reduced-motion: no-preference) {

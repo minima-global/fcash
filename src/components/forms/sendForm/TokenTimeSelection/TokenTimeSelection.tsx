@@ -42,8 +42,10 @@ const TokenTimeSelection = (props: any) => {
     try {
       const userPrefersOwnAddress = e.target.value === "Own";
       if (userPrefersOwnAddress) {
+        setLoadingAddress(true);
         const address = await getAddress();
         setFieldValue("address", address);
+        setLoadingAddress(false);
       }
 
       if (!userPrefersOwnAddress) {
@@ -251,7 +253,10 @@ const TokenTimeSelection = (props: any) => {
             disabled={Boolean(errors.datetime) || Boolean(errors.token)}
             color="inherit"
             className={styles["cancel-btn"]}
-            onClick={() => resetForm()}
+            onClick={() => {
+              resetForm();
+              setEstimatedBlock(false);
+            }}
           >
             Clear
           </Button>
