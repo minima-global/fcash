@@ -1,5 +1,12 @@
-import React from "react";
-import { TextField, Button } from "@mui/material";
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Stack,
+} from "@mui/material";
 
 import { useAppSelector } from "../../../../redux/hooks";
 import { selectBalance } from "../../../../redux/slices/minima/balanceSlice";
@@ -9,16 +16,45 @@ import styles from "./TokenTimeSelection.module.css";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { createBlockTime } from "../../../../minima/rpc-commands";
 import MiSelect from "../../../helper/layout/MiSelect";
-import { InputHelper, InputLabel, InputWrapper } from "../InputWrapper";
+import {
+  InputHelper,
+  InputLabel,
+  InputWrapper,
+  InputWrapperRadio,
+} from "../InputWrapper";
 import { updatePage } from "../../../../redux/slices/app/sendFormSlice";
 import EstimatedBlock from "../EstimatedBlock";
-import { Formik } from "formik";
+import { getAddress } from "../../../../minima/commands";
 
 const TokenTimeSelection = (props: any) => {
   const walletTokens = useAppSelector(selectBalance);
+
+  const [preferredSelection, setPreffered] = useState<false | "Custom" | "Own">(
+    false
+  );
+  const [loadingAddress, setLoadingAddress] = useState(false);
   const [estimatedBlock, setEstimatedBlock] = React.useState<false | number>(
     false
   );
+
+  const handleAddressSelection = async (e: any) => {
+    setFieldValue("address", "");
+    try {
+      setPreffered(e.target.value);
+      const userPrefersOwnAddress = e.target.value === "Own";
+
+      if (userPrefersOwnAddress) {
+        setLoadingAddress(true);
+
+        const myAddress = await getAddress();
+        setFieldValue("address", myAddress);
+
+        setLoadingAddress(false);
+      }
+    } catch (error: any) {
+      setFieldError("address", error.message);
+    }
+  };
 
   const {
     values,
@@ -94,19 +130,51 @@ const TokenTimeSelection = (props: any) => {
         {!!estimatedBlock && <p>Estimated block: {estimatedBlock}</p>}
         {!estimatedBlock && <p>N/A</p>}
       </EstimatedBlock>
-      <InputWrapper>
+
+      <InputWrapperRadio>
         <InputLabel>Enter a wallet address</InputLabel>
-        <TextField
-          id="address"
-          name="address"
-          placeholder="Address"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          helperText={dirty && errors.address}
-          error={touched.address && Boolean(errors.address)}
-          value={values.address}
-        />
-      </InputWrapper>
+        {!preferredSelection && (
+          <RadioGroup id="radio-group" onChange={handleAddressSelection}>
+            <FormControlLabel
+              label="Use my Minima wallet address"
+              value="Own"
+              control={<Radio />}
+            ></FormControlLabel>
+            <FormControlLabel
+              value="Custom"
+              label="Use a different wallet address"
+              control={<Radio />}
+            ></FormControlLabel>
+          </RadioGroup>
+        )}
+        {preferredSelection && (
+          <Stack spacing={1} sx={{ p: 2 }}>
+            <InputWrapper>
+              <TextField
+                id="address"
+                name="address"
+                disabled={loadingAddress}
+                placeholder={
+                  loadingAddress ? "Getting you an address..." : "Address"
+                }
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={dirty && errors.address}
+                error={touched.address && Boolean(errors.address)}
+                value={values.address}
+              />
+            </InputWrapper>
+            <Button
+              onClick={() => setPreffered(false)}
+              variant="outlined"
+              color="inherit"
+            >
+              Back
+            </Button>
+          </Stack>
+        )}
+      </InputWrapperRadio>
+
       <InputWrapper>
         <InputLabel>Amount</InputLabel>
         <TextField

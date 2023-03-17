@@ -29,6 +29,7 @@ const formValidation = yup.object().shape({
   datetime: yup
     .date()
     .required("Field is required")
+    .typeError("Select a valid date and time")
     .test("datetime-check", "Invalid date", function (val) {
       const { path, createError } = this;
 

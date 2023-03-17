@@ -6,7 +6,7 @@ export const EstimatedBlock = styled("div")`
   background-color: #e5e5e5;
   height: 56px;
   > p {
-    padding: 8px;
+    padding: 0px 16px;
   }
 
   display: flex;
