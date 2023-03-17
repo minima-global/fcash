@@ -1,373 +1,373 @@
 interface RewardIncentiveCashUserRewards {
-    dailyRewards: number;
-    previousRewards: number;
-    communityRewards: number;
-    inviterRewards: number;
+  dailyRewards: number;
+  previousRewards: number;
+  communityRewards: number;
+  inviterRewards: number;
 }
 interface DetailIncentiveCashUserRewards {
-    inviteCode?: string;
-    lastPing?: string;
-    rewards?: RewardIncentiveCashUserRewards;
+  inviteCode?: string;
+  lastPing?: string;
+  rewards?: RewardIncentiveCashUserRewards;
 }
 export interface IncentiveCashUserRewards {
-    uid: string;
-    details?: DetailIncentiveCashUserRewards;
+  uid: string;
+  details?: DetailIncentiveCashUserRewards;
 }
 
 interface Status {
-    version: string;
-    devices: number;
+  version: string;
+  devices: number;
+  length: number;
+  locked: boolean;
+  weight: number;
+  configuration: string;
+  minima: number;
+  coins: number;
+  data: string;
+  memory: {
+    ram: string;
+    disk: string;
+    files: {
+      txpowdb: string;
+      archivedb: string;
+      cascade: string;
+      chaintree: string;
+      wallet: string;
+      userdb: string;
+      p2pdb: string;
+    };
+  };
+  chain: {
+    block: number;
+    time: string;
+    hash: string;
+    speed: string;
+    difficulty: string;
+    size: number;
     length: number;
     weight: number;
-    configuration: string;
-    minima: number;
-    coins: number;
-    data: string;
-    memory: {
-        ram: string;
-        disk: string;
-        files: {
-            txpowdb: string;
-            archivedb: string;
-            cascade: string;
-            chaintree: string;
-            wallet: string;
-            userdb: string;
-            p2pdb: string;
-        };
+    branches: number;
+    cascade: {
+      start: number;
+      length: number;
+      weight: string;
     };
-    chain: {
-        block: number;
-        time: string;
-        hash: string;
-        speed: string;
-        difficulty: string;
-        size: number;
-        length: number;
-        weight: number;
-        branches: number;
-        cascade: {
-            start: number;
-            length: number;
-            weight: string;
-        };
+  };
+  txpow: {
+    mempool: number;
+    ramdb: number;
+    txpowdb: number;
+    archivedb: number;
+  };
+  network: {
+    host: string;
+    hostset: boolean;
+    port: number;
+    connecting: number;
+    connected: number;
+    rpc: boolean;
+    p2p: {
+      address: string;
+      isAcceptingInLinks: boolean;
+      numInLinks: number;
+      numOutLinks: number;
+      numNotAcceptingConnP2PLinks: number;
+      numNoneP2PLinks: number;
+      numKnownPeers: number;
+      numAllLinks: number;
+      nio_inbound: number;
+      nio_outbound: number;
     };
-    txpow: {
-        mempool: number;
-        ramdb: number;
-        txpowdb: number;
-        archivedb: number;
-    };
-    network: {
-        host: string;
-        hostset: boolean;
-        port: number;
-        connecting: number;
-        connected: number;
-        rpc: boolean;
-        p2p: {
-            address: string;
-            isAcceptingInLinks: boolean;
-            numInLinks: number;
-            numOutLinks: number;
-            numNotAcceptingConnP2PLinks: number;
-            numNoneP2PLinks: number;
-            numKnownPeers: number;
-            numAllLinks: number;
-            nio_inbound: number;
-            nio_outbound: number;
-        };
-    };
+  };
 }
 
 interface NetworkPeer {
-    welcome: string;
-    uid: string;
-    incoming: boolean;
-    host: string;
-    port: number;
-    minimaport: number;
-    valid: true;
-    connected: string;
+  welcome: string;
+  uid: string;
+  incoming: boolean;
+  host: string;
+  port: number;
+  minimaport: number;
+  valid: true;
+  connected: string;
 }
 
 interface CustomTokenJson {
-    name: string;
-    description: string;
-    url: string;
-    webvalidate: string;
-    ticker: string;
+  name: string;
+  description: string;
+  url: string;
+  webvalidate: string;
+  ticker: string;
 }
 
 interface NFT {
-    name: string;
-    description?: string;
-    external_url?: string;
-    image: string;
-    owner: string;
-    nft: string;
-    webvalidate: string;
-  }
+  name: string;
+  description?: string;
+  external_url?: string;
+  image: string;
+  owner: string;
+  nft: string;
+  webvalidate: string;
+}
 
 interface MinimaToken {
-    token: any;
-    coins: string;
-    tokenid: string;
-    confirmed: string;
-    unconfirmed: string;
-    sendable: string;
-    total: string;
-  }
-  
+  token: any;
+  coins: string;
+  tokenid: string;
+  confirmed: string;
+  unconfirmed: string;
+  sendable: string;
+  total: string;
+}
 
 interface Token {
-    tokenid: string;
-    token: string;
-    total: string;
-    sendable: string;
-    unconfirmed: string;
-    confirmed: string;
-    decimals: string;
-    mempool: string;
-    coinid?: string;
-    totalamount?: string;
-    scale?: string;
-    description?: string;
-    icon?: string;
-    proof?: string;
-    script?: string;
+  tokenid: string;
+  token: string;
+  total: string;
+  sendable: string;
+  unconfirmed: string;
+  confirmed: string;
+  decimals: string;
+  mempool: string;
+  coinid?: string;
+  totalamount?: string;
+  scale?: string;
+  description?: string;
+  icon?: string;
+  proof?: string;
+  script?: string;
 }
 
 interface NetworkStatus {
-    version: string;
-    time: string;
-    uptime: string;
-    conf: string;
-    host: string;
-    minimaport: number;
-    rpcport: number;
-    websocketport: number;
-    minidappserver: number;
-    automine: boolean;
-    root: string;
-    tip: string;
-    total: string;
-    lastblock: number;
-    lasttime: string;
-    cascade: string;
-    difficulty: string;
-    txpowdb: number;
-    ram: string;
-    mempooltxn: number;
-    mempoolcoins: number;
-    chainspeed: number;
-    chainlength: number;
-    chainweight: string;
-    connections: number;
-    txpowfiles?: string;
-    txpowfolder?: string;
-    IBD?: string;
+  version: string;
+  time: string;
+  uptime: string;
+  conf: string;
+  host: string;
+  minimaport: number;
+  rpcport: number;
+  websocketport: number;
+  minidappserver: number;
+  automine: boolean;
+  root: string;
+  tip: string;
+  total: string;
+  lastblock: number;
+  lasttime: string;
+  cascade: string;
+  difficulty: string;
+  txpowdb: number;
+  ram: string;
+  mempooltxn: number;
+  mempoolcoins: number;
+  chainspeed: number;
+  chainlength: number;
+  chainweight: string;
+  connections: number;
+  txpowfiles?: string;
+  txpowfolder?: string;
+  IBD?: string;
 }
 
 interface Address {
-    script: string;
-    address: string;
-    miniaddress: string;
+  script: string;
+  address: string;
+  miniaddress: string;
 }
 
 interface Coin {
-    coinid: string;
-    address: string;
-    mxaddress: string;
-    amount: string;
-    tokenid: string;
-    floating: boolean;
-    storestate: boolean;
-    created: number;
-    mmrentry: string;
-    state: State[];
-    token?: any;
-    tokenamount?: string;
+  coinid: string;
+  address: string;
+  mxaddress: string;
+  amount: string;
+  tokenid: string;
+  floating: boolean;
+  storestate: boolean;
+  created: number;
+  mmrentry: string;
+  state: State[];
+  token?: any;
+  tokenamount?: string;
 }
 
 interface MMRProof {
-    blocktime: string;
-    entry: string;
-    data: {
-        hashonly: boolean;
-        value: string;
-        finalhash: string;
-        spent: boolean;
-        coin: Coin;
-    };
-    inblock: string;
-    prevstate: [];
+  blocktime: string;
+  entry: string;
+  data: {
+    hashonly: boolean;
+    value: string;
+    finalhash: string;
+    spent: boolean;
+    coin: Coin;
+  };
+  inblock: string;
+  prevstate: [];
 }
 
 interface PublicKey {
-    bits: number;
-    uses: string;
-    allowed: string;
-    publickey: string;
+  bits: number;
+  uses: string;
+  allowed: string;
+  publickey: string;
 }
 
 interface SignatureWitnessProof {
-    data: string;
-    hashbits: number;
-    proofchain: [];
-    chainsha: string;
-    finalhash: string;
+  data: string;
+  hashbits: number;
+  proofchain: [];
+  chainsha: string;
+  finalhash: string;
 }
 
 interface SignatureWitness {
-    signature: string;
-    proof: SignatureWitnessProof;
+  signature: string;
+  proof: SignatureWitnessProof;
 }
 
 interface Script {
-    script: string;
-    proof: Proof;
+  script: string;
+  proof: Proof;
 }
 
 interface Proof {
-    data: string;
-    hashbits: number;
-    proofchain: [];
-    chainsha: string;
-    finalhash: string;
+  data: string;
+  hashbits: number;
+  proofchain: [];
+  chainsha: string;
+  finalhash: string;
 }
 
 interface Witness {
-    signatures: SignatureWitness[];
-    mmrproofs: MMRProof[];
-    tokens: [];
-    scripts: Script[];
+  signatures: SignatureWitness[];
+  mmrproofs: MMRProof[];
+  tokens: [];
+  scripts: Script[];
 }
 
 interface Magic {
-    prng: string;
-    maxtxpow: number;
-    maxtxn: number;
-    maxkissvm: number;
+  prng: string;
+  maxtxpow: number;
+  maxtxn: number;
+  maxkissvm: number;
 }
 
 interface WitnessBurn {
-    signatures: [];
-    mmrproofs: [];
-    tokens: [];
-    scripts: [];
+  signatures: [];
+  mmrproofs: [];
+  tokens: [];
+  scripts: [];
 }
 
 interface TransactionBurn {
-    inputs: [];
-    outputs: [];
-    state: [];
-    linkhash: string;
+  inputs: [];
+  outputs: [];
+  state: [];
+  linkhash: string;
 }
 
 interface TransactionInput {
-    coinid: string;
-    address: string;
-    mxaddress: string;
-    amount: string;
-    tokenid: string;
-    floating: boolean;
-    storestate: boolean;
+  coinid: string;
+  address: string;
+  mxaddress: string;
+  amount: string;
+  tokenid: string;
+  floating: boolean;
+  storestate: boolean;
 }
 
 interface TransactionOutput {
-    coinid: string;
-    address: string;
-    mxaddress: string;
-    amount: string;
-    tokenid: string;
-    floating: boolean;
-    storestate: boolean;
+  coinid: string;
+  address: string;
+  mxaddress: string;
+  amount: string;
+  tokenid: string;
+  floating: boolean;
+  storestate: boolean;
 }
 
 interface Transaction {
-    inputs: TransactionInput[];
-    outputs: TransactionOutput[];
-    state: State[];
-    linkhash: string;
-    tokengen?: TokenGenerator;
+  inputs: TransactionInput[];
+  outputs: TransactionOutput[];
+  state: State[];
+  linkhash: string;
+  tokengen?: TokenGenerator;
 }
 
 interface TransactionBody {
-    txndiff: string;
-    txn: Transaction;
-    witness: Witness;
-    burntxn: TransactionBurn;
-    burnwitness: WitnessBurn;
-    txnlist: [];
-    magic: Magic;
+  txndiff: string;
+  txn: Transaction;
+  witness: Witness;
+  burntxn: TransactionBurn;
+  burnwitness: WitnessBurn;
+  txnlist: [];
+  magic: Magic;
 }
 
 interface SuperParents {
-    difficulty: number;
-    count: number;
-    parent: string;
+  difficulty: number;
+  count: number;
+  parent: string;
 }
 
 interface TransactionHeader {
-    block: string;
-    blkdiff: string;
-    cascadelevels: number;
-    superparents: SuperParents[];
-    chainid: string;
-    parentchainid: string;
-    mmr: string;
-    total: string;
-    mmrpeaks: string;
-    nonce: string;
-    timemilli: string;
-    date: string;
+  block: string;
+  blkdiff: string;
+  cascadelevels: number;
+  superparents: SuperParents[];
+  chainid: string;
+  parentchainid: string;
+  mmr: string;
+  total: string;
+  mmrpeaks: string;
+  nonce: string;
+  timemilli: string;
+  date: string;
 }
 
 interface Txpow {
-    txpowid: string;
-    isblock: boolean;
-    istransaction: boolean;
-    superblock: number;
-    size: number;
-    header: TransactionHeader;
-    hasbody: boolean;
-    body: TransactionBody;
+  txpowid: string;
+  isblock: boolean;
+  istransaction: boolean;
+  superblock: number;
+  size: number;
+  header: TransactionHeader;
+  hasbody: boolean;
+  body: TransactionBody;
 }
 
 interface Value {
-    token: string;
-    name: any;
-    amount: string;
+  token: string;
+  name: any;
+  amount: string;
 }
 /** if you run `scripts` */
 
 interface IScript {
-    script: string;
-    address: string;
-    miniaddress: string;
-    simple: boolean;
-    default: boolean;
-    publickey: string;
-    track: boolean;
+  script: string;
+  address: string;
+  miniaddress: string;
+  simple: boolean;
+  default: boolean;
+  publickey: string;
+  track: boolean;
 }
 
 interface TokenGenerator {
-    tokenid: string;
-    token: string;
-    description: string;
-    icon: string;
-    proof: string;
-    total: string;
-    decimals: string;
-    script: string;
-    coinid: string;
-    totalamount: string;
-    scale: string;
+  tokenid: string;
+  token: string;
+  description: string;
+  icon: string;
+  proof: string;
+  total: string;
+  decimals: string;
+  script: string;
+  coinid: string;
+  totalamount: string;
+  scale: string;
 }
 
 interface State {
-    port: number;
-    type: number;
-    data: string;
+  port: number;
+  type: number;
+  data: string;
 }

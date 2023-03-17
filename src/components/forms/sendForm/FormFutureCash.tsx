@@ -113,11 +113,7 @@ const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
   ];
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Stack spacing={2} mb={2}>
-        {formTransition[sendFormSelector.page]}
-      </Stack>
-    </form>
+    <form onSubmit={handleSubmit}>{formTransition[sendFormSelector.page]}</form>
   );
 };
 
@@ -134,6 +130,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
   mapPropsToValues: (props) => ({
     token: props.initialToken,
     datetime: null,
+    preferred: false,
     address: "",
     amount: "",
     burn: "",
