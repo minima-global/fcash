@@ -7,7 +7,7 @@ import {
   getFutureCashScriptAddress,
   getBlockDifference,
 } from "../../../minima/rpc-commands";
-import TokenTimeSelection from "./TokenTimeSelection";
+import TokenTimeSelection from "./TokenTimeSelection/TokenTimeSelection";
 import Confirmation from "./Confirmation";
 import Success from "./Success";
 import * as yup from "yup";
@@ -23,16 +23,13 @@ import Pending from "./Pending/Pending";
 import * as RPC from "../../../minima/commands";
 import { isDate } from "date-fns";
 
-// precision to 64 decimal places
 Decimal.set({ precision: 64 });
-// tokens in Minima are scaled maximum 36 decimal places
-
 const formValidation = yup.object().shape({
   token: yup.object().required("Field is required."),
   datetime: yup
-    .mixed()
+    .date()
     .required("Field is required")
-    .test("check-my-webvalidator", "Invalid datetime", function (val) {
+    .test("datetime-check", "Invalid date", function (val) {
       const { path, createError } = this;
 
       if (val === undefined) {
@@ -149,7 +146,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
   ) => {
     setStatus(undefined);
     try {
-      if (!isDate(dt.datetime)) throw new Error("Not a date..");
+      if (!isDate(dt.datetime)) throw new Error("Please enter a valid date..");
 
       const blocktime = await createBlockTime(dt.datetime);
       const scriptAddress = await getFutureCashScriptAddress();

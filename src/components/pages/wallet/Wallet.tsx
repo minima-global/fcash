@@ -4,7 +4,7 @@ import React from "react";
 import { MinimaToken } from "../../../minima/@types/minima";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
-import { containsText, numberWithCommas } from "../../../utils";
+import { containsText } from "../../../utils";
 import MiCard from "../../helper/layout/MiCard";
 
 import styles from "./Wallet.module.css";

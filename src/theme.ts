@@ -81,15 +81,6 @@ theme = createTheme(theme, {
         },
       },
     },
-    MuiCardContent: {
-      styleOverrides: {
-        root: {
-          "&:last-child": {
-            paddingBottom: 16,
-          },
-        },
-      },
-    },
     MuiFormHelperText: {
       styleOverrides: {
         root: {
@@ -210,14 +201,6 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           backgroundColor: "transparent",
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
-          paddingBottom: 0,
         },
       },
     },

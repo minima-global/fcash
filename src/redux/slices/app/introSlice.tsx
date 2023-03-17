@@ -1,10 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { FIRSTTIMETXT } from "../../../minima/constants";
-import {
-  getFirstTime,
-  loadFile,
-  loadFileMetaData,
-} from "../../../minima/rpc-commands";
+import { getFirstTime } from "../../../minima/rpc-commands";
 import { AppThunk, RootState } from "../../store";
 
 export interface IntroState {
@@ -22,7 +17,6 @@ export const setPage =
     dispatch(updatePage(page));
   };
 export const checkIfFirstTime = (): AppThunk => async (dispatch) => {
-  // let's check if file exists, if not create it
   try {
     const isUsersFirstTime = await getFirstTime();
     dispatch(updateFirstTime(isUsersFirstTime));

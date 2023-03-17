@@ -3,8 +3,8 @@ import styles from "./styling/Card.module.css";
 
 const MiCard = ({ children }: any) => {
   return (
-    <Card variant="outlined" className={styles["card"]}>
-      <CardContent className={styles["card"]}>{children}</CardContent>
+    <Card className={styles["card"]} variant="outlined">
+      <CardContent>{children}</CardContent>
     </Card>
   );
 };

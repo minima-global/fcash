@@ -24,14 +24,6 @@ const Intro = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  React.useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      // console.log("re-activating to scroll");
-      document.body.style.overflow = "auto";
-    };
-  }, [dispatch]);
-
   return (
     <MiColoredOverlay color="light-orange" center={true}>
       <MiSwipeableCarousel />

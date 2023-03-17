@@ -22,7 +22,7 @@ import {
   selectDisplayChainHeight,
 } from "./redux/slices/minima/statusSlice";
 
-import { Grid } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import MiNavigation from "./components/helper/layout/MiNavigation";
 import Intro from "./components/pages/intro/Intro";
 import SplashScreen from "./components/intro/SplashScreen";
@@ -35,19 +35,18 @@ import MiCurrentBlockOverlay from "./components/helper/layout/MiCurrentBlockOver
 import { selectMenuStateStatus } from "./redux/slices/app/menuSlice";
 
 import Menu from "./components/pages/menu/Menu";
+import { NoResults } from "./components/helper/layout/MiToken";
 
 function App() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const routes = useRoutes(Routes);
-
   const [splashScreen, showSplashScreen] = React.useState(true);
   const [minimaStarted, setMinimaStarted] = React.useState(false);
 
-  const introPage = useAppSelector(selectPageSelector);
   const displayChainHeightComponent = useAppSelector(selectDisplayChainHeight);
   const selectMenuStatus = useAppSelector(selectMenuStateStatus);
-
+  const introPage = useAppSelector(selectPageSelector);
   const firstTime = useAppSelector(selectFirstTime);
 
   React.useEffect(() => {
@@ -59,12 +58,7 @@ function App() {
       dispatch(getFlaggedCoins());
       dispatch(checkIfFirstTime());
       setTimeout(() => showSplashScreen(false), 2500);
-      // TO-DO check if first time or switched off intro
-      try {
-        await addFutureCashScript(futureCashScript, false);
-      } catch (error) {
-        // console.error(error);
-      }
+      await addFutureCashScript(futureCashScript, false);
       firstTime ? navigate("intro") : navigate("/send");
     });
 
@@ -74,7 +68,6 @@ function App() {
     });
 
     events.onNewBalance(() => {
-      // console.log(`new balance update`);
       dispatch(callAndStoreCoins());
       dispatch(callAndStoreWalletBalance());
     });
@@ -84,48 +77,28 @@ function App() {
     <>
       {displayChainHeightComponent ? <MiCurrentBlockOverlay /> : null}
 
-      {splashScreen ? (
-        <Grid container>
-          <Grid item xs={0} sm={2} />
-          <Grid item xs={12} sm={8}>
-            <SplashScreen />
-          </Grid>
-          <Grid item xs={0} sm={2} />
-        </Grid>
-      ) : firstTime && introPage !== -1 ? (
-        <Grid container>
-          <Grid item xs={0} sm={2} />
-          <Grid item xs={12} sm={8}>
-            <Intro />
-          </Grid>
-          <Grid item xs={0} sm={2} />
-        </Grid>
-      ) : (
-        <>
-          {/* the rest of the app */}
-          <div className="App">
-            <div className="pb-50">
-              {/* {firstTime && introPage !== -1 ? null : <MiHeader />} */}
-              {selectMenuStatus ? <Menu /> : null}
-              <div className="App-content">
-                {minimaStarted ? (
-                  <>
-                    <Grid container>
-                      <Grid item xs={0} sm={2} />
-                      <Grid item xs={12} sm={8}>
-                        {routes}
-                      </Grid>
-                      <Grid item xs={0} sm={2} />
-                    </Grid>
-                  </>
-                ) : (
-                  <div>not rendered</div>
-                )}
-              </div>
+      {!!splashScreen && <SplashScreen />}
+
+      {!splashScreen && firstTime && introPage !== -1 && <Intro />}
+
+      {!(!splashScreen && firstTime && introPage !== -1) && (
+        <div className="App">
+          <Stack className="App-wrapper">
+            {!!selectMenuStatus && <Menu />}
+
+            <div className="App-content">
+              {!!minimaStarted && <>{routes}</>}
+
+              {!minimaStarted && (
+                <NoResults>
+                  <h6>Minima is offline</h6>
+                  <p>check your node status, or refresh this page.</p>
+                </NoResults>
+              )}
             </div>
-            {firstTime && introPage !== -1 ? null : <MiNavigation />}
-          </div>
-        </>
+            {!(firstTime && introPage !== -1) && <MiNavigation />}
+          </Stack>
+        </div>
       )}
     </>
   );

@@ -102,12 +102,6 @@ const MiSelect = (props: any) => {
   const [filterWallet, setFilterWallet] = React.useState<MinimaToken[]>([]);
   const [filterText, setFilterText] = React.useState("");
 
-  if (isOpen) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "auto";
-  }
-
   const [selectedOption, setSelectedOption] =
     React.useState<MinimaToken | null>(null);
   const toggling = () => setOpen(!isOpen);

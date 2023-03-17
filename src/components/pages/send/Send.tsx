@@ -4,14 +4,12 @@ import MiCard from "../../helper/layout/MiCard";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectPageSelector } from "../../../redux/slices/app/sendFormSlice";
 import { selectBalance } from "../../../redux/slices/minima/balanceSlice";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
 
 const Send = () => {
   const dispatch = useAppDispatch();
-
-  const sendFormSelector = useAppSelector(selectPageSelector);
-
   const wallet = useAppSelector(selectBalance);
+  const sendFormSelector = useAppSelector(selectPageSelector);
 
   return (
     <>

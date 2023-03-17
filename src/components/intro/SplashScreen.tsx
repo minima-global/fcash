@@ -5,12 +5,6 @@ import MiFutureCashIcon from "../helper/layout/svgs/MiFutureCashIcon";
 import MiFutureCashIconRight from "../helper/layout/svgs/MiFutureCashIconRight";
 
 const SplashScreen = () => {
-  React.useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
   return (
     <MiColoredOverlay color="splash" center={true}>
       <Stack

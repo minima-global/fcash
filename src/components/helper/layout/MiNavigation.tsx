@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   selectMenuStateStatus,
   toggleState,
-  updateState,
 } from "../../../redux/slices/app/menuSlice";
 
 const MiNavigation = () => {
@@ -19,7 +18,6 @@ const MiNavigation = () => {
 
   const toggleNavigation = (page: string) => {
     navigate(page);
-    // close Menu
     dispatch(toggleState(false));
   };
 
