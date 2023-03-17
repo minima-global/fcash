@@ -1,13 +1,11 @@
-import { ICoinStatus } from "../../../redux/slices/minima/coinSlice";
 import { Button, Stack } from "@mui/material";
 import styles from "./CoinDetails.module.css";
 
 import {
-  MiOverlayActionsContainer,
   MiOverlayDetails,
   MiOverlayDetailsContainer,
 } from "../../helper/layout/MiOverlay";
-import moment from "moment";
+import { format } from "date-fns";
 import MiCopy from "../../helper/layout/svgs/MiCopy";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectClipboardSelector } from "../../../redux/slices/app/clipboardSlice";
@@ -85,11 +83,6 @@ const CoinDetails = () => {
                 )}
 
                 <MiCoinDetailItem
-                  title="Coin's age since created"
-                  value={chainHeight - coin.created}
-                />
-
-                <MiCoinDetailItem
                   title="Current block height"
                   value={chainHeight}
                 />
@@ -97,15 +90,36 @@ const CoinDetails = () => {
                 {coin.state.length && (
                   <MiCoinDetailItem
                     title="Remaining blocks until unlock"
-                    value={new Decimal(MDS.util.getStateVariable(coin, 1))
-                      .minus(chainHeight)
-                      .toNumber()}
+                    value={
+                      MDS.util.getStateVariable(coin, 1)
+                        ? new Decimal(MDS.util.getStateVariable(coin, 1))
+                            .minus(chainHeight)
+                            .toNumber()
+                        : "N/A"
+                    }
                   />
                 )}
 
                 {coin.state.length && (
                   <MiCoinDetailItem
-                    title="Coin age till unlock"
+                    title="Current coin age"
+                    value={
+                      MDS.util.getStateVariable(coin, 1) &&
+                      MDS.util.getStateVariable(coin, 4)
+                        ? new Decimal(MDS.util.getStateVariable(coin, 4))
+                            .minus(
+                              new Decimal(
+                                MDS.util.getStateVariable(coin, 1)
+                              ).minus(chainHeight)
+                            )
+                            .toNumber()
+                        : "N/A"
+                    }
+                  />
+                )}
+                {coin.state.length && (
+                  <MiCoinDetailItem
+                    title="Age of coin on unlock"
                     value={
                       MDS.util.getStateVariable(coin, 4)
                         ? MDS.util.getStateVariable(coin, 4)
@@ -128,9 +142,16 @@ const CoinDetails = () => {
                 {coin.state.length && (
                   <MiCoinDetailItem
                     title="Approximate unlock date and time"
-                    value={moment(
-                      new Decimal(MDS.util.getStateVariable(coin, 3)).toNumber()
-                    ).format("MMM Do, YYYY H:mm A")}
+                    value={
+                      MDS.util.getStateVariable(coin, 3)
+                        ? format(
+                            new Decimal(
+                              MDS.util.getStateVariable(coin, 3)
+                            ).toNumber(),
+                            "MMM do, yyyy hh:mm:ss aa"
+                          )
+                        : "N/A"
+                    }
                   />
                 )}
                 {coin.state.length && (

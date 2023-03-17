@@ -97,6 +97,8 @@ const MiNothingToSeeSubtitle = styled("p")`
 
 const MiUnlockButton = styled("button")`
   background: #16181c;
+  text-overflow: ellipsis;
+  overflow: hidden;
   border-radius: 6px;
   border: none;
   color: #fff;
@@ -222,7 +224,7 @@ const FutureCoins = () => {
                           new Decimal(
                             MDS.util.getStateVariable(c, 3)
                           ).toNumber()
-                        ).format("H:mm A")}
+                        ).format("hh:mm A")}
                       </>
                     </MiUnlockDate>
                   )}

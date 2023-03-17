@@ -1,6 +1,6 @@
 {
   "name": "fcash",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "private": true,
   "homepage": ".",
   "proxy": "http://localhost:9002",
@@ -38,7 +38,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:dapp": "npm run build && rm dapp/futurecash_* && cd build && zip -r futurecash_$npm_package_version.mds.zip . && mv futurecash_$npm_package_version.mds.zip ../dapp/",
+    "build:dapp": "npm run build && rm dapp/futurecash-* && cd build && zip -r futurecash-$npm_package_version.mds.zip . && mv futurecash-$npm_package_version.mds.zip ../dapp/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

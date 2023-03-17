@@ -111,6 +111,8 @@ function App() {
               <Stack className="App-wrapper">
                 {!!selectMenuStatus && <Menu />}
 
+                <div></div>
+
                 <div className="App-content">
                   {!!minimaStarted && <>{routes}</>}
 
@@ -121,8 +123,10 @@ function App() {
                     </NoResults>
                   )}
                 </div>
-                {!(firstTime && introPage !== -1) && <MiNavigation />}
+
+                <div></div>
               </Stack>
+              {!(firstTime && introPage !== -1) && <MiNavigation />}
             </div>
           )}
         </>

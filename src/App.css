@@ -4,11 +4,23 @@
 }
 .App {
   overflow: hidden;
+  
+
 }
 .App-wrapper {
   overflow: auto;
-  padding-bottom: 48px;
+  display: grid!important;
+  grid-template-columns: 1fr 2fr 1fr;
 }
+
+@media only screen and (max-width: 900px) {
+  .App-wrapper {
+    grid-template-columns: 4fr;
+  } 
+}
+
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
