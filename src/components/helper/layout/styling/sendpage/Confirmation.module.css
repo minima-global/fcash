@@ -12,7 +12,6 @@
 }
 .confirmationDetailList div h5 {
   margin: 0;
-  font-family: Manrope-regular;
   font-size: 14px;
   font-weight: 700;
   line-height: 21px;
@@ -23,7 +22,7 @@
 }
 .confirmationDetailList div p {
   margin: 0;
-  font-family: Manrope-regular;
+  
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
@@ -53,7 +52,7 @@
 }
 
 .cancelBtn {
-  font-family: Manrope-regular;
+  
   font-size: 0.875rem;
   font-weight: 800;
   line-height: 21px;

@@ -1,5 +1,5 @@
 import MyEnhancedTransitionalFormHandler from "../../forms/sendForm/FormFutureCash";
-import MiCard from "../../helper/layout/MiCard";
+import MiCard from "../../helper/layout/Card/MiCard";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectPageSelector } from "../../../redux/slices/app/sendFormSlice";

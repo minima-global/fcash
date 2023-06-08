@@ -23,7 +23,6 @@ const InputWrapperRadio = styled("div")`
   }
 `;
 const InputLabel = styled("label")`
-  font-family: Manrope-regular;
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 21px;
@@ -34,7 +33,6 @@ const InputLabel = styled("label")`
   margin-bottom: 4px;
 `;
 const InputHelper = styled("div")`
-  font-family: Manrope-regular;
   font-size: 0.775rem;
   font-weight: 500;
   text-align: left;

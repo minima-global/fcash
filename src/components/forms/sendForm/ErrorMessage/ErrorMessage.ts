@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 
 const ErrorMessage = styled("div")`
-  font-family: Manrope-regular;
   font-size: 0.875rem;
   color: rgb(153, 27, 27);
   background-color: rgb(254, 242, 242);

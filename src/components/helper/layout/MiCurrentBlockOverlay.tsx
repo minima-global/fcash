@@ -5,7 +5,7 @@ import {
   selectChainHeight,
   updateDisplayChainHeight,
 } from "../../../redux/slices/minima/statusSlice";
-import MiCard from "./MiCard";
+import MiCard from "./Card/MiCard";
 
 const BackDrop = styled("div")`
   background: rgba(0, 0, 0, 0.6);

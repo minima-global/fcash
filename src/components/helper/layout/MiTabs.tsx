@@ -20,7 +20,7 @@ const TabButton = styled("button")`
   border-radius: 8px;
   letter-spacing: 0.01em;
   color: #16181c;
-  font-family: Manrope-regular;
+
   font-weight: 800;
   font-size: 0.938rem;
   border: none;

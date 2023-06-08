@@ -22,7 +22,7 @@ import {
   selectDisplayChainHeight,
 } from "./redux/slices/minima/statusSlice";
 
-import { Grid, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import MiNavigation from "./components/helper/layout/MiNavigation";
 import Intro from "./components/pages/intro/Intro";
 import SplashScreen from "./components/intro/SplashScreen";
@@ -37,6 +37,7 @@ import { selectMenuStateStatus } from "./redux/slices/app/menuSlice";
 import Menu from "./components/pages/menu/Menu";
 import { NoResults } from "./components/helper/layout/MiToken";
 import Unavailable from "./components/Unavailable";
+import Grid from "./components/Grid";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -108,25 +109,30 @@ function App() {
 
           {!(!splashScreen && firstTime && introPage !== -1) && (
             <div className="App">
-              <Stack className="App-wrapper">
+              <div className="App-wrapper">
                 {!!selectMenuStatus && <Menu />}
-
-                <div></div>
-
-                <div className="App-content">
-                  {!!minimaStarted && <>{routes}</>}
-
-                  {!minimaStarted && (
-                    <NoResults>
-                      <h6>Minima is offline</h6>
-                      <p>check your node status, or refresh this page.</p>
-                    </NoResults>
-                  )}
-                </div>
-
-                <div></div>
-              </Stack>
-              {!(firstTime && introPage !== -1) && <MiNavigation />}
+                <Grid
+                  header={
+                    <div className="header">
+                      <img alt="icon" src="./assets/icon.svg" />
+                    </div>
+                  }
+                  content={
+                    <>
+                      {!!minimaStarted && routes}
+                      {!minimaStarted && (
+                        <NoResults>
+                          <h6>Minima is offline</h6>
+                          <p>check your node status, or refresh this page.</p>
+                        </NoResults>
+                      )}
+                    </>
+                  }
+                  footer={
+                    <>{!(firstTime && introPage !== -1) && <MiNavigation />}</>
+                  }
+                />
+              </div>
             </div>
           )}
         </>

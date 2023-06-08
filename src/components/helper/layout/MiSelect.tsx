@@ -86,7 +86,6 @@ const Scroller = styled("div")`
 `;
 
 const DropDownListHeader = styled("h6")`
-  font-family: Manrope-regular;
   font-size: 24px;
   font-weight: 700;
   line-height: 33px;

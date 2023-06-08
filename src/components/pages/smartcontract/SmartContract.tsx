@@ -1,4 +1,4 @@
-import MiCard from "../../helper/layout/MiCard";
+import MiCard from "../../helper/layout/Card/MiCard";
 import { futureCashScript } from "../../../minima/scripts";
 import styled from "@emotion/styled";
 import MiArrowDown from "../../helper/layout/svgs/MiArrowDown";
@@ -7,7 +7,6 @@ import { getFutureCashScriptAddress } from "../../../minima/rpc-commands";
 import React from "react";
 
 const MiSmartContractTitle = styled("p")`
-  font-family: Manrope-regular;
   font-weight: 700;
   font-size: 1rem;
   line-height: 22px;

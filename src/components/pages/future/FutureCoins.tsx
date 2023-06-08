@@ -63,7 +63,6 @@ const MiNoResults = styled("div")`
 `;
 
 const MiNothingToSee = styled("h6")`
-  font-family: Manrope-regular;
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 33px;
@@ -80,7 +79,6 @@ const MiNothingToSee = styled("h6")`
 const MiNothingToSeeSubtitle = styled("p")`
   position: relative;
   z-index: 1;
-  font-family: Manrope-regular;
 
   font-weight: 500;
   font-size: 0.938rem;
@@ -105,7 +103,6 @@ const MiUnlockButton = styled("button")`
   height: 32px;
   width: 85px;
   letter-spacing: 0.01em;
-  font-family: Manrope-regular;
   font-weight: 800;
   :disabled {
     background: #d3d3d8;

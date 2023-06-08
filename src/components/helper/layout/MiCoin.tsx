@@ -23,7 +23,6 @@ const MiFutureCoin = styled("div")`
 const MiCoinName = styled("p")`
   padding: 0;
   margin: 0;
-  font-family: Manrope-regular;
   font-weight: 600;
   font-size: 1rem;
   line-height: 24px;
@@ -35,7 +34,7 @@ const MiCoinName = styled("p")`
 const MiCoinAmount = styled("p")`
   padding: 0;
   margin: 0;
-  font-family: Manrope-regular;
+
   font-weight: 400;
   font-size: 1rem;
   line-height: 24px;
@@ -45,7 +44,6 @@ const MiCoinAmount = styled("p")`
 `;
 
 const MiUnlockDate = styled("p")`
-  font-family: Manrope-regular;
   font-weight: 400;
   font-size: 0.688rem;
   line-height: 16px;

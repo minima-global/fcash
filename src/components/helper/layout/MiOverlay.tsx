@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 
 const MiHeader = styled("h6")`
-  font-family: Manrope-regular;
   font-style: normal;
   font-weight: 700;
   font-size: 1.5rem;
@@ -16,7 +15,6 @@ const MiHeader = styled("h6")`
 `;
 
 const MiContent = styled("p")`
-  font-family: Manrope-regular;
   font-style: normal;
   font-weight: 500;
   font-size: 0.938rem;
@@ -43,7 +41,7 @@ const MiOverlayDetails = styled("div")`
   margin-bottom: 12px;
   h5 {
     margin: 0;
-    font-family: Manrope-regular;
+
     font-size: 0.875rem;
     font-weight: 700;
     line-height: 21px;
@@ -53,7 +51,7 @@ const MiOverlayDetails = styled("div")`
   }
   p {
     margin: 0;
-    font-family: Manrope-regular;
+
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 21px;

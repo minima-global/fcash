@@ -49,7 +49,6 @@ const Intro = () => {
 export default Intro;
 
 const MiIntroTitle = styled("div")`
-  font-family: Manrope-regular;
   font-weight: 700;
   font-size: 2rem;
   line-height: 40px;
@@ -67,7 +66,6 @@ const MiIntroActionsButton = styled("button")`
   border-radius: 6px;
   height: 54px;
 
-  font-family: Manrope-regular;
   font-weight: 800;
   font-size: 1.125rem;
   line-height: 21px;
@@ -83,7 +81,6 @@ const MiIntroActionsButton = styled("button")`
 `;
 
 const MiIntroSkipButton = styled("div")`
-  font-family: Manrope-regular;
   font-style: normal;
   font-weight: 600;
   font-size: 1rem;

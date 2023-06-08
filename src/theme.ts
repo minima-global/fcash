@@ -32,7 +32,6 @@ let theme = createTheme({
     menu: { main: "rgba(255, 255, 255, 0.95)" },
   },
   typography: {
-    fontFamily: ["Manrope-regular"].join(","),
     h4: {
       lineHeight: "27px",
       letterSpacing: "0.02em",
@@ -41,17 +40,14 @@ let theme = createTheme({
       lineHeight: 1,
     },
     caption: {
-      fontFamily: "Manrope-semibold",
       color: "rgb(118, 118, 130)",
     },
     subtitle1: {
       fontSize: "0.9em",
-      fontFamily: "Manrope-semibold",
       color: "#363A3F",
     },
     body2: {
       fontSize: "1em",
-      fontFamily: "Manrope-semibold",
       color: "#363A3F!important",
     },
   },
@@ -89,7 +85,6 @@ theme = createTheme(theme, {
           padding: 8,
           margin: 0,
           fontSize: "0.875rem",
-          fontFamily: "Manrope-regular",
           letterSpacing: "0.00938em",
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
@@ -218,13 +213,6 @@ theme = createTheme(theme, {
           "&:focus": {
             backgroundColor: "rgba(255, 255, 255, 0.8)",
           },
-        },
-      },
-    },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          fontFamily: "Manrope-regular",
         },
       },
     },

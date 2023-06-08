@@ -39,7 +39,6 @@ const MenuContainer = styled("div")`
   background: #ffede9;
 `;
 const MenuTitle = styled("h6")`
-  font-family: Manrope-regular;
   font-weight: 700;
   font-size: 2rem;
   line-height: 44px;
@@ -75,7 +74,6 @@ const MenuListItem = styled("li")`
   margin-right: 64px;
 
   cursor: pointer;
-  font-family: Manrope-regular;
   font-weight: 700;
   font-size: 1rem;
   line-height: 20px;
