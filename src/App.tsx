@@ -26,11 +26,7 @@ import { Stack } from "@mui/material";
 import MiNavigation from "./components/helper/layout/MiNavigation";
 import Intro from "./components/pages/intro/Intro";
 import SplashScreen from "./components/intro/SplashScreen";
-import {
-  checkIfFirstTime,
-  selectFirstTime,
-  selectPageSelector,
-} from "./redux/slices/app/introSlice";
+import { selectPageSelector } from "./redux/slices/app/introSlice";
 import MiCurrentBlockOverlay from "./components/helper/layout/MiCurrentBlockOverlay";
 import { selectMenuStateStatus } from "./redux/slices/app/menuSlice";
 
@@ -38,19 +34,34 @@ import Menu from "./components/pages/menu/Menu";
 import { NoResults } from "./components/helper/layout/MiToken";
 import Unavailable from "./components/Unavailable";
 import Grid from "./components/Grid";
+import useFirstVisit from "./hooks/useFirstVisit";
+
+import * as utils from "./utils";
 
 function App() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const routes = useRoutes(Routes);
-  const [splashScreen, showSplashScreen] = React.useState(true);
   const [minimaStarted, setMinimaStarted] = React.useState(false);
   const [MDSStatus, setMDSStatus] = React.useState(true);
 
   const displayChainHeightComponent = useAppSelector(selectDisplayChainHeight);
   const selectMenuStatus = useAppSelector(selectMenuStateStatus);
+  const [firstTime, setFirstTime] = React.useState(true);
   const introPage = useAppSelector(selectPageSelector);
-  const firstTime = useAppSelector(selectFirstTime);
+
+  React.useEffect(() => {
+    const ls = localStorage.getItem(utils.getAppUID());
+
+    if (!ls) {
+      return localStorage.setItem(utils.getAppUID(), "1");
+    }
+
+    if (ls) {
+      setFirstTime(false);
+      navigate("/send");
+    }
+  }, []);
 
   React.useEffect(() => {
     events.onFail(() => {
@@ -63,10 +74,7 @@ function App() {
       dispatch(callAndStoreCoins());
       dispatch(callAndStoreWalletBalance());
       dispatch(getFlaggedCoins());
-      dispatch(checkIfFirstTime());
-      setTimeout(() => showSplashScreen(false), 2500);
       await addFutureCashScript(futureCashScript, false);
-      firstTime ? navigate("intro") : navigate("/send");
     });
 
     events.onNewBlock(() => {
@@ -103,11 +111,9 @@ function App() {
         <>
           {displayChainHeightComponent ? <MiCurrentBlockOverlay /> : null}
 
-          {!!splashScreen && <SplashScreen />}
+          {!!firstTime && introPage !== -1 && <Intro />}
 
-          {!splashScreen && firstTime && introPage !== -1 && <Intro />}
-
-          {!(!splashScreen && firstTime && introPage !== -1) && (
+          {!(firstTime && introPage !== -1) && (
             <div className="App">
               <div className="App-wrapper">
                 {!!selectMenuStatus && <Menu />}
@@ -128,9 +134,7 @@ function App() {
                       )}
                     </>
                   }
-                  footer={
-                    <>{!(firstTime && introPage !== -1) && <MiNavigation />}</>
-                  }
+                  footer={<MiNavigation />}
                 />
               </div>
             </div>

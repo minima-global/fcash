@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { setPage } from "../../../redux/slices/app/introSlice";
 
@@ -13,6 +13,7 @@ import ForYourSelf from "../../intro/ForYourSelf";
 import LockUpFundsNow from "../../intro/LockUpFundsNow";
 import UnlockTheFuture from "../../intro/UnlockTheFuture";
 import ToSaveInvestSecure from "../../intro/ToSaveInvestSecure";
+import SplashScreen from "../../intro/SplashScreen";
 
 export const displayIntroPages = [
   <LockUpFundsNow />,
@@ -23,26 +24,37 @@ export const displayIntroPages = [
 const Intro = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [splashScreen, setSplashScreen] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setSplashScreen(false), 2500);
+  }, []);
 
   return (
-    <MiColoredOverlay color="light-orange" center={true}>
-      <MiSwipeableCarousel />
+    <>
+      {!!splashScreen && <SplashScreen />}
 
-      <MiIntroActionsContainer>
-        <MiIntroActionsButton
-          onClick={() => {
-            navigate("/instructions");
-            dispatch(setPage(-1));
-          }}
-        >
-          Instructions
-        </MiIntroActionsButton>
+      {!splashScreen && (
+        <MiColoredOverlay color="light-orange" center={true}>
+          <MiSwipeableCarousel />
 
-        <MiIntroSkipButton onClick={() => dispatch(setPage(-1))}>
-          Skip
-        </MiIntroSkipButton>
-      </MiIntroActionsContainer>
-    </MiColoredOverlay>
+          <MiIntroActionsContainer>
+            <MiIntroActionsButton
+              onClick={() => {
+                navigate("/instructions");
+                dispatch(setPage(-1));
+              }}
+            >
+              Instructions
+            </MiIntroActionsButton>
+
+            <MiIntroSkipButton onClick={() => dispatch(setPage(-1))}>
+              Skip
+            </MiIntroSkipButton>
+          </MiIntroActionsContainer>
+        </MiColoredOverlay>
+      )}
+    </>
   );
 };
 
