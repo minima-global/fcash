@@ -25,7 +25,6 @@ import {
 import { Stack } from "@mui/material";
 import MiNavigation from "./components/helper/layout/MiNavigation";
 import Intro from "./components/pages/intro/Intro";
-import SplashScreen from "./components/intro/SplashScreen";
 import { selectPageSelector } from "./redux/slices/app/introSlice";
 import MiCurrentBlockOverlay from "./components/helper/layout/MiCurrentBlockOverlay";
 import { selectMenuStateStatus } from "./redux/slices/app/menuSlice";
@@ -34,7 +33,6 @@ import Menu from "./components/pages/menu/Menu";
 import { NoResults } from "./components/helper/layout/MiToken";
 import Unavailable from "./components/Unavailable";
 import Grid from "./components/Grid";
-import useFirstVisit from "./hooks/useFirstVisit";
 
 import * as utils from "./utils";
 

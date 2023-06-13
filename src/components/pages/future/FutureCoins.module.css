@@ -17,3 +17,65 @@
   padding: 0;
   margin: 0;
 }
+
+.futures {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  gap: 8px;
+  box-shadow: 0px 4px 10px 4px rgba(0, 0, 0, 0.05);
+  padding: 16px 18px;
+}
+
+.futures li {
+  background-color: #FFEDE9;
+  border-radius: 8px;
+  margin: auto 0;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr;
+  gap: 8px;
+}
+.futures li img {
+  width: inherit;
+  height: inherit;
+  max-width: 48px;
+  max-height: 48px;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+}
+.futures li > div:first-of-type, .futures li > div:last-of-type {
+  margin: auto 0;
+  display: block;
+  overflow: hidden;
+}
+
+.futures li p, .futures li h6 {
+  padding: 0;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: hidden;
+
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: #363A3F;
+  font-size: 1rem;
+}
+
+.futures li p {
+  font-weight: 400;
+}
+.futures li h6 {
+  font-weight: 600;
+}
+
+.future li > div:last-of-type {
+  font-weight: 400;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  color: #16181C;
+}

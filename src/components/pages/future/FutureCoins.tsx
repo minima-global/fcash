@@ -99,8 +99,10 @@ const MiUnlockButton = styled("button")`
   overflow: hidden;
   border-radius: 6px;
   border: none;
-  color: #fff;
-  height: 32px;
+  color: #ffffff;
+  min-height: 32px;
+  max-height: 32px;
+  margin: auto 0;
   width: 85px;
   letter-spacing: 0.01em;
   font-weight: 800;
@@ -169,155 +171,125 @@ const FutureCoins = () => {
               Ready {readyCoins.length > 0 ? `(${readyCoins.length})` : ""}
             </TabButton>
           </Tabs>
-          {/* Pending Coins */}
-          {pendingCoins && pendingCoins.length > 0 && tabOpen == 0 ? (
-            <MiFutureContainer>
+
+          {!!pendingCoins.length && tabOpen === 0 && (
+            <ul className={styles["futures"]}>
               {pendingCoins.map((c: any) => (
-                <MiFutureCoin
+                <li
                   id="pending-coin"
                   key={c.coinid}
                   onClick={() => {
                     navigate("coindetails", { state: { ...c } });
                   }}
-                  // onClick={() => dispatch(showDetails(true))}
                 >
-                  <Stack direction="row">
-                    <Avatar
-                      sx={{
-                        width: "48px",
-                        height: "48px",
-                        background: "#fff",
-                      }}
-                      className={styles["avatar"]}
-                      variant="rounded"
-                      src={
-                        c.tokenid === MINIMA__TOKEN_ID
-                          ? MinimaLogoSquare
-                          : c.token.url && c.token.url.length
-                          ? c.token.url
-                          : `https://robohash.org/${c.tokenid}`
-                      }
-                    />
-                    <Stack flexDirection="column" alignItems="flex-start">
-                      <MiCoinName>
-                        {typeof c.token == "string" ? c.token : c.token.name}
-                      </MiCoinName>
-
-                      <MiCoinAmount>
-                        {c.tokenid == "0x00" ? c.amount : c.tokenamount}
-                      </MiCoinAmount>
-                    </Stack>
-                  </Stack>
-                  {c.state.length && (
-                    <MiUnlockDate>
-                      <>
-                        {moment(
-                          new Decimal(
-                            MDS.util.getStateVariable(c, 3)
-                          ).toNumber()
-                        ).format("MMM Do, YY")}{" "}
-                        <br />
-                        {moment(
-                          new Decimal(
-                            MDS.util.getStateVariable(c, 3)
-                          ).toNumber()
-                        ).format("hh:mm A")}
-                      </>
-                    </MiUnlockDate>
+                  <img
+                    alt="token-img"
+                    src={
+                      c.tokenid === MINIMA__TOKEN_ID
+                        ? MinimaLogoSquare
+                        : c.token.url && c.token.url.length
+                        ? c.token.url
+                        : `https://robohash.org/${c.tokenid}`
+                    }
+                  />
+                  <div>
+                    <h6>
+                      {typeof c.token == "string" ? c.token : c.token.name}
+                    </h6>
+                    <p>{c.tokenid == "0x00" ? c.amount : c.tokenamount}</p>
+                  </div>
+                  {!!c.state.length && (
+                    <div>
+                      {moment(
+                        new Decimal(MDS.util.getStateVariable(c, 3)).toNumber()
+                      ).format("MMM Do, YY")}{" "}
+                      <br />
+                      {moment(
+                        new Decimal(MDS.util.getStateVariable(c, 3)).toNumber()
+                      ).format("hh:mm A")}
+                    </div>
                   )}
-                </MiFutureCoin>
+                  {!c.state.length && <div>Date/Time N/A</div>}
+                </li>
               ))}
-            </MiFutureContainer>
-          ) : null}
-          {/* Ready Coins */}
-          {readyCoins && readyCoins.length > 0 && tabOpen == 1 ? (
-            <MiFutureContainer>
+            </ul>
+          )}
+
+          {!!readyCoins.length && tabOpen === 1 && (
+            <ul className={styles["futures"]}>
               {readyCoins.map((c: any) => (
-                <MiFutureCoin id="ready-coin" key={c.coinid}>
-                  <Stack direction="row">
-                    <Avatar
-                      sx={{
-                        width: "48px",
-                        height: "48px",
-                        background: "#fff",
-                      }}
-                      className={styles["avatar"]}
-                      variant="rounded"
-                      src={
-                        c.tokenid === MINIMA__TOKEN_ID
-                          ? MinimaLogoSquare
-                          : c.token.url && c.token.url.length
-                          ? c.token.url
-                          : `https://robohash.org/${c.tokenid}`
+                <li id="ready-coin" key={c.coinid}>
+                  <img
+                    alt="token-img"
+                    src={
+                      c.tokenid === MINIMA__TOKEN_ID
+                        ? MinimaLogoSquare
+                        : c.token.url && c.token.url.length
+                        ? c.token.url
+                        : `https://robohash.org/${c.tokenid}`
+                    }
+                  />
+                  <div>
+                    <h6>
+                      {typeof c.token == "string" ? c.token : c.token.name}
+                    </h6>
+                    <p>{c.tokenid == "0x00" ? c.amount : c.tokenamount}</p>
+                  </div>
+                  <MiUnlockButton
+                    disabled={c.status && c.status == "PENDING"}
+                    onClick={async () => {
+                      // dispatch a flag on the coin being collected.
+                      dispatch(flagCoinCollection(c.coinid)); // flag this coin as being collected
+                      dispatch(updatePendingStatus(true)); // there are pending collection coins in our balance
+
+                      try {
+                        await collectFutureCash({
+                          coinid: c.coinid,
+                          address: MDS.util.getStateVariable(c, 2),
+                          tokenid: c.tokenid,
+                          amount:
+                            c.tokenid == "0x00" ? c.amount : c.tokenamount,
+                        });
+                        // show success page
+                        dispatch(updatePage(futurePageSelector.page + 1));
+                      } catch (err: any) {
+                        console.error(err);
                       }
-                    />
-                    <Stack flexDirection="column" alignItems="flex-start">
-                      <MiCoinName>
-                        {typeof c.token == "string" ? c.token : c.token.name}
-                      </MiCoinName>
-
-                      <MiCoinAmount>
-                        {c.tokenid == "0x00" ? c.amount : c.tokenamount}
-                      </MiCoinAmount>
-                    </Stack>
-                  </Stack>
-                  <Stack justifyContent="center">
-                    <MiUnlockButton
-                      disabled={c.status && c.status == "PENDING"}
-                      onClick={async () => {
-                        // dispatch a flag on the coin being collected.
-                        dispatch(flagCoinCollection(c.coinid)); // flag this coin as being collected
-                        dispatch(updatePendingStatus(true)); // there are pending collection coins in our balance
-
-                        try {
-                          await collectFutureCash({
-                            coinid: c.coinid,
-                            address: MDS.util.getStateVariable(c, 2),
-                            tokenid: c.tokenid,
-                            amount:
-                              c.tokenid == "0x00" ? c.amount : c.tokenamount,
-                          });
-                          // show success page
-                          dispatch(updatePage(futurePageSelector.page + 1));
-                        } catch (err: any) {
-                          console.error(err);
-                        }
-                      }}
-                    >
-                      {c.status == "PENDING" ? "Collecting..." : "Collect"}
-                    </MiUnlockButton>
-                  </Stack>
-                </MiFutureCoin>
+                    }}
+                  >
+                    {c.status == "PENDING" ? "Collecting..." : "Collect"}
+                  </MiUnlockButton>
+                </li>
               ))}
-            </MiFutureContainer>
-          ) : null}
+            </ul>
+          )}
 
-          {(pendingCoins.length === 0 && tabOpen == 0) ||
-          (readyCoins.length == 0 && tabOpen == 1) ? (
-            <MiNoResults>
-              {/* <MiFutureNoResults /> */}
-              <Stack spacing={2} sx={{ m: 2 }}>
-                <MiNothingToSee>
-                  Nothing to <br /> see here!
-                </MiNothingToSee>
-                <MiNothingToSeeSubtitle>
-                  You currently have no <br />{" "}
-                  {tabOpen === 1
-                    ? "have no contracts that are ready to collect."
-                    : "pending contracts."}
-                </MiNothingToSeeSubtitle>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  disableElevation
-                  fullWidth
-                  onClick={() => navigate("/send")}
-                >
-                  Start contract
-                </Button>
-              </Stack>
-            </MiNoResults>
-          ) : null}
+          {(!pendingCoins.length && tabOpen === 0) ||
+            (!readyCoins.length && tabOpen === 1 && (
+              <MiNoResults>
+                {/* <MiFutureNoResults /> */}
+                <Stack spacing={2} sx={{ m: 2 }}>
+                  <MiNothingToSee>
+                    Nothing to <br /> see here!
+                  </MiNothingToSee>
+                  <MiNothingToSeeSubtitle>
+                    You currently have no <br />{" "}
+                    {tabOpen === 1
+                      ? "have no contracts that are ready to collect."
+                      : "pending contracts."}
+                  </MiNothingToSeeSubtitle>
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    disableElevation
+                    fullWidth
+                    onClick={() => navigate("/send")}
+                  >
+                    Start contract
+                  </Button>
+                </Stack>
+              </MiNoResults>
+            ))}
         </Stack>
       )}
     </>

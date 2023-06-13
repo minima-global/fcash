@@ -1,5 +1,6 @@
 import { ICoinStatus } from "./../redux/slices/minima/coinSlice";
 import { Coin, MinimaToken } from "../minima/@types/minima";
+import getAppUID from "./getAppUID";
 
 const numberWithCommas = (x: string) => {
   try {
@@ -84,6 +85,11 @@ const makeTokenImage = (
   return undefined;
 };
 
-export { containsText, copy, numberWithCommas, mergeArray, makeTokenImage };
-
-export * from "./getAppUID";
+export {
+  getAppUID,
+  containsText,
+  copy,
+  numberWithCommas,
+  mergeArray,
+  makeTokenImage,
+};

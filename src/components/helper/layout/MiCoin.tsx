@@ -16,8 +16,6 @@ const MiFutureCoin = styled("div")`
 
   * {
     padding: 0 8px;
-    text-overflow: ellipsis;
-    display: block;
   }
 `;
 const MiCoinName = styled("p")`
@@ -29,6 +27,8 @@ const MiCoinName = styled("p")`
   text-align: left;
   letter-spacing: 0.02em;
   color: #363a3f;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 const MiCoinAmount = styled("p")`
