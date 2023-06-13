@@ -35,6 +35,7 @@ import Unavailable from "./components/Unavailable";
 import Grid from "./components/Grid";
 
 import * as utils from "./utils";
+import useIsMinimaBrowser from "./hooks/useIsMinimaBrowser";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -47,6 +48,8 @@ function App() {
   const selectMenuStatus = useAppSelector(selectMenuStateStatus);
   const [firstTime, setFirstTime] = React.useState(true);
   const introPage = useAppSelector(selectPageSelector);
+
+  const openTitleBar = useIsMinimaBrowser();
 
   React.useEffect(() => {
     const ls = localStorage.getItem(utils.getAppUID());
@@ -117,7 +120,7 @@ function App() {
                 {!!selectMenuStatus && <Menu />}
                 <Grid
                   header={
-                    <div className="header">
+                    <div onClick={openTitleBar} className="header">
                       <img alt="icon" src="./assets/icon.svg" />
                     </div>
                   }

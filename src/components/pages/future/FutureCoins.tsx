@@ -171,7 +171,6 @@ const FutureCoins = () => {
               Ready {readyCoins.length > 0 ? `(${readyCoins.length})` : ""}
             </TabButton>
           </Tabs>
-
           {!!pendingCoins.length && tabOpen === 0 && (
             <ul className={styles["futures"]}>
               {pendingCoins.map((c: any) => (
@@ -214,7 +213,6 @@ const FutureCoins = () => {
               ))}
             </ul>
           )}
-
           {!!readyCoins.length && tabOpen === 1 && (
             <ul className={styles["futures"]}>
               {readyCoins.map((c: any) => (
@@ -263,33 +261,49 @@ const FutureCoins = () => {
               ))}
             </ul>
           )}
-
-          {(!pendingCoins.length && tabOpen === 0) ||
-            (!readyCoins.length && tabOpen === 1 && (
-              <MiNoResults>
-                {/* <MiFutureNoResults /> */}
-                <Stack spacing={2} sx={{ m: 2 }}>
-                  <MiNothingToSee>
-                    Nothing to <br /> see here!
-                  </MiNothingToSee>
-                  <MiNothingToSeeSubtitle>
-                    You currently have no <br />{" "}
-                    {tabOpen === 1
-                      ? "have no contracts that are ready to collect."
-                      : "pending contracts."}
-                  </MiNothingToSeeSubtitle>
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    disableElevation
-                    fullWidth
-                    onClick={() => navigate("/send")}
-                  >
-                    Start contract
-                  </Button>
-                </Stack>
-              </MiNoResults>
-            ))}
+          {tabOpen === 0 && pendingCoins.length === 0 && (
+            <MiNoResults>
+              <Stack spacing={2} sx={{ m: 2 }}>
+                <MiNothingToSee>
+                  Nothing to <br /> see here!
+                </MiNothingToSee>
+                <MiNothingToSeeSubtitle>
+                  You currently have no <br /> pending contracts.
+                </MiNothingToSeeSubtitle>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                  fullWidth
+                  onClick={() => navigate("/send")}
+                >
+                  Start contract
+                </Button>
+              </Stack>
+            </MiNoResults>
+          )}
+          {readyCoins.length === 0 && tabOpen === 1 && (
+            <MiNoResults>
+              <Stack spacing={2} sx={{ m: 2 }}>
+                <MiNothingToSee>
+                  Nothing to <br /> see here!
+                </MiNothingToSee>
+                <MiNothingToSeeSubtitle>
+                  You currently have no <br /> have no contracts that are ready
+                  to collect.
+                </MiNothingToSeeSubtitle>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  disableElevation
+                  fullWidth
+                  onClick={() => navigate("/send")}
+                >
+                  Start contract
+                </Button>
+              </Stack>
+            </MiNoResults>
+          )}
         </Stack>
       )}
     </>
