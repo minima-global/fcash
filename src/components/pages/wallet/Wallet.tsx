@@ -51,7 +51,7 @@ const Wallet = () => {
   }, [walletTokens, filterText]);
 
   return (
-    <MiCard>
+    <MiCard extraClass="align-self-start">
       <MiSearchBarWithIcon>
         <MiSearchBar
           value={filterText}

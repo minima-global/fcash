@@ -30,7 +30,7 @@ import {
   selectPageSelector,
   updatePage,
 } from "../../../redux/slices/app/futureCoinSlice";
-import MiSuccess from "../../futurecoins/Success";
+import MiSuccess from "../../futurecoins/Success/Success";
 import { TabButton, Tabs } from "../../helper/layout/MiTabs";
 
 import MinimaLogoSquare from "../../../assets/images/minimaLogoSquare.png";

@@ -55,7 +55,7 @@ const SmartContract = () => {
   }, []);
 
   return (
-    <MiCard>
+    <MiCard extraClass="align-self-start">
       <MiSmartContractTitle>
         FutureCash uses the following Smart Contract script:
       </MiSmartContractTitle>

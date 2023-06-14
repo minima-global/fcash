@@ -1,8 +1,10 @@
 import styles from "./Card.module.css";
 
-const MiCard = ({ children }: any) => {
+const MiCard = ({ children, extraClass }: any) => {
+  let base = `${styles.card} ${extraClass}`;
+
   return (
-    <div className={styles["card"]}>
+    <div className={base}>
       <div>{children}</div>
     </div>
   );

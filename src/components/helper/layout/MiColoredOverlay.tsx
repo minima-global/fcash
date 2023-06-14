@@ -1,17 +1,18 @@
-import { Stack } from "@mui/material";
 import styles from "./styling/ColoredOverlay.module.css";
 
-const MiColoredOverlay = ({ children, center, color }: any) => {
+const MiColoredOverlay = ({ children }: any) => {
+  const base = `${styles.grid}`;
+
   return (
-    <div className={styles[`${color}-overlay${center ? "-center" : ""}`]}>
-      {color !== "light-orange" ? (
-        <Stack className={styles["content"]} alignItems="center">
-          {children}
-        </Stack>
-      ) : (
-        children
-      )}
-    </div>
+    <>
+      <div className={styles["backdrop"]} />
+      <div className={base}>
+        <header />
+        <main>
+          <section>{children}</section>
+        </main>
+      </div>
+    </>
   );
 };
 

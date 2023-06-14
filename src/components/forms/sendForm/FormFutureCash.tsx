@@ -172,6 +172,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
       props.dispatch(updatePage(props.page + 1));
     } catch (err: any) {
       // console.log("formError", err);
+
       if (
         err === "pending" ||
         (err && err.message && err.message === "pending")
@@ -179,7 +180,15 @@ const MyEnhancedTransitionalFormHandler = withFormik<
         return props.dispatch(updatePage(props.page + 2));
       }
 
+      const errorMessageInsufficient =
+        err && err.message && err.message.includes("No Coins of");
+
       setSubmitting(false);
+
+      if (errorMessageInsufficient) {
+        return setStatus("Insufficient funds.");
+      }
+
       setStatus(err && err.message ? err.message : err);
     }
   },

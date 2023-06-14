@@ -20,3 +20,11 @@ ul {
   padding: 0;
   list-style: none;
 }
+
+.justify-self-center {
+  justify-self: center;
+}
+
+.align-self-start {
+  align-self: flex-start;
+}

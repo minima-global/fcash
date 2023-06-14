@@ -110,7 +110,7 @@ function App() {
 
       {MDSStatus && (
         <>
-          {displayChainHeightComponent ? <MiCurrentBlockOverlay /> : null}
+          {!!displayChainHeightComponent && <MiCurrentBlockOverlay />}
 
           {!!firstTime && introPage !== -1 && <Intro />}
 
