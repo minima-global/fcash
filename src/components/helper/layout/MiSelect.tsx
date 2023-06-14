@@ -19,10 +19,13 @@ import {
   NoResults,
 } from "./MiToken";
 
-import { containsText, numberWithCommas } from "../../../utils";
+import { containsText } from "../../../utils";
 import MiArrow from "./svgs/MiArrow";
 import MinimaLogoSquare from "../../../assets/images/minimaLogoSquare.png";
 import { MINIMA__TOKEN_ID } from "../../../minima/constants";
+
+import { CSSTransition } from "react-transition-group";
+import OverlayGrid from "../../overlayGrid";
 
 const DropDownContainer = styled("div")`
   width: 100%;
@@ -64,17 +67,18 @@ const DropDownListContainer = styled("div")`
   padding-top: 32px;
   padding-left: 16px;
   padding-right: 16px;
+
+  @media screen and (min-width: 561px) {
+    position: relative;
+    border-radius: 4px;
+    margin: 0;
+
+    align-self: center;
+
+    height: fit-content;
+  }
 `;
-const BackDrop = styled("div")`
-  background: rgba(0, 0, 0, 0.6);
-  height: 100vh;
-  z-index: 999;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-`;
+
 const DropDownList = styled("ul")`
   padding: 0;
   margin-top: 24px;
@@ -189,12 +193,33 @@ const MiSelect = (props: any) => {
           )}
           {!selectedOption && <p>No token selected.</p>}
         </DropDownHeader>
-        {isOpen && (
-          <>
-            <BackDrop className={styles["fadeIn"]}>
-              <DropDownListContainer
-                className={isOpen ? styles["slideIn"] : styles["slideOut"]}
-              >
+        <>
+          <CSSTransition
+            in={!!isOpen}
+            unmountOnExit
+            timeout={200}
+            classNames={{
+              enter: styles.backdropEnter,
+              enterDone: styles.backdropEnterActive,
+              exit: styles.backdropExit,
+              exitActive: styles.backdropExitActive,
+            }}
+          >
+            <div className={styles["backdrop"]} />
+          </CSSTransition>
+          <CSSTransition
+            in={!!isOpen}
+            unmountOnExit
+            timeout={100}
+            classNames={{
+              enter: styles.ddMenuEnter,
+              enterDone: styles.ddMenuEnterActive,
+              exit: styles.ddMenuExit,
+              exitActive: styles.ddMenuExitActive,
+            }}
+          >
+            <OverlayGrid>
+              <DropDownListContainer>
                 <Stack flexDirection="column">
                   <Stack flexDirection="row" justifyContent="flex-end">
                     <MiDismiss
@@ -280,9 +305,9 @@ const MiSelect = (props: any) => {
                   </Scroller>
                 </Stack>
               </DropDownListContainer>
-            </BackDrop>
-          </>
-        )}
+            </OverlayGrid>
+          </CSSTransition>
+        </>
       </DropDownContainer>
     </>
   );

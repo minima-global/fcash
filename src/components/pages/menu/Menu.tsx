@@ -33,7 +33,6 @@ const MenuContainer = styled("div")`
 
   @media screen and (min-width: 561px) {
     position: relative;
-    height: 50vh;
     border-radius: 4px;
     margin: 0;
 
