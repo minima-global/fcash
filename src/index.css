@@ -64,3 +64,7 @@ ul {
   opacity: 0;
   transition: opacity 200ms;
 }
+
+.brand-color {
+  background-color: #F77E66;
+}

@@ -1,0 +1,14 @@
+.splash-screen {
+  background-color: #FFFFFF;
+  display: grid;
+  height: 100%;
+}
+
+.brand {
+  display: flex;
+  gap: 8px;
+  flex-direction: row;
+  align-self: center;
+  justify-self: center;
+  margin-bottom: 56px;
+}

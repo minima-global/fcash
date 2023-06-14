@@ -5,7 +5,6 @@ import { setPage } from "../../../redux/slices/app/introSlice";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../redux/hooks";
 
-import MiPagination from "../../helper/layout/MiPagination";
 import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
 import MiSwipeableCarousel from "../../helper/layout/carousel/MiCarousel";
 
@@ -14,6 +13,11 @@ import LockUpFundsNow from "../../intro/LockUpFundsNow";
 import UnlockTheFuture from "../../intro/UnlockTheFuture";
 import ToSaveInvestSecure from "../../intro/ToSaveInvestSecure";
 import SplashScreen from "../../intro/SplashScreen";
+
+import { CSSTransition } from "react-transition-group";
+
+import styles from "./Intro.module.css";
+import OverlayGrid from "../../overlayGrid";
 
 export const displayIntroPages = [
   <LockUpFundsNow />,
@@ -32,28 +36,53 @@ const Intro = () => {
 
   return (
     <>
-      {!!splashScreen && <SplashScreen />}
+      <CSSTransition
+        in={!!splashScreen}
+        unmountOnExit
+        timeout={200}
+        classNames={{
+          enter: styles.backdropEnter,
+          enterDone: styles.backdropEnterActive,
+          exit: styles.backdropExit,
+          exitActive: styles.backdropExitActive,
+        }}
+      >
+        <SplashScreen />
+      </CSSTransition>
+      <CSSTransition
+        in={!splashScreen}
+        unmountOnExit
+        timeout={200}
+        classNames={{
+          enter: styles.backdropEnter,
+          enterDone: styles.backdropEnterActive,
+          exit: styles.backdropExit,
+          exitActive: styles.backdropExitActive,
+        }}
+      >
+        <MiColoredOverlay extraClass="brand-color" center={true}>
+          <div className={styles["intro-wrapper"]}>
+            <MiSwipeableCarousel />
 
-      {!splashScreen && (
-        <MiColoredOverlay color="light-orange" center={true}>
-          <MiSwipeableCarousel />
+            <div>
+              <MiIntroActionsContainer>
+                <MiIntroActionsButton
+                  onClick={() => {
+                    navigate("/instructions");
+                    dispatch(setPage(-1));
+                  }}
+                >
+                  Instructions
+                </MiIntroActionsButton>
 
-          <MiIntroActionsContainer>
-            <MiIntroActionsButton
-              onClick={() => {
-                navigate("/instructions");
-                dispatch(setPage(-1));
-              }}
-            >
-              Instructions
-            </MiIntroActionsButton>
-
-            <MiIntroSkipButton onClick={() => dispatch(setPage(-1))}>
-              Skip
-            </MiIntroSkipButton>
-          </MiIntroActionsContainer>
+                <MiIntroSkipButton onClick={() => dispatch(setPage(-1))}>
+                  Skip
+                </MiIntroSkipButton>
+              </MiIntroActionsContainer>
+            </div>
+          </div>
         </MiColoredOverlay>
-      )}
+      </CSSTransition>
     </>
   );
 };
@@ -72,17 +101,17 @@ const MiIntroTitle = styled("div")`
 `;
 
 const MiIntroActionsButton = styled("button")`
-  background: #fff;
+  background: #ffffff;
   color: #363a3f;
   border: none;
   border-radius: 6px;
-  height: 54px;
+  padding: 12px 16px;
+  text-align: center;
 
   font-weight: 800;
   font-size: 1.125rem;
   line-height: 21px;
   width: 100%;
-  text-align: center;
 
   cursor: pointer;
 
@@ -103,7 +132,7 @@ const MiIntroSkipButton = styled("div")`
   color: #ffffff;
 
   border-bottom: 1px solid #fff;
-  min-width: 25vw;
+  width: fit-content;
 
   :hover {
     transform: scale(0.989);
@@ -111,22 +140,10 @@ const MiIntroSkipButton = styled("div")`
 `;
 
 const MiIntroActionsContainer = styled("div")`
-  margin-top: 92px;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
   flex-direction: column;
-  position: relative;
-
-  margin: 0 32px;
-
-  > :nth-of-type(1) {
-    margin-top: 37px;
-  }
-
-  > :nth-of-type(2) {
-    margin-top: 8px;
-  }
+  gap: 8px;
+  align-items: center;
 `;
 
 export {

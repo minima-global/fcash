@@ -1,7 +1,7 @@
 import styles from "./styling/ColoredOverlay.module.css";
 
-const MiColoredOverlay = ({ children }: any) => {
-  const base = `${styles.grid}`;
+const MiColoredOverlay = ({ children, extraClass }: any) => {
+  const base = `${styles.grid} ${extraClass}`;
 
   return (
     <>
