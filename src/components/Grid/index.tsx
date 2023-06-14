@@ -1,3 +1,4 @@
+import useGetInnerHeight from "../../hooks/useGetInnerHeight";
 import styles from "./Grid.module.css";
 
 interface IProps {
@@ -8,8 +9,10 @@ interface IProps {
   fullHeight?: boolean;
 }
 const Grid = ({ header, content, footer, fullHeight = false }: IProps) => {
+  const innerHeight = useGetInnerHeight();
+
   return (
-    <div className={styles["grid"]}>
+    <div className={styles["grid"]} style={{ height: ` ${innerHeight}px` }}>
       <header>{header}</header>
 
       <main>

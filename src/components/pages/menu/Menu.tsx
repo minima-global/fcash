@@ -15,28 +15,31 @@ import {
   updateState,
 } from "../../../redux/slices/app/menuSlice";
 
-const BackDrop = styled("div")`
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 994;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 56px;
-`;
+import { CSSTransition } from "react-transition-group";
+import OverlayGrid from "../../overlayGrid";
+
 const MenuContainer = styled("div")`
-  z-index: 995;
-  position: fixed;
+  margin-bottom: 56px;
   bottom: 0;
   left: 0;
   right: 0;
-  margin-bottom: 56px;
+  position: fixed;
   height: 70vh;
+  max-height: 70vh;
   width: 100%;
-  background-color: #fff;
   padding: 38px 0px;
   box-shadow: 0px 4px 10px 4px rgba(0, 0, 0, 0.05);
-  background: #ffede9;
+  background-color: #ffede9;
+
+  @media screen and (min-width: 561px) {
+    position: relative;
+    height: 50vh;
+    border-radius: 4px;
+    margin: 0;
+
+    align-self: center;
+    height: fit-content;
+  }
 `;
 const MenuTitle = styled("h6")`
   font-weight: 700;
@@ -123,29 +126,56 @@ const Menu = () => {
   };
 
   return (
-    <BackDrop>
-      <MenuContainer className={menuStatus ? styles["slideIn"] : ""}>
-        <MenuTitle>Menu</MenuTitle>
-        <MenuList>
-          <MenuListItem onClick={toggleNavigateBalance}>
-            <MiBalance size={19} color="#16181c" />
-            Balance
-          </MenuListItem>
-          <MenuListItem onClick={toggleBlockHeightComponent}>
-            <MiCurrentBlock size={19} color="#16181C" />
-            Current block
-          </MenuListItem>
-          <MenuListItem onClick={toggleNavigateInstructions}>
-            <MiInstructions size={19} />
-            Instructions
-          </MenuListItem>
-          <MenuListItem onClick={toggleNavigateSmartContract}>
-            <MiSmartContractIcon size={19} color="#16181c" />
-            Smart contract
-          </MenuListItem>
-        </MenuList>
-      </MenuContainer>
-    </BackDrop>
+    <>
+      <CSSTransition
+        in={!!menuStatus}
+        unmountOnExit
+        timeout={200}
+        classNames={{
+          enter: styles.backdropEnter,
+          enterDone: styles.backdropEnterActive,
+          exit: styles.backdropExit,
+          exitActive: styles.backdropExitActive,
+        }}
+      >
+        <div className={styles["backdrop"]} />
+      </CSSTransition>
+      <CSSTransition
+        in={!!menuStatus}
+        unmountOnExit
+        timeout={100}
+        classNames={{
+          enter: styles.ddMenuEnter,
+          enterDone: styles.ddMenuEnterActive,
+          exit: styles.ddMenuExit,
+          exitActive: styles.ddMenuExitActive,
+        }}
+      >
+        <OverlayGrid>
+          <MenuContainer>
+            <MenuTitle>Menu</MenuTitle>
+            <MenuList>
+              <MenuListItem onClick={toggleNavigateBalance}>
+                <MiBalance size={19} color="#16181c" />
+                Balance
+              </MenuListItem>
+              <MenuListItem onClick={toggleBlockHeightComponent}>
+                <MiCurrentBlock size={19} color="#16181C" />
+                Current block
+              </MenuListItem>
+              <MenuListItem onClick={toggleNavigateInstructions}>
+                <MiInstructions size={19} />
+                Instructions
+              </MenuListItem>
+              <MenuListItem onClick={toggleNavigateSmartContract}>
+                <MiSmartContractIcon size={19} color="#16181c" />
+                Smart contract
+              </MenuListItem>
+            </MenuList>
+          </MenuContainer>
+        </OverlayGrid>
+      </CSSTransition>
+    </>
   );
 };
 export default Menu;

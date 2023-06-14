@@ -117,7 +117,7 @@ function App() {
           {!(firstTime && introPage !== -1) && (
             <div className="App">
               <div className="App-wrapper">
-                {!!selectMenuStatus && <Menu />}
+                <Menu />
                 <Grid
                   header={
                     <div onClick={openTitleBar} className="header">

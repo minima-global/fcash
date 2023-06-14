@@ -1,13 +1,44 @@
-@keyframes slidein {
-  from {
-    height: 0;
-  }
+.ddMenuEnter {
+  position: absolute;
+  transform: translateY(+110%);
+}
+.ddMenuEnterActive {
+  position: absolute;
+  transform: translateY(0%);
+  transition: all 0.5s ease;
 
-  to {
-    height: 70vh;
-  }
+}
+.ddMenuExit {
+  position: absolute;
+  transform: translateY(0%);
+}
+.ddMenuExitActive {
+  transform: translateY(+110%);
+  transition: all 0.5s ease;
 }
 
-.slideIn {
-  animation: 0.5s alternate slidein;
+.backdropEnter {
+  opacity: 0;
+}
+.backdropEnterActive {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+
+.backdropExit {
+  opacity: 1;
+}
+.backdropExitActive {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 43;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 56px;
 }

@@ -15,6 +15,7 @@ const Send = () => {
     <>
       {wallet && !!wallet.length && (
         <MiCard
+          extraClass="align-self-start"
           children={
             <MyEnhancedTransitionalFormHandler
               initialToken={wallet[0]}
