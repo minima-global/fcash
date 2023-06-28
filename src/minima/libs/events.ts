@@ -156,7 +156,7 @@ const initializeMinima = () => {
         case "MAXIMAHOSTS":
           break;
         default:
-          console.error("Unknown event type: ", nodeEvent);
+        // console.error("Unknown event type: ", nodeEvent);
       }
     }
   );
