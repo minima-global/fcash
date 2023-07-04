@@ -15,6 +15,7 @@ const Tabs = styled("div")`
 `;
 
 const TabButton = styled("button")`
+  font-family: "Manrope", sans-serif;
   background: #fff;
   width: 100%;
   border-radius: 8px;

@@ -4,15 +4,15 @@
 
 body {
   margin: 0;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope', sans-serif!important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
 }
 
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Roboto Mono', monospace;
 }
 
 ul {

@@ -32,6 +32,7 @@ let theme = createTheme({
     menu: { main: "rgba(255, 255, 255, 0.95)" },
   },
   typography: {
+    fontFamily: "Manrope, sans-serif",
     h4: {
       lineHeight: "27px",
       letterSpacing: "0.02em",
@@ -62,6 +63,7 @@ let theme = createTheme({
       styleOverrides: `
             body {
                 background: #FF7358;
+                font-family: 'Manrope', sans-serif !important;
             }
           `,
     },
@@ -106,6 +108,7 @@ theme = createTheme(theme, {
         // Name of the slot
         root: {
           // Some CSS
+          fontFamily: "Manrope, sans-serif",
           borderRadius: 8,
           textTransform: "none",
           fontWeight: 800,
@@ -187,6 +190,7 @@ theme = createTheme(theme, {
     MuiListItemButton: {
       styleOverrides: {
         root: {
+          fontFamily: "Manrope!important",
           backgroundColor: "rgba(255, 255, 255, 0.8)",
           borderRadius: 8,
         },
