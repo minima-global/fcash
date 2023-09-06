@@ -14,23 +14,17 @@
   transition: opacity 200ms;
 }
 
-.intro-wrapper {
+.intro_wrapper {
   position: absolute;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-
-  max-width: 560px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  gap: 48px;
 }
 
-.intro-wrapper > div:last-of-type {
+.align {
   display: grid;
+  grid-template-columns: 1fr minmax(0, 560px) 1fr;
+  grid-template-rows: 1fr;
+  gap: 48px;
 }

@@ -4,11 +4,10 @@ import styles from "./Grid.module.css";
 interface IProps {
   header: any;
   content: any;
-  footer: any;
 
   fullHeight?: boolean;
 }
-const Grid = ({ header, content, footer, fullHeight = false }: IProps) => {
+const Grid = ({ header, content, fullHeight = false }: IProps) => {
   const innerHeight = useGetInnerHeight();
 
   return (
@@ -18,8 +17,6 @@ const Grid = ({ header, content, footer, fullHeight = false }: IProps) => {
       <main>
         <section className={fullHeight ? "!h-screen" : ""}>{content}</section>
       </main>
-
-      <footer>{footer}</footer>
     </div>
   );
 };

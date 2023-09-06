@@ -5,119 +5,88 @@ import MiCard from "../../helper/layout/Card/MiCard";
 import { Tabs, TabButton } from "../../helper/layout/MiTabs";
 import styles from "./Instructions.module.css";
 import styled from "@emotion/styled";
-
-const MiInstructionTitle = styled("p")`
-  font-weight: 700;
-  font-size: 1rem;
-  line-height: 22px;
-  letter-spacing: 0.02em;
-  color: #ff7358;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-`;
-const MiInstructionWrapper = styled("div")`
-  padding: 0px 0px;
-`;
-const MiInstructionList = styled("ol")`
-  padding-inline-start: 20px;
-
-  > :last-of-type {
-    margin-bottom: 0 !important;
-  }
-`;
-const MiInstruction = styled("li")`
-  font-weight: 400;
-  font-size: 1rem;
-  line-height: 22px;
-  letter-spacing: 0.02em;
-  color: #363a3f;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-  margin-bottom: 8px;
-`;
+import FadeIn from "../../UI/Animations/FadeIn";
+import { Link, useLocation } from "react-router-dom";
 
 const Instructions = () => {
-  const [tabOpen, setTabOpenIndex] = React.useState(0);
-  const toggle = (i: number) => setTabOpenIndex(i);
-  return (
-    <>
-      <Stack spacing={3}>
-        <Tabs>
-          <TabButton
-            onClick={() => toggle(0)}
-            className={tabOpen === 0 ? styles["tab-open"] : undefined}
-          >
-            Send
-          </TabButton>
-          <TabButton
-            onClick={() => toggle(1)}
-            className={tabOpen === 1 ? styles["tab-open"] : undefined}
-          >
-            Future
-          </TabButton>
-        </Tabs>
-        {tabOpen === 0 && (
-          <MiCard>
-            <MiInstructionWrapper>
-              <MiInstructionTitle>
-                How to send funds to the future
-              </MiInstructionTitle>
-              <MiInstructionList>
-                <MiInstruction>Navigate to the Send page.</MiInstruction>
-                <MiInstruction>Select a token to send.</MiInstruction>
-                <MiInstruction>
-                  Pick a date and time that you would like the tokens to become
-                  unlocked.
-                </MiInstruction>
-                <MiInstruction>
-                  Enter a Minima wallet address. This can be your wallet address
-                  or the address of a third party.{" "}
-                  <b>
-                    <i>If you are choosing to lock funds for someone else.</i>
-                  </b>
-                </MiInstruction>
-                <MiInstruction>
-                  Choose how many tokens you would like to lock.
-                </MiInstruction>
-                <MiInstruction>
-                  Then send those tokens to the future.
-                </MiInstruction>
-              </MiInstructionList>
-            </MiInstructionWrapper>
-          </MiCard>
-        )}
+  const location = useLocation();
 
-        {tabOpen === 1 && (
-          <MiCard>
-            <MiInstructionWrapper>
-              <MiInstructionTitle>Collecting funds</MiInstructionTitle>
-              <MiInstructionList>
-                <MiInstruction>Navigate to the Future page.</MiInstruction>
-                <MiInstruction>
-                  Tokens which have not reached their unlock date and time can
-                  be found under the Pending tab.
-                </MiInstruction>
-                <MiInstruction>
-                  To view more information, click on the token. Tokens which
-                  have reached their unlock date and time can be found under the{" "}
-                  <b>
-                    <i>Ready</i>
-                  </b>{" "}
-                  tab.
-                </MiInstruction>
-                <MiInstruction>
-                  Once a token is ready to collect, simply hit the Collect
-                  button and the tokens will automatically unlock and appear in
-                  the balance of the wallet address to which they were sent.
-                </MiInstruction>
-              </MiInstructionList>
-            </MiInstructionWrapper>
-          </MiCard>
-        )}
-      </Stack>
-    </>
+  return (
+    <div className="mt-3">
+      <FadeIn isOpen={true}>
+        <ul className="w-full gap-2 p-2 rounded-lg bg-white grid grid-cols-2 flex-wrap text-base font-medium text-center text-gray-500 dark:text-gray-400">
+          <li className="mr-2">
+            <Link
+              to="#send"
+              className={`w-full font-semibold inline-block p-3 hover:color-futurecash text-white rounded-lg ${
+                location.hash === "#send"
+                  ? "active hover:text-white"
+                  : "passive"
+              }`}
+            >
+              Send
+            </Link>
+          </li>
+          <li className="mr-2">
+            <Link
+              to="#future"
+              className={`w-full inline-block p-3 font-semibold text-white hover:color-futurecash rounded-lg ${
+                location.hash === "#future"
+                  ? "active hover:text-white"
+                  : "passive"
+              }`}
+            >
+              Future
+            </Link>
+          </li>
+        </ul>
+
+        <div className="mt-8 flex flex-col gap-4 bg-white rounded py-4 px-3">
+          <h1 className="color-futurecash text-sm font-semibold">
+            How to send cash to the future
+          </h1>
+          {location.hash === "#send" && (
+            <ul className="flex flex-col gap-2">
+              <li>1. Navigate to the Send page</li>
+              <li>2. Select a token</li>
+              <li>
+                3. Pick a date and time that you would like the tokens to become
+                unlocked on
+              </li>
+              <li>
+                4. Enter a Minima wallet address. This can be your wallet
+                address or the address of a third party.
+              </li>
+              <li>5. Choose how much tokens you'd like to send</li>
+              <li>
+                6. (optional) Enter a burn if you'd like to prioritize your
+                transaction
+              </li>
+              <li>7. Then click the send button to send them to the future!</li>
+            </ul>
+          )}
+          {location.hash === "#future" && (
+            <ul className="flex flex-col gap-2">
+              <li>1. Navigate to the Future page</li>
+              <li>
+                2. Tokens which have not reached their unlock date & time can be
+                founder under the 'Pending' tab. To view more information, tap
+                on the token.
+              </li>
+              <li>
+                3. Tokens which have reacher their unlock date & time can be
+                found under the 'Ready' tab.
+              </li>
+              <li>
+                4. Once a token is ready to be collected, simply hit the collect
+                button, then click the confirm button on the following screen to
+                collect.
+              </li>
+            </ul>
+          )}
+        </div>
+      </FadeIn>
+    </div>
   );
 };
 

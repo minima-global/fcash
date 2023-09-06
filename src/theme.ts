@@ -62,7 +62,7 @@ let theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: `
             body {
-                background: #FF7358;
+                background: #F4F4F5;
                 font-family: 'Manrope', sans-serif !important;
             }
           `,

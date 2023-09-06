@@ -3,11 +3,12 @@
   display: grid;
 
   grid-template-columns: 1fr;
-  grid-template-rows: 56px 1fr 85px;
+  grid-template-rows: 56px 1fr 64px;
   grid-template-areas:
               'header'
               'main'
               'footer';
+
   
   position: absolute;
   z-index: 44;
@@ -22,7 +23,7 @@
 }
 .app_grid > main {
   grid-area: main;
-  height: calc(100vh - 56px - 56px);
+  height: calc(100vh - 56px - 64px);
   overflow: hidden;
 
   display: grid;
@@ -33,17 +34,14 @@
   grid-area: 1 / 2 / 1 / 3;
 
   display: grid;
-  height: calc(100vh - 112px);
+  height: calc(100vh - 120px);
 
   padding: 16px 0;
-  margin: 0 1rem;
 }
-.app_grid main > section.full {
-  grid-area: 1 / 1 / 1 / 4
-}
+
 .app_grid > footer {
   grid-area: footer;
-  min-height: 56px;
+  min-height: 64px;
 }
 
 @media screen and (min-width: 561px) {

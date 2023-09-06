@@ -92,7 +92,7 @@ const formValidation = yup.object().shape({
   burn: yup.string().matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters."),
 });
 interface FormValues {
-  token?: MinimaToken;
+  token: MinimaToken | null;
   datetime: any;
   address: string;
   amount: string;
@@ -117,7 +117,6 @@ const TransitionalFormHandler = (props: FormikProps<FormValues>) => {
 };
 
 interface MyEnhancedFutureCashFormProps {
-  initialToken: MinimaToken;
   dispatch: AppDispatch;
   page: number;
 }
@@ -127,7 +126,7 @@ const MyEnhancedTransitionalFormHandler = withFormik<
 >({
   validationSchema: formValidation,
   mapPropsToValues: (props) => ({
-    token: props.initialToken,
+    token: null,
     datetime: null,
     preferred: false,
     address: "",

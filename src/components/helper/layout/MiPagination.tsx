@@ -1,14 +1,17 @@
 import { Stack } from "@mui/material";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { setPage, selectPageSelector } from "../../../redux/slices/app/introSlice";
+import {
+  setPage,
+  selectPageSelector,
+} from "../../../redux/slices/app/introSlice";
 import MiPaginationIcon from "./svgs/MiPaginationIcon";
 import styles from "../layout/styling/intro/index.module.css";
 
 import { displayIntroPages } from "../../pages/intro/Intro";
 
 type MiPaginationProps = {
-    onClick?: Function;
+  onClick?: Function;
 };
 
 const MiPagination: React.FC<MiPaginationProps> = ({ onClick }) => {
@@ -16,15 +19,15 @@ const MiPagination: React.FC<MiPaginationProps> = ({ onClick }) => {
   const selectIntroPage = useAppSelector(selectPageSelector);
 
   const onClickHandler = (currPage: number) => {
-      if (onClick) {
-          onClick(currPage)
-      } else {
-          dispatch(setPage(currPage));
-      }
+    if (onClick) {
+      onClick(currPage);
+    } else {
+      dispatch(setPage(currPage));
+    }
   };
 
   return (
-    <div className={styles["root"]}>
+    <div className={`${styles.root} mt-8`}>
       <Stack flexDirection="row" alignItems="center" justifyContent="center">
         {displayIntroPages.map((p, i) => (
           <MiPaginationIcon

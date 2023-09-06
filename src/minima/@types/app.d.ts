@@ -6,7 +6,7 @@ interface IFutureCashCollection {
   coinid: string;
   address: string;
   tokenid: string;
-  amount: string;
+  amount?: string;
 }
 interface IFutureCashPost {
   amount: string;

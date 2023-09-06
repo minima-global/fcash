@@ -281,7 +281,6 @@ const collectFutureCash = (futureCash: IFutureCashCollection) => {
   return new Promise((resolve, reject) => {
     constructTransaction(futureCash)
       .then((res) => {
-        // console.log(res)
         resolve(res);
       })
       .catch((err) => {
@@ -319,10 +318,7 @@ const constructTransaction = (
   fCash: IFutureCashCollection
 ): Promise<boolean> => {
   const id = Math.floor(Math.random() * 1000000000);
-
   return new Promise((resolve, reject) => {
-    // console.log(`Token Amount`, fCash.amount)
-    // console.log(`Token tokenid`, fCash.tokenid)
     const command = `
             txncreate id:${id};
             txninput id:${id} coinid:${fCash.coinid};
@@ -331,12 +327,10 @@ const constructTransaction = (
             txnpost id:${id};
             txndelete id:${id}
         `;
-
-    // console.log(command)
-
+    console.log("running command", command);
     rpc(command)
       .then((r) => {
-        // console.log(r)
+        console.log(r);
         resolve(r);
       })
       .catch((err) => {

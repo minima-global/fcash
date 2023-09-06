@@ -1,9 +1,5 @@
-import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { setPage } from "../../../redux/slices/app/introSlice";
-
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hooks";
 
 import MiColoredOverlay from "../../helper/layout/MiColoredOverlay";
 import MiSwipeableCarousel from "../../helper/layout/carousel/MiCarousel";
@@ -12,12 +8,11 @@ import ForYourSelf from "../../intro/ForYourSelf";
 import LockUpFundsNow from "../../intro/LockUpFundsNow";
 import UnlockTheFuture from "../../intro/UnlockTheFuture";
 import ToSaveInvestSecure from "../../intro/ToSaveInvestSecure";
-import SplashScreen from "../../intro/SplashScreen";
 
 import { CSSTransition } from "react-transition-group";
 
 import styles from "./Intro.module.css";
-import OverlayGrid from "../../overlayGrid";
+import Button from "../../UI/Button";
 
 export const displayIntroPages = [
   <LockUpFundsNow />,
@@ -27,17 +22,11 @@ export const displayIntroPages = [
 ];
 const Intro = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [splashScreen, setSplashScreen] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => setSplashScreen(false), 2500);
-  }, []);
 
   return (
     <>
       <CSSTransition
-        in={!!splashScreen}
+        in={true}
         unmountOnExit
         timeout={200}
         classNames={{
@@ -47,38 +36,28 @@ const Intro = () => {
           exitActive: styles.backdropExitActive,
         }}
       >
-        <SplashScreen />
-      </CSSTransition>
-      <CSSTransition
-        in={!splashScreen}
-        unmountOnExit
-        timeout={200}
-        classNames={{
-          enter: styles.backdropEnter,
-          enterDone: styles.backdropEnterActive,
-          exit: styles.backdropExit,
-          exitActive: styles.backdropExitActive,
-        }}
-      >
-        <MiColoredOverlay extraClass="brand-color" center={true}>
-          <div className={styles["intro-wrapper"]}>
+        <MiColoredOverlay extraClass="bg-futurecash" center={true}>
+          <div className={`${styles.intro_wrapper} mt-8`}>
             <MiSwipeableCarousel />
 
-            <div>
-              <MiIntroActionsContainer>
-                <MiIntroActionsButton
-                  onClick={() => {
-                    navigate("/instructions");
-                    dispatch(setPage(-1));
-                  }}
+            <div className={styles["align"]}>
+              <div />
+              <div className="mt-8">
+                <Button
+                  extraClass="w-full mb-4 !bg-white !text-black !font-bold"
+                  onClick={() => navigate("/dashboard/instructions#send")}
                 >
                   Instructions
-                </MiIntroActionsButton>
-
-                <MiIntroSkipButton onClick={() => dispatch(setPage(-1))}>
-                  Skip
-                </MiIntroSkipButton>
-              </MiIntroActionsContainer>
+                </Button>
+                <MiIntroActionsContainer>
+                  <MiIntroSkipButton
+                    onClick={() => navigate("/dashboard/send")}
+                  >
+                    Skip
+                  </MiIntroSkipButton>
+                </MiIntroActionsContainer>
+              </div>
+              <div />
             </div>
           </div>
         </MiColoredOverlay>

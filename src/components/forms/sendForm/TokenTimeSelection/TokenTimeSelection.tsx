@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   TextField,
   Button,
@@ -8,14 +8,10 @@ import {
   Stack,
 } from "@mui/material";
 
-import { useAppSelector } from "../../../../redux/hooks";
-import { selectBalance } from "../../../../redux/slices/minima/balanceSlice";
-
 import styles from "./TokenTimeSelection.module.css";
 
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { createBlockTime } from "../../../../minima/rpc-commands";
-import MiSelect from "../../../helper/layout/MiSelect";
 import {
   InputHelper,
   InputLabel,
@@ -26,9 +22,10 @@ import { updatePage } from "../../../../redux/slices/app/sendFormSlice";
 import EstimatedBlock from "../EstimatedBlock";
 import { getAddress } from "../../../../minima/commands";
 import useIsVaultLocked from "../../../../hooks/useIsVaultLocked";
+import { appContext } from "../../../../AppContext";
 
 const TokenTimeSelection = (props: any) => {
-  const walletTokens = useAppSelector(selectBalance);
+  const { wallet: walletTokens } = useContext(appContext);
   const userLockedVault = useIsVaultLocked();
 
   const [loadingAddress, setLoadingAddress] = useState(false);
@@ -91,7 +88,7 @@ const TokenTimeSelection = (props: any) => {
     <>
       <Stack spacing={10}>
         <Stack spacing={2}>
-          <MiSelect
+          {/* <MiSelect
             id="token"
             name="token"
             value={values.token}
@@ -101,7 +98,7 @@ const TokenTimeSelection = (props: any) => {
             tokens={walletTokens}
             setFieldValue={setFieldValue}
             resetForm={resetForm}
-          />
+          /> */}
           <InputWrapper>
             <InputLabel>Date & time</InputLabel>
             <DateTimePicker

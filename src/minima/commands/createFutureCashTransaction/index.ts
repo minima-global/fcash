@@ -5,7 +5,7 @@ export const createFutureCashTransaction = (
   state: { port: number; data: any }[],
   password: false | string,
   burn: false | string
-) => {
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     MDS.cmd(
       `send amount:${amount} address:${address} tokenid:${tokenid} state:{${state.map(
@@ -13,14 +13,16 @@ export const createFutureCashTransaction = (
       )}} ${password ? `password:${password}` : ""} ${
         burn ? `burn:${burn}` : ""
       }`,
-      (res) => {
-        if (!res.status && !res.pending)
+      (resp: any) => {
+        if (!resp.status && !resp.pending)
           reject(
-            res.error ? res.error : res.message ? res.message : "RPC Failed"
+            resp.error
+              ? resp.error
+              : "Creating transaction failed, please try again"
           );
-        if (!res.status && res.pending) reject("pending");
+        if (!resp.status && resp.pending) resolve("Transaction is pending");
 
-        resolve(true);
+        resolve("Transaction approved");
       }
     );
   });
