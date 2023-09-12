@@ -581,348 +581,342 @@ const Future = () => {
         </ul>
       </div>
 
-      {
-        <ScaleIn isOpen={!!collect}>
-          {createPortal(
-            <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
-              <Grid
-                fullHeight={true}
-                header={<div />}
-                content={
-                  <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
-                    <Grid
-                      fullHeight={true}
-                      header={<div />}
-                      content={
-                        <div className="flex flex-col">
-                          <h1 className="text-black text-2xl mb-4">
-                            Confirm transaction
-                          </h1>
-                          <div className="bg-white rounded px-4 py-4">
-                            <ul className="break-all flex flex-col gap-6">
-                              <li>
+      {!!collect &&
+        createPortal(
+          <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
+            <Grid
+              fullHeight={true}
+              header={<div />}
+              content={
+                <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
+                  <Grid
+                    fullHeight={true}
+                    header={<div />}
+                    content={
+                      <div className="flex flex-col">
+                        <h1 className="text-black text-2xl mb-4">
+                          Confirm transaction
+                        </h1>
+                        <div className="bg-white rounded px-4 py-4">
+                          <ul className="break-all flex flex-col gap-6">
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Token
+                              </h3>
+                              <p className="text-black">
+                                {coinToCollect &&
+                                coinToCollect.tokenid === "0x00"
+                                  ? "Minima"
+                                  : coinToCollect &&
+                                    coinToCollect.token.name.name
+                                  ? coinToCollect.token.name.name
+                                  : "Unavailable"}
+                              </p>
+                            </li>
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Amount
+                              </h3>
+                              {coinToCollect &&
+                                coinToCollect.tokenid === "0x00" && (
+                                  <p className="text-black">
+                                    {coinToCollect && coinToCollect.amount}
+                                  </p>
+                                )}
+                              {coinToCollect &&
+                                coinToCollect.tokenid !== "0x00" && (
+                                  <p className="text-black">
+                                    {coinToCollect && coinToCollect.tokenamount}
+                                  </p>
+                                )}
+                            </li>
+
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Recipient address
+                              </h3>
+                              <p className="text-black">
+                                {coinToCollect &&
+                                  MDS.util.getStateVariable(coinToCollect, 2)}
+                              </p>
+                            </li>
+
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Block height unlocked
+                              </h3>
+                              <p className="text-black">
+                                {coinToCollect &&
+                                  MDS.util.getStateVariable(coinToCollect, 1)}
+                              </p>
+                            </li>
+
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Date and time unlocked
+                              </h3>
+                              <p className="text-black">
+                                {coinToCollect &&
+                                  format(
+                                    parseInt(
+                                      MDS.util.getStateVariable(
+                                        coinToCollect,
+                                        3
+                                      )
+                                    ),
+                                    "MMM d yyyy - hh:mm:ss a"
+                                  )}
+                              </p>
+                            </li>
+
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Coin ID
+                              </h3>
+                              <p className="text-black">
+                                {coinToCollect && coinToCollect.coinid}
+                              </p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="mt-6">
+                          <h4 className="color-core-grey">TIPS</h4>
+                          <p className="mt-2 text-sm">
+                            After you have collected this contract you may need
+                            to wait a few minutes before your wallet balance is
+                            updated.
+                          </p>
+                        </div>
+
+                        <Button
+                          onClick={async () => {
+                            setSubmitting(true);
+                            if (coinToCollect) {
+                              const recipientAddress =
+                                MDS.util.getStateVariable(coinToCollect, 2);
+                              // console.log(
+                              //   "WIthdrawing to address.." + recipientAddress
+                              // );
+
+                              await collectFutureCash({
+                                coinid: coinToCollect.coinid,
+                                address: recipientAddress,
+                                tokenid: coinToCollect.tokenid,
+                                amount:
+                                  coinToCollect.tokenid == "0x00"
+                                    ? coinToCollect.amount
+                                    : coinToCollect.tokenamount,
+                              })
+                                .then((res) => {
+                                  console.log(res);
+                                  setCoinCollected(coinToCollect.coinid);
+                                  setCollect(false);
+                                  setSubmitting(false);
+
+                                  setSuccess(true);
+                                })
+                                .catch((err) => {
+                                  setStatus(err);
+                                });
+                            }
+                          }}
+                          disabled={submitting}
+                          extraClass="mt-6"
+                        >
+                          Confirm
+                        </Button>
+
+                        {!submitting && (
+                          <div className="flex items-center justify-center">
+                            <button
+                              onClick={() => {
+                                setCollect(false);
+                              }}
+                              className="hover:cursor-pointer hover:opacity-50 mt-4 bg-transparent text-base text-center border-black border-b-2 border-y-0 border-x-0 rounded-none pb-0 px-0 pt-0"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    }
+                  />
+                </div>
+              }
+            />
+          </div>,
+          document.body
+        )}
+
+      {!!viewDetail &&
+        createPortal(
+          <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
+            <Grid
+              fullHeight={true}
+              header={<div />}
+              content={
+                <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
+                  <Grid
+                    fullHeight={true}
+                    header={<div />}
+                    content={
+                      <div className="flex flex-col">
+                        <h1 className="text-black text-2xl mb-4">
+                          Contract details
+                        </h1>
+                        <div className="bg-white rounded px-4 py-4">
+                          <ul className="break-all flex flex-col gap-6">
+                            <li className="flex justify-between items-center">
+                              <div>
                                 <h3 className="color-core-black-3 text-lg">
                                   Token
                                 </h3>
                                 <p className="text-black">
-                                  {coinToCollect &&
-                                  coinToCollect.tokenid === "0x00"
+                                  {viewCoin && viewCoin.tokenid === "0x00"
                                     ? "Minima"
-                                    : coinToCollect &&
-                                      coinToCollect.token.name.name
-                                    ? coinToCollect.token.name.name
+                                    : viewCoin && viewCoin.token.name.name
+                                    ? viewCoin.token.name.name
                                     : "Unavailable"}
                                 </p>
-                              </li>
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Amount
-                                </h3>
-                                {coinToCollect &&
-                                  coinToCollect.tokenid === "0x00" && (
-                                    <p className="text-black">
-                                      {coinToCollect && coinToCollect.amount}
-                                    </p>
-                                  )}
-                                {coinToCollect &&
-                                  coinToCollect.tokenid !== "0x00" && (
-                                    <p className="text-black">
-                                      {coinToCollect &&
-                                        coinToCollect.tokenamount}
-                                    </p>
-                                  )}
-                              </li>
-
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Recipient address
-                                </h3>
-                                <p className="text-black">
-                                  {coinToCollect &&
-                                    MDS.util.getStateVariable(coinToCollect, 2)}
-                                </p>
-                              </li>
-
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Block height unlocked
-                                </h3>
-                                <p className="text-black">
-                                  {coinToCollect &&
-                                    MDS.util.getStateVariable(coinToCollect, 1)}
-                                </p>
-                              </li>
-
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Date and time unlocked
-                                </h3>
-                                <p className="text-black">
-                                  {coinToCollect &&
-                                    format(
-                                      parseInt(
-                                        MDS.util.getStateVariable(
-                                          coinToCollect,
-                                          3
-                                        )
-                                      ),
-                                      "MMM d yyyy - hh:mm:ss a"
-                                    )}
-                                </p>
-                              </li>
-
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Coin ID
-                                </h3>
-                                <p className="text-black">
-                                  {coinToCollect && coinToCollect.coinid}
-                                </p>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="mt-6">
-                            <h4 className="color-core-grey">TIPS</h4>
-                            <p className="mt-2 text-sm">
-                              After you have collected this contract you may
-                              need to wait a few minutes before your wallet
-                              balance is updated.
-                            </p>
-                          </div>
-
-                          <Button
-                            onClick={async () => {
-                              setSubmitting(true);
-                              if (coinToCollect) {
-                                const recipientAddress =
-                                  MDS.util.getStateVariable(coinToCollect, 2);
-                                // console.log(
-                                //   "WIthdrawing to address.." + recipientAddress
-                                // );
-
-                                await collectFutureCash({
-                                  coinid: coinToCollect.coinid,
-                                  address: recipientAddress,
-                                  tokenid: coinToCollect.tokenid,
-                                  amount:
-                                    coinToCollect.tokenid == "0x00"
-                                      ? coinToCollect.amount
-                                      : coinToCollect.tokenamount,
-                                })
-                                  .then((res) => {
-                                    console.log(res);
-                                    setCoinCollected(coinToCollect.coinid);
-                                    setCollect(false);
-                                    setSubmitting(false);
-
-                                    setSuccess(true);
-                                  })
-                                  .catch((err) => {
-                                    setStatus(err);
-                                  });
-                              }
-                            }}
-                            disabled={submitting}
-                            extraClass="mt-6"
-                          >
-                            Confirm
-                          </Button>
-
-                          {!submitting && (
-                            <div className="flex items-center justify-center">
-                              <button
-                                onClick={() => {
-                                  setCollect(false);
-                                }}
-                                className="hover:cursor-pointer hover:opacity-50 mt-4 bg-transparent text-base text-center border-black border-b-2 border-y-0 border-x-0 rounded-none pb-0 px-0 pt-0"
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      }
-                    />
-                  </div>
-                }
-              />
-            </div>,
-            document.body
-          )}
-        </ScaleIn>
-      }
-      {
-        <ScaleIn isOpen={!!viewDetail}>
-          {createPortal(
-            <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
-              <Grid
-                fullHeight={true}
-                header={<div />}
-                content={
-                  <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
-                    <Grid
-                      fullHeight={true}
-                      header={<div />}
-                      content={
-                        <div className="flex flex-col">
-                          <h1 className="text-black text-2xl mb-4">
-                            Contract details
-                          </h1>
-                          <div className="bg-white rounded px-4 py-4">
-                            <ul className="break-all flex flex-col gap-6">
-                              <li className="flex justify-between items-center">
-                                <div>
-                                  <h3 className="color-core-black-3 text-lg">
-                                    Token
-                                  </h3>
-                                  <p className="text-black">
-                                    {viewCoin && viewCoin.tokenid === "0x00"
-                                      ? "Minima"
-                                      : viewCoin && viewCoin.token.name.name
-                                      ? viewCoin.token.name.name
-                                      : "Unavailable"}
-                                  </p>
+                              </div>
+                              {viewCoin && viewCoin.tokenid === "0x00" && (
+                                <div className="relative">
+                                  <svg
+                                    className="absolute right-[-6px] top-[-6px] z-50"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    height="24"
+                                    viewBox="0 -960 960 960"
+                                    width="24"
+                                  >
+                                    <path
+                                      fill="#3DA2FF"
+                                      d="m344-60-76-128-144-32 14-148-98-112 98-112-14-148 144-32 76-128 136 58 136-58 76 128 144 32-14 148 98 112-98 112 14 148-144 32-76 128-136-58-136 58Zm94-278 226-226-56-58-170 170-86-84-56 56 142 142Z"
+                                    />
+                                  </svg>
+                                  <svg
+                                    className="rounded-lg"
+                                    width="64"
+                                    height="64"
+                                    viewBox="0 0 80 81"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <rect
+                                      width="80"
+                                      height="80"
+                                      transform="translate(0 0.550781)"
+                                      fill="#08090B"
+                                    />
+                                    <path
+                                      d="M52.3627 30.187L50.5506 37.9909L48.2331 28.5753L40.1133 25.3689L37.9178 34.8015L35.9836 23.7402L27.8638 20.5508L19.5 56.5508H28.3691L30.9305 45.4895L32.8646 56.5508H41.7512L43.9292 47.1182L46.2467 56.5508H55.1158L60.5 33.3764L52.3627 30.187Z"
+                                      fill="white"
+                                    />
+                                  </svg>
                                 </div>
-                                {viewCoin && viewCoin.tokenid === "0x00" && (
-                                  <div className="relative">
-                                    <svg
-                                      className="absolute right-[-6px] top-[-6px] z-50"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      height="24"
-                                      viewBox="0 -960 960 960"
-                                      width="24"
-                                    >
-                                      <path
-                                        fill="#3DA2FF"
-                                        d="m344-60-76-128-144-32 14-148-98-112 98-112-14-148 144-32 76-128 136 58 136-58 76 128 144 32-14 148 98 112-98 112 14 148-144 32-76 128-136-58-136 58Zm94-278 226-226-56-58-170 170-86-84-56 56 142 142Z"
-                                      />
-                                    </svg>
-                                    <svg
-                                      className="rounded-lg"
-                                      width="64"
-                                      height="64"
-                                      viewBox="0 0 80 81"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <rect
-                                        width="80"
-                                        height="80"
-                                        transform="translate(0 0.550781)"
-                                        fill="#08090B"
-                                      />
-                                      <path
-                                        d="M52.3627 30.187L50.5506 37.9909L48.2331 28.5753L40.1133 25.3689L37.9178 34.8015L35.9836 23.7402L27.8638 20.5508L19.5 56.5508H28.3691L30.9305 45.4895L32.8646 56.5508H41.7512L43.9292 47.1182L46.2467 56.5508H55.1158L60.5 33.3764L52.3627 30.187Z"
-                                        fill="white"
-                                      />
-                                    </svg>
-                                  </div>
-                                )}
-                                {viewCoin && viewCoin.tokenid !== "0x00" && (
-                                  <img
-                                    className="rounded-l-lg w-[80px] h-[80px]"
-                                    alt="token-icon"
-                                    src={
-                                      viewCoin &&
-                                      "url" in viewCoin.token.name &&
-                                      viewCoin.token.name.url.length
-                                        ? viewCoin.token.name.url
-                                        : `https://robohash.org/${viewCoin.tokenid}`
-                                    }
-                                  />
-                                )}
-                              </li>
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Amount
-                                </h3>
-                                {viewCoin && viewCoin.tokenid === "0x00" && (
-                                  <p className="text-black">
-                                    {viewCoin && viewCoin.amount}
-                                  </p>
-                                )}
-                                {viewCoin && viewCoin.tokenid !== "0x00" && (
-                                  <p className="text-black">
-                                    {viewCoin && viewCoin.tokenamount}
-                                  </p>
-                                )}
-                              </li>
-
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Recipient address
-                                </h3>
+                              )}
+                              {viewCoin && viewCoin.tokenid !== "0x00" && (
+                                <img
+                                  className="rounded-l-lg w-[80px] h-[80px]"
+                                  alt="token-icon"
+                                  src={
+                                    viewCoin &&
+                                    "url" in viewCoin.token.name &&
+                                    viewCoin.token.name.url.length
+                                      ? viewCoin.token.name.url
+                                      : `https://robohash.org/${viewCoin.tokenid}`
+                                  }
+                                />
+                              )}
+                            </li>
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Amount
+                              </h3>
+                              {viewCoin && viewCoin.tokenid === "0x00" && (
                                 <p className="text-black">
-                                  {viewCoin &&
-                                    MDS.util.getStateVariable(viewCoin, 2)}
+                                  {viewCoin && viewCoin.amount}
                                 </p>
-                              </li>
-
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Block height unlocked
-                                </h3>
+                              )}
+                              {viewCoin && viewCoin.tokenid !== "0x00" && (
                                 <p className="text-black">
-                                  {viewCoin &&
-                                    MDS.util.getStateVariable(viewCoin, 1)}
+                                  {viewCoin && viewCoin.tokenamount}
                                 </p>
-                              </li>
+                              )}
+                            </li>
 
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Date and time unlocked
-                                </h3>
-                                <p className="text-black">
-                                  {viewCoin &&
-                                    format(
-                                      parseInt(
-                                        MDS.util.getStateVariable(viewCoin, 3)
-                                      ),
-                                      "MMM d yyyy - hh:mm:ss a"
-                                    )}
-                                </p>
-                              </li>
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Recipient address
+                              </h3>
+                              <p className="text-black">
+                                {viewCoin &&
+                                  MDS.util.getStateVariable(viewCoin, 2)}
+                              </p>
+                            </li>
 
-                              <li>
-                                <h3 className="color-core-black-3 text-lg">
-                                  Coin ID
-                                </h3>
-                                <p className="text-black">
-                                  {viewCoin && viewCoin.coinid}
-                                </p>
-                              </li>
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Block height unlocked
+                              </h3>
+                              <p className="text-black">
+                                {viewCoin &&
+                                  MDS.util.getStateVariable(viewCoin, 1)}
+                              </p>
+                            </li>
 
-                              <li>
-                                <h3 className="color-core-black-3 text-lg ">
-                                  Token ID
-                                </h3>
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Date and time unlocked
+                              </h3>
+                              <p className="text-black">
+                                {viewCoin &&
+                                  format(
+                                    parseInt(
+                                      MDS.util.getStateVariable(viewCoin, 3)
+                                    ),
+                                    "MMM d yyyy - hh:mm:ss a"
+                                  )}
+                              </p>
+                            </li>
 
-                                <p className="text-black">
-                                  {viewCoin && viewCoin.tokenid}
-                                </p>
-                              </li>
-                            </ul>
-                          </div>
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Coin ID
+                              </h3>
+                              <p className="text-black">
+                                {viewCoin && viewCoin.coinid}
+                              </p>
+                            </li>
 
-                          <Button
-                            onClick={() => {
-                              setViewDetails(false);
-                            }}
-                            extraClass="mt-6"
-                          >
-                            Cancel
-                          </Button>
+                            <li>
+                              <h3 className="color-core-black-3 text-lg ">
+                                Token ID
+                              </h3>
+
+                              <p className="text-black">
+                                {viewCoin && viewCoin.tokenid}
+                              </p>
+                            </li>
+                          </ul>
                         </div>
-                      }
-                    />
-                  </div>
-                }
-              />
-            </div>,
-            document.body
-          )}
-        </ScaleIn>
-      }
+
+                        <Button
+                          onClick={() => {
+                            setViewDetails(false);
+                          }}
+                          extraClass="mt-6"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    }
+                  />
+                </div>
+              }
+            />
+          </div>,
+          document.body
+        )}
 
       {status &&
         createPortal(

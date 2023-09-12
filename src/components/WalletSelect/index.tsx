@@ -18,7 +18,7 @@ const WalletSelect = () => {
 
   const [searchParams] = useSearchParams();
   useEffect(() => {
-    if (balance.length) {
+    if (balance.length && formik.values.token) {
       const currentToken = balance.find(
         (t: MinimaToken) => t.tokenid === formik.values.token.tokenid
       );
