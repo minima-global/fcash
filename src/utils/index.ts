@@ -1,4 +1,3 @@
-import { ICoinStatus } from "./../redux/slices/minima/coinSlice";
 import { Coin, MinimaToken } from "../minima/@types/minima";
 import getAppUID from "./getAppUID";
 
@@ -32,27 +31,6 @@ function copy(text: string) {
   });
 }
 
-// merge the token and coin and return a new object
-const mapCoinToToken = (coin: Coin, token: MinimaToken): any => {
-  return Object.assign({}, coin, token);
-};
-
-// select a token, iterate through coins and find a coin with same tokenid
-const mergeArray = (coins: ICoinStatus[], tokens: MinimaToken[]): any => {
-  const mergeArr: any = [];
-
-  tokens.map((t) => {
-    coins.forEach((c) => {
-      let merge = {};
-      if (c.tokenid == t.tokenid) {
-        merge = mapCoinToToken(c, t);
-        mergeArr.push(merge);
-      }
-    });
-  });
-  return mergeArr;
-};
-
 const containsText = (text: string, searchText: string) =>
   text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
 
@@ -85,11 +63,4 @@ const makeTokenImage = (
   return undefined;
 };
 
-export {
-  getAppUID,
-  containsText,
-  copy,
-  numberWithCommas,
-  mergeArray,
-  makeTokenImage,
-};
+export { getAppUID, containsText, copy, numberWithCommas, makeTokenImage };

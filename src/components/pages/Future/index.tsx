@@ -410,7 +410,7 @@ const Future = () => {
                         }}
                         extraClass="text-sm !py-2 !px-3"
                       >
-                        {coinToCollect && coinCollected === coinToCollect.coinid
+                        {coinToCollect && coinCollected === c.coinid
                           ? "Collected"
                           : "Collect"}
                       </Button>

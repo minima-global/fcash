@@ -265,6 +265,7 @@ const Send = () => {
                   }}
                 />
               </div>
+
               <div className="mt-8">
                 <h1 className="text-base pb-3">
                   How much would you like to lock?
@@ -1284,16 +1285,14 @@ const formValidation = yup.object().shape({
         return createError({ path, message: "Please select a valid date" });
       }
 
-      return createBlockTime(val)
-        .then(() => {
-          return true;
-        })
-        .catch((err) => {
-          return createError({
-            path,
-            message: err.message,
-          });
+      createBlockTime(val).catch((err) => {
+        return createError({
+          path,
+          message: err.message,
         });
+      });
+
+      return true;
     }),
   address: yup.object().shape({
     hexstring: yup

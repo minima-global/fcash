@@ -2,14 +2,12 @@ import { StatusState } from "./slices/minima/statusSlice";
 import { configureStore, ThunkAction, AnyAction } from "@reduxjs/toolkit";
 import { ToastState } from "./slices/app/toastSlice";
 import { MiningState } from "./slices/minima/miningSlice";
-import { CoinState, coinMiddleware } from "./slices/minima/coinSlice";
 import { balanceMiddleware, BalanceState } from "./slices/minima/balanceSlice";
 import { SendFormState } from "./slices/app/sendFormSlice";
 import { ClipboardState } from "./slices/app/clipboardSlice";
 import { FutureCoinState } from "./slices/app/futureCoinSlice";
 import { IntroState } from "./slices/app/introSlice";
 import { MenuState } from "./slices/app/menuSlice";
-import coinReducer from "./slices/minima/coinSlice";
 import toastReducer from "./slices/app/toastSlice";
 import miningReducer from "./slices/minima/miningSlice";
 import balanceReducer from "./slices/minima/balanceSlice";
@@ -22,7 +20,6 @@ import menuReducer from "./slices/app/menuSlice";
 import introReducer from "./slices/app/introSlice";
 
 export type RootState = {
-  coins: CoinState;
   mining: MiningState;
   toast: ToastState;
   wallet: BalanceState;
@@ -36,7 +33,6 @@ export type RootState = {
 
 export const store = configureStore({
   reducer: {
-    coins: coinReducer,
     mining: miningReducer,
     toast: toastReducer,
     wallet: balanceReducer,
@@ -48,7 +44,7 @@ export const store = configureStore({
     menu: menuReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(balanceMiddleware, coinMiddleware),
+    getDefaultMiddleware().concat(balanceMiddleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

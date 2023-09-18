@@ -64,7 +64,7 @@ const AppProvider = ({ children }: IProps) => {
           // add future cash script
           MDS.cmd(
             `newscript trackall:false script:"RETURN (@BLOCK GTE PREVSTATE(1) OR @COINAGE GTE PREVSTATE(4)) AND VERIFYOUT(@INPUT PREVSTATE(2) @AMOUNT @TOKENID FALSE)"`,
-            (resp: any) => {}
+            () => {}
           );
         }
 

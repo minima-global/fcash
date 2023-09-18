@@ -9,3 +9,4 @@
 
 - Tweak WalletSelect
 - Tweak block time check on form
+- Fix collected state on Futures page

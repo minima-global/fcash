@@ -1,9 +1,7 @@
-import { FlaggedCoin } from "./../redux/slices/minima/coinSlice";
 import { IFutureCashCollection, IFutureCashPost } from "./@types/app";
 import { Coin, IScript, MinimaToken, Status } from "./@types/minima";
 import Decimal from "decimal.js";
 import { futureCashScript } from "./scripts";
-import { ICoinStatus } from "../redux/slices/minima/coinSlice";
 
 import { FIRSTTIMETXT, FLAGGEDCOINSTXT } from "./constants";
 
@@ -184,57 +182,6 @@ const getBlockTime = (): Promise<number> => {
   });
 };
 
-/** Get coins */
-
-const getFutureCoins = (
-  _addr: string,
-  _flaggedCoins: FlaggedCoin[]
-): Promise<ICoinStatus[]> => {
-  return new Promise((resolve, reject) => {
-    // console.log("FLAGGEDCOINS", _flaggedCoins);
-    rpc(`coins relevant:true address:${_addr}`)
-      .then(async (coins) => {
-        if (_flaggedCoins.length > 0) {
-          resolve(
-            coins.map((c: Coin) => {
-              const getFlaggedCoin = _flaggedCoins.find(
-                (f) => f.coinid == c.coinid
-              );
-
-              if (getFlaggedCoin) {
-                // console.log("Setting interface to flagged coin")
-                return Object.assign(c, {
-                  status: "PENDING",
-                  collectedOnBlock: getFlaggedCoin.collectOnBlock,
-                });
-              }
-
-              return Object.assign(c, {
-                status: "NOTCOLLECTED",
-                collectedOnBlock: undefined,
-              });
-            })
-          );
-        } else {
-          resolve(
-            coins.map((c: Coin) =>
-              Object.assign(c, {
-                collectedOnBlock: undefined,
-                status: "NOTCOLLECTED",
-              })
-            )
-          );
-        }
-
-        resolve([]);
-      })
-      .catch((err) => {
-        console.error(err);
-        reject(err);
-      });
-  });
-};
-
 /** Get Balance */
 
 const getWalletBalance = (): Promise<MinimaToken[]> => {
@@ -269,19 +216,18 @@ const addFutureCashScript = async (scr: string, trackall: boolean) => {
 
 /** Get Script Address */
 
-const getFutureCashScriptAddress = async () => {
-  try {
-    const scripts = await rpc(`scripts`);
+const getFutureCashScriptAddress = async (): Promise<string> => {
+  return new Promise((resolve) => {
+    MDS.cmd("scripts", (resp: any) => {
+      if (resp.status) {
+        const script = resp.response.find(
+          (s: IScript) => s.script === futureCashScript
+        );
 
-    const script = scripts.find((s: IScript) => s.script === futureCashScript);
-    if (script && script.address) {
-      return script.address;
-    }
-
-    throw new Error("not found");
-  } catch (error: any) {
-    throw new Error(error);
-  }
+        resolve(script.address);
+      }
+    });
+  });
 };
 
 /** Collect Cash */
@@ -403,7 +349,6 @@ const getFirstTime = async () => {
 
 export {
   rpc,
-  getFutureCoins,
   getWalletBalance,
   getBlockDifference,
   addFutureCashScript,
