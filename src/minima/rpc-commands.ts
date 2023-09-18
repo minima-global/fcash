@@ -1,7 +1,6 @@
 import { FlaggedCoin } from "./../redux/slices/minima/coinSlice";
 import { IFutureCashCollection, IFutureCashPost } from "./@types/app";
 import { Coin, IScript, MinimaToken, Status } from "./@types/minima";
-import moment, { Moment } from "moment";
 import Decimal from "decimal.js";
 import { futureCashScript } from "./scripts";
 import { ICoinStatus } from "../redux/slices/minima/coinSlice";
@@ -125,7 +124,7 @@ const rpc = (command: string): Promise<any> => {
         });
       }
 
-      resolve(res.response);
+      resolve(true);
     });
   });
 };
@@ -136,16 +135,16 @@ const createBlockTime = async (dateTimeChosenByUser: Date) => {
   try {
     // get current time
     const now = new Date().getTime();
-    const duration = dateTimeChosenByUser.getTime() - now;
-    const currentBlockHeight = await getBlockTime();
+    const duration = new Decimal(dateTimeChosenByUser.getTime()).minus(now);
+    const currentBlockHeight = await getBlockHeight();
 
-    if (duration <= 0) {
+    if (duration.lessThanOrEqualTo(0)) {
       throw new Error(
         "You have to send cash to the future, not the present or the past."
       );
     }
 
-    const calculatedBlocktime = blockTimeCalculator(duration);
+    const calculatedBlocktime = blockTimeCalculator(duration.toNumber());
 
     return calculatedBlocktime.add(currentBlockHeight).round().toNumber();
   } catch (err) {
@@ -159,6 +158,16 @@ const msTimePerBlock = timePerBlock * 1000;
 
 const blockTimeCalculator = (ms: number): Decimal => {
   return new Decimal(ms).dividedBy(msTimePerBlock);
+};
+
+const getBlockHeight = (): Promise<number> => {
+  return new Promise((resolve, reject) => {
+    MDS.cmd("block", (resp: any) => {
+      if (resp.status) {
+        resolve(resp.response.block);
+      }
+    });
+  });
 };
 
 /** Get block time */
@@ -280,8 +289,8 @@ const getFutureCashScriptAddress = async () => {
 const collectFutureCash = (futureCash: IFutureCashCollection) => {
   return new Promise((resolve, reject) => {
     constructTransaction(futureCash)
-      .then((res) => {
-        resolve(res);
+      .then(() => {
+        resolve(true);
       })
       .catch((err) => {
         console.error(err);
@@ -327,10 +336,9 @@ const constructTransaction = (
             txnpost id:${id};
             txndelete id:${id}
         `;
-    console.log("running command", command);
     rpc(command)
       .then((r) => {
-        console.log(r);
+        // console.log(r);
         resolve(r);
       })
       .catch((err) => {

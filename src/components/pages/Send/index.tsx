@@ -130,6 +130,7 @@ const Send = () => {
                 Lock up funds now, for yourself, or for another, to save, invest
                 or secure, and unlock in the future
               </h1>
+
               <WalletSelect />
               <div id="date-time" className="mt-8">
                 <h1 className="text-base pb-3 flex gap-1 items-center">

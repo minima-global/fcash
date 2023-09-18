@@ -403,10 +403,7 @@ const Future = () => {
 
                     <div className="my-auto">
                       <Button
-                        disabled={
-                          coinToCollect &&
-                          coinCollected === coinToCollect.coinid
-                        }
+                        disabled={coinToCollect && coinCollected === c.coinid}
                         onClick={() => {
                           setCollect(true);
                           setCoinToCollect(c);
@@ -694,9 +691,6 @@ const Future = () => {
                             if (coinToCollect) {
                               const recipientAddress =
                                 MDS.util.getStateVariable(coinToCollect, 2);
-                              // console.log(
-                              //   "WIthdrawing to address.." + recipientAddress
-                              // );
 
                               await collectFutureCash({
                                 coinid: coinToCollect.coinid,
@@ -707,8 +701,7 @@ const Future = () => {
                                     ? coinToCollect.amount
                                     : coinToCollect.tokenamount,
                               })
-                                .then((res) => {
-                                  console.log(res);
+                                .then(() => {
                                   setCoinCollected(coinToCollect.coinid);
                                   setCollect(false);
                                   setSubmitting(false);

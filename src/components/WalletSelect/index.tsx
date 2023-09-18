@@ -26,7 +26,7 @@ const WalletSelect = () => {
         formik.setFieldValue("token", currentToken);
       }
     }
-  }, [balance]);
+  }, [balance, formik.values]);
 
   useEffect(() => {
     const requestingTokenID = searchParams.get("tokenid");
