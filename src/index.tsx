@@ -28,7 +28,7 @@ import Send from "./components/pages/Send";
 import SplashScreen from "./components/intro/SplashScreen";
 import Dashboard from "./components/Dashboard";
 import Wallet from "./components/pages/wallet/Wallet";
-import Instructions from "./components/pages/Instructions/Instructions";
+import Instructions from "./components/pages/instructions/Instructions";
 import SmartContract from "./components/pages/smartcontract/SmartContract";
 import Future from "./components/pages/Future";
 import Intro from "./components/pages/intro/Intro";

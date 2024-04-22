@@ -3,7 +3,7 @@ import { useContext } from "react";
 import useGetInnerHeight from "../../hooks/useGetInnerHeight";
 import styles from "./Grid.module.css";
 import useIsMinimaBrowser from "../../hooks/useIsMinimaBrowser";
-import Menu from "../pages/Menu/Menu";
+import Menu from "../pages/menu/Menu";
 import { appContext } from "../../AppContext";
 
 const Dashboard = () => {

@@ -1,10 +1,3 @@
-import { Stack } from "@mui/material";
-import React from "react";
-import MiCard from "../../helper/layout/Card/MiCard";
-
-import { Tabs, TabButton } from "../../helper/layout/MiTabs";
-import styles from "./Instructions.module.css";
-import styled from "@emotion/styled";
 import FadeIn from "../../UI/Animations/FadeIn";
 import { Link, useLocation } from "react-router-dom";
 
