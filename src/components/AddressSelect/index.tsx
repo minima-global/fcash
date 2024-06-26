@@ -33,7 +33,7 @@ const AddressSelect = () => {
   return (
     <>
       <div onChange={handleChange} className={styles["radio-wrapper"]}>
-        <label htmlFor="my-address">
+        <label htmlFor="my-address" className={`${formik.values.address.preferred === "0" && "outline outline-sky-300"}`}>
           <input
             defaultChecked={formik.values.address.preferred === "0"}
             type="radio"
@@ -44,7 +44,7 @@ const AddressSelect = () => {
           Use my Minima wallet address
         </label>
 
-        <label htmlFor="custom-address">
+        <label htmlFor="custom-address" className={`${formik.values.address.preferred === "1" && "outline outline-sky-300"}`}>
           <input
             defaultChecked={formik.values.address.preferred === "1"}
             type="radio"

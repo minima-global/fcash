@@ -13,7 +13,7 @@ import { collectFutureCash } from "../../../minima/rpc-commands";
 const Future = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { coins, tip } = useContext(appContext);
+  const { coins, tip, getCoins } = useContext(appContext);
 
   const [collect, setCollect] = useState(false);
   const [coinToCollect, setCoinToCollect] = useState<false | Coin>(false);
@@ -28,6 +28,11 @@ const Future = () => {
 
   const [pending, setPending] = useState<Coin[] | undefined>(undefined);
   const [ready, setReady] = useState<Coin[] | undefined>(undefined);
+
+  useEffect(() => {
+    console.log('getCoins');
+    getCoins();
+  }, [location]);
 
   useEffect(() => {
     setPending(

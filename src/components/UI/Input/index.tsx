@@ -40,13 +40,13 @@ const Input = ({
   ref,
 }: IProps) => {
   let base =
-    "w-full p-4  bg-white text-base color-typing placeholder-core-grey-60 rounded disabled:opacity-40 disabled:cursor-not-allowed focus:outline-[#3DA2FF]";
+    "w-full p-4 bg-white text-base placeholder-core-grey-60 rounded disabled:opacity-40 disabled:cursor-not-allowed truncate outline-none border-none focus:outline focus:outline-sky-300";
 
   if (extraClass) {
     base += ` ${extraClass}`;
   }
   if (error) {
-    base += " form-error-border red-bad";
+    base += " form-error-border red-bad focus:!outline-none";
   }
 
   return (

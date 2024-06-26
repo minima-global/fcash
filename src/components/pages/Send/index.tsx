@@ -1,4 +1,4 @@
-import { RefObject, useContext, useRef, useState } from "react";
+import { RefObject, useContext, useEffect, useRef, useState } from "react";
 import Decimal from "decimal.js";
 
 import { Formik } from "formik";
@@ -25,13 +25,22 @@ import Grid from "../../Grid";
 import * as RPC from "../../../minima/rpc-commands";
 
 import { format } from "date-fns";
+import { useSearchParams } from "react-router-dom";
 
 const Send = () => {
-  const { wallet, vaultLocked, tip } = useContext(appContext);
+  const [searchParams] = useSearchParams();
+
+  const { wallet, vaultLocked, tip, loaded, getBalanceDefault } =
+    useContext(appContext);
   const customStartInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [openStartPicker, setOpenStartPicker] = useState(false);
-  const [dateTimePickerConstraintsOnCliff, setDateTimePickerConstraintOnCliff] =
-    useState<Date | null>(null);
+  const [_, setDateTimePickerConstraintOnCliff] = useState<Date | null>(null);
+
+  useEffect(() => {
+    if (loaded && loaded.current) {
+      getBalanceDefault();
+    }
+  }, [loaded]);
 
   const [tooltips, setTooltips] = useState({
     datetime: false,
@@ -45,7 +54,9 @@ const Send = () => {
   return (
     <Formik
       initialValues={{
-        token: wallet[0],
+        token: searchParams.get("tokenid")
+          ? wallet.find((t: any) => t.tokenid === searchParams.get("tokenid"))
+          : wallet[0],
         datetime: "",
         blocktime: undefined || "",
         address: {
@@ -106,7 +117,113 @@ const Send = () => {
             });
         }
       }}
-      validationSchema={formValidation}
+      validationSchema={yup.object().shape({
+        token: yup.object().required("Field is required."),
+        datetime: yup
+          .date()
+          .required("Field is required")
+          .typeError("Select a valid date and time")
+          .test("datetime-check", "Invalid date", function (val) {
+            const { path, createError } = this;
+
+            if (val === undefined) {
+              return false;
+            }
+
+            if (!isDate(val)) {
+              return createError({
+                path,
+                message: "Please select a valid date",
+              });
+            }
+
+            createBlockTime(val).catch((err) => {
+              return createError({
+                path,
+                message: err.message,
+              });
+            });
+
+            return true;
+          }),
+        address: yup.object().shape({
+          hexstring: yup
+            .string()
+            .required("Please enter an address")
+            .matches(/0|M[xX][0-9a-zA-Z]+/, "Invalid Address")
+            .min(59, "Invalid Address, too short")
+            .max(66, "Invalid Address, too long")
+            .test("check-address", "Invalid address", function (val) {
+              if (val === undefined) {
+                return false;
+              }
+
+              return true;
+            }),
+          preferred: yup
+            .string()
+            .required("Please select your preference for an address"),
+        }),
+        amount: yup
+          .string()
+          .required("Field is required")
+          .matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters")
+          .test("check-my-funds", "Insufficient funds.", function (val) {
+            const { path, createError, parent } = this;
+
+            if (!val) {
+              return false;
+            }
+
+            try {
+              if (isNaN(parseInt(val))) {
+                throw new Error("Invalid number");
+              }
+
+              if (new Decimal(val).greaterThan(parent.token.sendable)) {
+                throw new Error("Insufficient funds");
+              }
+            } catch (error) {
+              if (error instanceof Error) {
+                return createError({ path, message: error.message });
+              }
+
+              createError({ path, message: "Invalid amount" });
+            }
+
+            return true;
+          }),
+        burn: yup
+          .string()
+          .matches(/^[^a-zA-Z\\;'"]+$/, "Invalid character")
+          .test("Sufficient funds", "Has enough Minima", function (val) {
+            const { path, createError, parent } = this;
+
+            if (val === undefined) {
+              return true;
+            }
+
+            try {
+              if (isNaN(parseInt(val))) {
+                throw new Error("Invalid number");
+              }
+
+              if (new Decimal(val).greaterThan(wallet[0].sendable)) {
+                throw new Error(
+                  "Insufficient funds, you need more MINIMA to pay for the burn"
+                );
+              }
+            } catch (error) {
+              if (error instanceof Error) {
+                return createError({ path, message: error.message });
+              }
+
+              createError({ path, message: "Invalid burn amount" });
+            }
+
+            return true;
+          }),
+      })}
     >
       {({
         handleSubmit,
@@ -125,13 +242,14 @@ const Send = () => {
       }) => (
         <form onSubmit={handleSubmit}>
           {step === 0 && (
-            <div className="text-2xl rounded-lg w-full pb-4">
+            <div className="pb-4">
               <h1 className="text-base mb-8 mt-6">
                 Lock up funds now, for yourself, or for another, to save, invest
                 or secure, and unlock in the future
               </h1>
 
               <WalletSelect />
+
               <div id="date-time" className="mt-8">
                 <h1 className="text-base pb-3 flex gap-1 items-center">
                   Select date and time{" "}
@@ -201,12 +319,13 @@ const Send = () => {
                     </svg>
                   )}
                 </h1>
-                <ScaleIn isOpen={tooltips.datetime}>
-                  <Tooltip
-                    content="Select a date & time in the future"
-                    position={162}
-                  />
-                </ScaleIn>
+                  
+                <Tooltip
+                  onClose={() => setTooltips({ ...tooltips, datetime: false })}
+                  active={tooltips.datetime}
+                  content="Select a date & time in the future"
+                  position={162}
+                />
 
                 <DateTimePicker
                   open={openStartPicker}
@@ -387,12 +506,13 @@ const Send = () => {
                     </svg>
                   )}
                 </h1>
-                <ScaleIn isOpen={tooltips.burn}>
-                  <Tooltip
-                    content="(optional) A burn is denominated in MINIMA and will priortize your transaction"
-                    position={38}
-                  />
-                </ScaleIn>
+
+                <Tooltip
+                  onClose={() => setTooltips({ ...tooltips, burn: false })}
+                  active={tooltips.burn}
+                  content="(optional) A burn is denominated in MINIMA and will priortize your transaction"
+                  position={38}
+                />
                 <Input
                   formikProps={getFieldProps("burn")}
                   id="burn"
@@ -473,12 +593,13 @@ const Send = () => {
                       </svg>
                     )}
                   </h1>
-                  <ScaleIn isOpen={tooltips.vault}>
-                    <Tooltip
-                      content="Your vault password is required to post this transaction"
-                      position={120}
-                    />
-                  </ScaleIn>
+
+                  <Tooltip
+                    onClose={() => setTooltips({ ...tooltips, vault: false })}
+                    active={tooltips.vault}
+                    content="Your vault password is required to post this transaction"
+                    position={120}
+                  />
                   <Input
                     formikProps={getFieldProps("password")}
                     id="password"
@@ -490,16 +611,17 @@ const Send = () => {
                 </div>
               )}
 
-              <Button
+              <Button                                
                 type="submit"
                 disabled={isSubmitting || !isValid}
-                extraClass="mt-6"
+                extraClass="mt-6 font-bold tracking-wider hover:opacity-90"
               >
-                Send funds
+                Review
               </Button>
 
               <div className="flex items-center justify-center">
                 <button
+                  type="button"
                   disabled={isSubmitting}
                   onClick={() => {
                     resetForm();
@@ -639,12 +761,13 @@ const Send = () => {
                                 </svg>
                               )}
                             </h3>
-                            <ScaleIn isOpen={tooltips.created}>
-                              <Tooltip
-                                content="The created timestamp will change according to when this transaction is posted to the network"
-                                position={195}
-                              />
-                            </ScaleIn>
+
+                            <Tooltip
+                              onClose={() => setTooltips({ ...tooltips, created: false })}
+                              active={tooltips.created}
+                              content="The created timestamp will change according to when this transaction is posted to the network"
+                              position={195}
+                            />
                             <p className="text-black">
                               {format(new Date(), "MMM d yyyy - hh:mm:ss a")}
                             </p>
@@ -673,9 +796,10 @@ const Send = () => {
                       </div>
 
                       <Button
+                        type="button"
                         onClick={() => submitForm()}
                         disabled={isSubmitting}
-                        extraClass="mt-6"
+                        extraClass="mt-6 font-bold tracking-wider hover:opacity-90"
                       >
                         Confirm
                       </Button>
@@ -683,6 +807,7 @@ const Send = () => {
                       {!isSubmitting && (
                         <div className="flex items-center justify-center">
                           <button
+                            type="button"
                             disabled={isSubmitting}
                             onClick={() => {
                               setStep(0);
@@ -852,6 +977,7 @@ const Send = () => {
                         </p>
                       )}
                       <Button
+                        type="button"
                         onClick={() => {
                           setStep(0);
                           resetForm();
@@ -1041,6 +1167,7 @@ const Send = () => {
                       </p>
 
                       <Button
+                        type="button"
                         onClick={() => {
                           setStep(0);
                           resetForm();
@@ -1247,6 +1374,7 @@ const Send = () => {
                       </ScaleIn>
 
                       <Button
+                        type="button"
                         onClick={() => {
                           setStatus(undefined);
                           setStep(1);
@@ -1267,82 +1395,3 @@ const Send = () => {
 };
 
 export default Send;
-
-const formValidation = yup.object().shape({
-  token: yup.object().required("Field is required."),
-  datetime: yup
-    .date()
-    .required("Field is required")
-    .typeError("Select a valid date and time")
-    .test("datetime-check", "Invalid date", function (val) {
-      const { path, createError } = this;
-
-      if (val === undefined) {
-        return false;
-      }
-
-      if (!isDate(val)) {
-        return createError({ path, message: "Please select a valid date" });
-      }
-
-      createBlockTime(val).catch((err) => {
-        return createError({
-          path,
-          message: err.message,
-        });
-      });
-
-      return true;
-    }),
-  address: yup.object().shape({
-    hexstring: yup
-      .string()
-      .required("Please enter an address")
-      .matches(/0|M[xX][0-9a-zA-Z]+/, "Invalid Address")
-      .min(59, "Invalid Address, too short")
-      .max(66, "Invalid Address, too long")
-      .test("check-address", "Invalid address", function (val) {
-        if (val === undefined) {
-          return false;
-        }
-
-        return true;
-      }),
-    preferred: yup
-      .string()
-      .required("Please select your preference for an address"),
-  }),
-  amount: yup
-    .string()
-    .required("Field is required")
-    .matches(/^[^a-zA-Z\\;'"]+$/, "Invalid characters")
-    .test("check-my-funds", "Insufficient funds.", function (val) {
-      const { path, createError, parent } = this;
-
-      if (val == undefined) {
-        return false;
-      }
-
-      const selectedToken = parent.token;
-      if (new Decimal(selectedToken.sendable).lessThan(new Decimal(0.0))) {
-        const requiredAmount = new Decimal(val).minus(
-          new Decimal(selectedToken.sendable)
-        );
-
-        return createError({
-          path,
-          message: `Insufficient funds, you need another ${requiredAmount.toString()} ${
-            typeof selectedToken.token == "string"
-              ? selectedToken.token
-              : typeof selectedToken.token == "object" &&
-                selectedToken.token.hasOwnProperty("name")
-              ? selectedToken.token.name
-              : "Unknown"
-          } `,
-        });
-      }
-
-      return true;
-    }),
-  burn: yup.string().matches(/^[^a-zA-Z\\;'"]+$/, "Invalid character"),
-});

@@ -51,7 +51,7 @@ const Intro = () => {
                 </Button>
                 <MiIntroActionsContainer>
                   <MiIntroSkipButton
-                    onClick={() => navigate("/dashboard/send")}
+                    onClick={() => navigate("/dashboard/send/0x00")}
                   >
                     Skip
                   </MiIntroSkipButton>

@@ -29,7 +29,7 @@
   margin-left: -5px;
   border-width: 14px;
   border-style: solid;
-  border-color: transparent transparent #464C4F transparent;
+  border-color: transparent transparent transparent transparent;
 }
 
 .tooltip-hook::after {

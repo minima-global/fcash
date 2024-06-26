@@ -58,11 +58,11 @@ const router = createHashRouter(
         <Route path="instructions" element={<Instructions />} />
         <Route path="contract" element={<SmartContract />} />
         <Route path="smartcontract" element={<SmartContract />} />
-        <Route
-          path="*"
-          element={<Navigate to="/dashboard/send" replace={false} />}
-        />
       </Route>
+      <Route
+        path="*"
+        element={<Navigate to="/dashboard/send" replace={false} />}
+      />
     </Route>
   )
 );

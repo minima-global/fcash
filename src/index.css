@@ -126,13 +126,6 @@
   display: inline;
 }
 
-.input-outline {
-  outline: 1px solid #464C4F;
-}
-.input-no-outline {
-  outline: none;
-}
-
 
 .password-label {
   color: var(--core-grey-80);
@@ -291,8 +284,6 @@ input:-webkit-autofill,
     color: #BDBDC4;
     width: 20px;
     height: 20px;
-    border: 2px solid  var(--core-black-contrast-3);
-    border-radius: 12px;
     transform: translateY(-0.01em);
   }
   input[type="checkbox"]:disabled {
@@ -303,19 +294,6 @@ input:-webkit-autofill,
   
     display: grid;
     place-content: center;
-  }
-  input[type="checkbox"]::before {
-    content: url(./assets/check_small.svg);
-    width: inherit;
-    height: inherit;
-    border-radius: 50%;
-    transform: scale(0);
-    transition: 120ms transform ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px 6px;
-    /* box-shadow: inset 1em 1em #282B2E; */
   }
   input[type="checkbox"]:checked::before {
     transform: scale(1);
@@ -423,4 +401,11 @@ code {
 
 .hover-state:hover svg path {
   fill: white;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance:none;
 }

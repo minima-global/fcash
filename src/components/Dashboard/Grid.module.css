@@ -34,42 +34,6 @@
 .grid header {
   grid-area: header;
 }
-.grid > footer {
-  z-index: 45;
-  grid-area: footer;
-  display: grid;
-  grid-template-columns: 1fr minmax(0, 560px) 1fr;
-}
-.grid > footer nav {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-self: center;
-}
-
-.grid > footer nav a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-
-}
-.grid > footer nav a p {
-  margin: 0;
-}
-.grid > footer nav a img {
-  min-height: 18px;
-  min-width: 18px;
-}
-
-.active p, .active svg path {
-  color: var(--brand-color);
-  fill: var(--brand-color);
-}
-.passive p, .passive svg path {
-  color: var(--core-grey-20);
-  fill: #FFFFFF;
-}
 
 
 .header {

@@ -3,13 +3,14 @@ import {
   useRef,
   useState,
   useEffect,
-  ReactElement,
 } from "react";
 import { Coin, IScript, MinimaToken } from "./minima/@types/minima";
 
 import * as RPC from "./minima/commands";
 import { makeTokenImage } from "./utils";
 import { futureCashScript } from "./minima/scripts";
+
+import * as utils from "./utils";
 
 var balanceInterval: ReturnType<typeof setInterval>;
 export const appContext = createContext({} as any);
@@ -30,10 +31,6 @@ const AppProvider = ({ children }: IProps) => {
   const [displayBlock, setDisplayBlock] = useState(false);
 
   const [vaultLocked, setVaultLocked] = useState<boolean | null>(null);
-
-  const [usersFirstTimeOpeningApp, setUsersFirstTimeOpeningApp] = useState<
-    boolean | null
-  >(null);
 
   useEffect(() => {
     if (window.innerWidth < 568) {
@@ -89,33 +86,57 @@ const AppProvider = ({ children }: IProps) => {
   }, [loaded]);
 
   const getCoins = async () => {
-    setCoins([]);
-    (window as any).MDS.cmd("scripts", function (resp: any) {
-      if (resp.status) {
-        const script = resp.response.find(
-          (c: IScript) => c.script === futureCashScript
-        );
+    try {
+      const futureCashContract = await new Promise((resolve, reject) => {
+        (window as any).MDS.cmd("scripts", function(resp: any) {          
+          if (!resp.status) reject("No response from server");
 
-        (window as any).MDS.cmd("coins", function (resp: any) {
-          if (resp.status) {
-            resp.response.forEach((c: Coin) => {
-              if (c.address === script.address) {
-                if (
-                  c.token &&
-                  c.token.name &&
-                  c.token.name.url &&
-                  c.token.name.url.startsWith("<artimage>", 0)
-                ) {
-                  c.token.name.url = makeTokenImage(
-                    c.token.name.url,
-                    c.tokenid
-                  );
-                }
-                setCoins((prevState) => [...prevState, c]);
+          const c = resp.response.find((c: IScript) => c.script === futureCashScript);
+          resolve(c.address);
+        })
+      });
+
+      const futureContracts: Coin[] = await new Promise((resolve, reject) => {
+        (window as any).MDS.cmd("coins", function(resp: any) {
+          if (!resp.status) reject("No response from server, cmd coins");
+          let futures: Coin[] = [];
+          resp.response.forEach((c: Coin) => {
+            if (c.address === futureCashContract) {
+              if (
+                c.token &&
+                c.token.name &&
+                c.token.name.url &&
+                c.token.name.url.startsWith("<artimage>", 0)
+              ) {
+                c.token.name.url = makeTokenImage(
+                  c.token.name.url,
+                  c.tokenid
+                );
               }
-            });
-          }
+              futures.push(c);
+            }
+          })
+          resolve(futures);
+
+        })
+      })
+
+      setCoins(futureContracts);
+
+    } catch (error) {
+      console.error('Failed to fetch Future contracts', error);
+      setCoins([]);
+    }
+  };
+
+  const getBalanceDefault = () => {
+    (window as any).MDS.cmd("balance", (resp: any) => {
+      if (resp.status) {
+        const updatedTokens = resp.response.map((item: MinimaToken) => {
+          utils.updateTokenUrl(item.token, item.tokenid);
+          return item; // Make sure to return the item
         });
+        setWallet(updatedTokens);
       }
     });
   };
@@ -164,6 +185,7 @@ const AppProvider = ({ children }: IProps) => {
   return (
     <appContext.Provider
       value={{
+        loaded,
         mode,
         isMobile: mode === "mobile",
 
@@ -171,6 +193,7 @@ const AppProvider = ({ children }: IProps) => {
         wallet,
         coins,
         getCoins,
+        getBalanceDefault,
         tip,
         vaultLocked,
 

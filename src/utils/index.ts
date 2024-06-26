@@ -1,4 +1,3 @@
-import { Coin, MinimaToken } from "../minima/@types/minima";
 import getAppUID from "./getAppUID";
 
 const numberWithCommas = (x: string) => {
@@ -63,4 +62,14 @@ const makeTokenImage = (
   return undefined;
 };
 
-export { getAppUID, containsText, copy, numberWithCommas, makeTokenImage };
+const isArtImageToken = (url: string | undefined): boolean => {
+  return url !== undefined && url.startsWith("<artimage>", 0);
+};
+
+const updateTokenUrl = (token: any, tokenid: string): void => {
+  if (token.url && isArtImageToken(token.url)) {
+    token.url = makeTokenImage(token.url, tokenid);
+  }
+};
+
+export { getAppUID, containsText, copy, numberWithCommas, makeTokenImage, isArtImageToken, updateTokenUrl };
