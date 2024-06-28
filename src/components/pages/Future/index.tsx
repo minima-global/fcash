@@ -30,7 +30,6 @@ const Future = () => {
   const [ready, setReady] = useState<Coin[] | undefined>(undefined);
 
   useEffect(() => {
-    console.log('getCoins');
     getCoins();
   }, [location]);
 

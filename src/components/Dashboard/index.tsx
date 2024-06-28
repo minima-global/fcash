@@ -70,7 +70,9 @@ const Dashboard = () => {
               </div>
             </>
           )}
-
+          {displayMenu &&          
+          <div/>
+          }
           <div onClick={() => setDisplayMenu((prevState: boolean) => !prevState)} className="z-[60] text-white font-bold flex flex-col items-center my-auto">
             {!displayMenu && <MenuIcon fill="currentColor" extraClass="" />}
             {displayMenu && <CloseIcon fill="currentColor" extraClass="" />}

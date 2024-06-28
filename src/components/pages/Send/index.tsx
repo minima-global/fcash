@@ -339,10 +339,18 @@ const Send = () => {
                     setDateTimePickerConstraintOnCliff(value);
 
                     if (value) {
-                      const calculateBlockTime = await getBlockTimeByDate(
-                        value
-                      );
-                      setFieldValue("blocktime", calculateBlockTime);
+
+                      try {
+                        const calculateBlockTime = await getBlockTimeByDate(
+                          value
+                        ).catch((err) => {
+                          throw err;
+                        })
+                        setFieldValue("blocktime", calculateBlockTime);
+                        
+                      } catch (error) {
+                        // do nutin
+                      }
                     }
                   }}
                   onClose={() => setOpenStartPicker(false)}
@@ -636,7 +644,7 @@ const Send = () => {
           )}
           {step === 1 &&
             createPortal(
-              <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
+              <div className="z-61 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
                 <Grid
                   fullHeight={true}
                   header={<div />}
@@ -826,7 +834,7 @@ const Send = () => {
             )}
           {step === 2 &&
             createPortal(
-              <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
+              <div className="z-61 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
                 <Grid
                   header={<div />}
                   content={
@@ -993,7 +1001,7 @@ const Send = () => {
             )}
           {step === 3 &&
             createPortal(
-              <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
+              <div className="z-61 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
                 <Grid
                   header={<div />}
                   content={
@@ -1183,7 +1191,7 @@ const Send = () => {
             )}
           {status &&
             createPortal(
-              <div className="z-50 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
+              <div className="z-61 bg-base absolute top-0 left-0 right-0 bottom-0 h-full">
                 <Grid
                   header={<div />}
                   content={
