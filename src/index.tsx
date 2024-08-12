@@ -59,6 +59,7 @@ const router = createHashRouter(
         <Route path="contract" element={<SmartContract />} />
         <Route path="smartcontract" element={<SmartContract />} />
       </Route>
+
       <Route
         path="*"
         element={<Navigate to="/dashboard/send" replace={false} />}

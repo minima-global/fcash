@@ -17,12 +17,10 @@ const Dashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { displayMenu, setDisplayMenu } = useContext(appContext);
+  const { displayMenu, setDisplayMenu, unavailable } = useContext(appContext);
 
   const isActive = (_current: string) => {
-    return location.pathname.includes(_current)
-      ? "!text-sky-500"
-      : "";
+    return location.pathname.includes(_current) ? "!text-sky-500" : "";
   };
 
   return (
@@ -56,32 +54,46 @@ const Dashboard = () => {
         </section>
       </main>
 
-      <footer className="bg-black grid grid-cols-[1fr_minmax(0,_560px)_1fr]">
-        <div />
-        <nav className={`grid grid-cols-3 ${displayMenu && "grid-cols-1"}`}>
-          {!displayMenu && (
-            <>
-              <div onClick={() => navigate("/dashboard/send")} className={`text-white font-bold flex flex-col items-center my-auto ${isActive("/dashboard/send")}`}>
-                <SendIcon />
-                Send</div>
-              <div onClick={() => navigate("/dashboard/future#pending")} className={`text-white font-bold flex flex-col items-center my-auto ${isActive("/dashboard/future")}`}>
-                <RefreshIcon fill="currentColor" extraClass="" />
-                Future
-              </div>
-            </>
-          )}
-          {displayMenu &&          
-          <div/>
-          }
-          <div onClick={() => setDisplayMenu((prevState: boolean) => !prevState)} className="z-[60] text-white font-bold flex flex-col items-center my-auto">
-            {!displayMenu && <MenuIcon fill="currentColor" extraClass="" />}
-            {displayMenu && <CloseIcon fill="currentColor" extraClass="" />}
-            {!displayMenu && "Menu"}
-            {displayMenu && "Close"}
-          </div>
-        </nav>
-        <div />
-      </footer>
+      {!unavailable &&
+        <footer className="bg-black grid grid-cols-[1fr_minmax(0,_560px)_1fr]">
+          <div />
+          <nav className={`grid grid-cols-3 ${displayMenu && "grid-cols-1"}`}>
+            {!displayMenu && (
+              <>
+                <div
+                  onClick={() => navigate("/dashboard/send")}
+                  className={`text-white font-bold flex flex-col items-center my-auto ${isActive(
+                    "/dashboard/send"
+                  )}`}
+                >
+                  <SendIcon />
+                  Send
+                </div>
+                <div
+                  onClick={() => navigate("/dashboard/future#pending")}
+                  className={`text-white font-bold flex flex-col items-center my-auto ${isActive(
+                    "/dashboard/future"
+                  )}`}
+                >
+                  <RefreshIcon fill="currentColor" extraClass="" />
+                  Future
+                </div>
+              </>
+            )}
+            {displayMenu && <div />}
+            <div
+              onClick={() => setDisplayMenu((prevState: boolean) => !prevState)}
+              className="z-[60] text-white font-bold flex flex-col items-center my-auto"
+            >
+              {!displayMenu && <MenuIcon fill="currentColor" extraClass="" />}
+              {displayMenu && <CloseIcon fill="currentColor" extraClass="" />}
+              {!displayMenu && "Menu"}
+              {displayMenu && "Close"}
+            </div>
+          </nav>
+          <div />
+        </footer>    
+      }
 
       <Menu />
     </div>

@@ -13,6 +13,12 @@ import { collectFutureCash } from "../../../minima/rpc-commands";
 const Future = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { wallet } = useContext(appContext);
+
+  const [burn, setBurn] = useState("");
+  const [error, setError] = useState<{ burn: string } | null>(null);
+
   const { coins, tip, getCoins } = useContext(appContext);
 
   const [collect, setCollect] = useState(false);
@@ -28,6 +34,46 @@ const Future = () => {
 
   const [pending, setPending] = useState<Coin[] | undefined>(undefined);
   const [ready, setReady] = useState<Coin[] | undefined>(undefined);
+
+  const isNumber = (value: string): boolean => {
+    const numberPattern = /^\d+(\.\d+)?$/;
+    return numberPattern.test(value);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    try {
+      setBurn(value);
+
+      if (!value) {
+        return setError(null);
+      }
+
+      if (!isNumber(value)) {
+        throw new Error("Please enter a valid number");
+      }
+
+      // Check if the value exceeds the wallet amount
+      const burnValue = new Decimal(value);
+      const walletAmount = new Decimal(wallet[0]?.sendable || 0);
+
+      console.log(burnValue.toString());
+      console.log(walletAmount.toString());
+      if (burnValue.greaterThan(walletAmount)) {
+        throw new Error("You don't have enough MINIMA to collect this coin");
+      }
+
+      setBurn(value);
+      setError(null);
+    } catch (error) {
+      if (error instanceof Error) {
+        return setError({ burn: error.message });
+      }
+
+      setError({ burn: "Invalid burn amount" });
+    }
+  };
 
   useEffect(() => {
     getCoins();
@@ -678,6 +724,24 @@ const Future = () => {
                                 {coinToCollect && coinToCollect.coinid}
                               </p>
                             </li>
+
+                            <li>
+                              <h3 className="color-core-black-3 text-lg">
+                                Add Burn (optional)
+                              </h3>
+                              <input
+                                id="burn"
+                                name="burn"
+                                value={burn}
+                                onChange={handleChange}
+                                placeholder="0.0"
+                                className="font-mono bg-transparent w-full focus:outline-none focus:underline"
+                              />
+
+                              {!error&&<p className="text-sm mt-1 text-neutral-600">Speed up your transactions when the network is busy</p>}
+
+                              {error && <p className="text-sm mt-1 text-red-600">{error.burn}</p>}
+                            </li>
                           </ul>
                         </div>
                         <div className="mt-6">
@@ -717,7 +781,7 @@ const Future = () => {
                                 });
                             }
                           }}
-                          disabled={submitting}
+                          disabled={submitting || !!error}
                           extraClass="mt-6"
                         >
                           Confirm

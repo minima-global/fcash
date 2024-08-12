@@ -22,6 +22,8 @@ const AppProvider = ({ children }: IProps) => {
   const loaded = useRef(false);
   const [mode, setMode] = useState("desktop");
 
+  const [unavailable, setUnavailable] = useState(false);
+
   /**  Minima Stuff  */
   const [wallet, setWallet] = useState<MinimaToken[]>([]);
   const [coins, setCoins] = useState<Coin[]>([]);
@@ -171,7 +173,10 @@ const AppProvider = ({ children }: IProps) => {
       );
 
       setWallet(balanceWithoutNFT);
-    });
+    }).catch((err) => {
+      console.log(err);
+      setUnavailable(true);
+    })
   };
 
   const checkVaultLocked = () => {
@@ -202,6 +207,9 @@ const AppProvider = ({ children }: IProps) => {
 
         displayBlock,
         setDisplayBlock,
+
+        unavailable,
+        setUnavailable
       }}
     >
       {children}

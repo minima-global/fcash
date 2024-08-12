@@ -7,7 +7,7 @@ import {
 } from "../../helper/layout/MiOverlay";
 import { format } from "date-fns";
 import MiCopy from "../../helper/layout/svgs/MiCopy";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppSelector } from "../../../redux/hooks";
 import { selectClipboardSelector } from "../../../redux/slices/app/clipboardSlice";
 import Decimal from "decimal.js";
 import React from "react";

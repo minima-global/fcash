@@ -94,7 +94,7 @@ const WalletSelect = () => {
                   src={
                     "url" in currentSelectedToken.token &&
                     currentSelectedToken.token.url.length
-                      ? currentSelectedToken.token.url
+                      ? decodeURIComponent(currentSelectedToken.token.url)
                       : `https://robohash.org/${currentSelectedToken.tokenid}`
                   }
                   alt="custom-token"
@@ -214,7 +214,7 @@ const WalletSelect = () => {
                               src={
                                 "url" in tkn.token &&
                                 tkn.token.url.length
-                                  ? tkn.token.url
+                                  ? decodeURIComponent(tkn.token.url)
                                   : `https://robohash.org/${tkn.tokenid}`
                               }
                               alt="custom-token"

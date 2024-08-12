@@ -1,16 +1,8 @@
 import MiCard from "../../helper/layout/Card/MiCard";
 import { futureCashScript } from "../../../minima/scripts";
-import styled from "@emotion/styled";
-import { Stack } from "@mui/material";
 import { getFutureCashScriptAddress } from "../../../minima/rpc-commands";
 import React from "react";
 import FadeIn from "../../UI/Animations/FadeIn";
-
-const MiSmartContract = styled("div")`
-  margin: 8px;
-  text-align: left;
-  margin-bottom: 8px;
-`;
 
 const SmartContract = () => {
   const [address, setAddress] = React.useState("");
@@ -28,30 +20,18 @@ const SmartContract = () => {
   return (
     <FadeIn isOpen={true}>
       <MiCard extraClass="align-self-start mt-4">
-        <h1 className="text-base font-bold color-futurecash">
+        <h1 className="text-base font-bold tracking-widest">
           FutureCash uses the following Smart Contract script
         </h1>
-        <MiSmartContract>
-          <Stack>
+        <div className="mt-2">
             <code className="text-black font-bold">{futureCashScript}</code>
-            <div className="w-full flex justify-center items-center my-4 text-center">
-              <svg
-                width="15"
-                height="25"
-                viewBox="0 0 15 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.79289 24.2306C7.18342 24.6211 7.81658 24.6211 8.20711 24.2306L14.5711 17.8666C14.9616 17.4761 14.9616 16.8429 14.5711 16.4524C14.1805 16.0619 13.5474 16.0619 13.1569 16.4524L7.5 22.1092L1.84315 16.4524C1.45262 16.0619 0.819456 16.0619 0.428931 16.4524C0.0384071 16.8429 0.0384071 17.4761 0.428931 17.8666L6.79289 24.2306ZM6.5 0.5L6.5 23.5234L8.5 23.5234L8.5 0.5L6.5 0.5Z"
-                  fill="black"
-                />
-              </svg>
-            </div>
-
+        </div>
+        <div className="text-center mt-2 font-bold text-xl">
+          {">>>>"}
+        </div>
+        <div className="my-4">
             <code className="text-black break-all">{address}</code>
-          </Stack>
-        </MiSmartContract>
+        </div>
       </MiCard>
     </FadeIn>
   );

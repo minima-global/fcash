@@ -29,7 +29,7 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
   onTouchEnd,
 }) => {
   let base =
-    "w-full px-4 py-3.5 rounded font-medium text-base disabled:cursor-not-allowed focus:outline-none hover:border-color-transparent hover:outline-none";
+    "w-full px-4 py-3.5 rounded font-medium text-base disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-100 focus:outline-none hover:border-color-transparent hover:outline-none";
 
   if (extraClass && extraClass.length) {
     base += ` ${extraClass ? extraClass + "" : ""}`;
@@ -39,10 +39,6 @@ const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
     base += " text-white bg-black";
   } else if (variant === "secondary") {
     base += " text-white core-black-contrast-2";
-  }
-
-  if (disabled) {
-    base += " button-disabled";
   }
 
   return (

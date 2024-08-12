@@ -199,13 +199,13 @@ const Send = () => {
           .test("Sufficient funds", "Has enough Minima", function (val) {
             const { path, createError, parent } = this;
 
-            if (val === undefined) {
+            if (!val) {
               return true;
             }
 
-            try {
-              if (isNaN(parseInt(val))) {
-                throw new Error("Invalid number");
+            try {              
+              if (parent.token.tokenid === '0x00' && new Decimal(val).plus(parent.amount).greaterThan(wallet[0].sendable)) {
+                throw new Error("Insufficient funds, you need more MINIMA to pay for the burn");
               }
 
               if (new Decimal(val).greaterThan(wallet[0].sendable)) {
@@ -404,13 +404,7 @@ const Send = () => {
                   disabled={false}
                   id="amount"
                   name="amount"
-                  placeholder={`${
-                    values.token &&
-                    values.token.sendable &&
-                    new Decimal(values.token.sendable).equals(0)
-                      ? `Max ${new Decimal(values.token.sendable)}`
-                      : "Add amount"
-                  }`}
+                  placeholder="0.0"
                   endIcon={
                     <div
                       onClick={() =>

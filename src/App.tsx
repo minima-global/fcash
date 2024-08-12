@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 import "./App.css";
 import * as utils from "./utils";
+import Unavailable from "./components/Unavailable";
 
 function App() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <>
+      <Unavailable />
       <Outlet />
     </>
   );
