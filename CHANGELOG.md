@@ -1,5 +1,11 @@
 # Changelog
 
+##### [2.7.0] - 13 August 24
+
+- Added burn for transactional features
+- Added MDS Fail Unavailable feature
+- Design tweaks
+
 ##### [2.3.2] - 12 September 23
 
 - Fixed tokenid crash
