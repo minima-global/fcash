@@ -199,7 +199,7 @@ const Send = () => {
           .test("Sufficient funds", "Has enough Minima", function (val) {
             const { path, createError, parent } = this;
 
-            if (!val) {
+            if (!val || !parent.amount) {
               return true;
             }
 
@@ -522,7 +522,7 @@ const Send = () => {
                   type="text"
                   disabled={isSubmitting}
                   placeholder="Add amount"
-                  error={errors.burn ? errors.burn : false}
+                  error={errors && errors.burn ? errors.burn : false}
                 />
               </div>
 

@@ -1,5 +1,9 @@
 # Changelog
 
+##### [2.7.1] - 14 August 24
+
+- Tweak burn
+
 ##### [2.7.0] - 13 August 24
 
 - Added burn for transactional features
